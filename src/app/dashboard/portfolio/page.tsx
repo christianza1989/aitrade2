@@ -44,7 +44,7 @@ export default function PortfolioPage() {
         });
 
         for (const pos of positionsWithMarketData) {
-            const currentHigh = pos.highPnlPercent || 0;
+            const currentHigh = (pos as any).highPnlPercent || 0;
             if (pos.pnlPercent > currentHigh) {
                 fetch('/api/portfolio/update', {
                     method: 'POST',
