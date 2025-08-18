@@ -1,0 +1,26 @@
+[
+  {
+    "timestamp": "2025-08-18T10:50:55.573Z",
+    "symbol": "API3USDT",
+    "amount": 13636.363636363636,
+    "entryPrice": 0.88
+  },
+  {
+    "timestamp": "2025-08-18T10:50:55.921Z",
+    "symbol": "EPICUSDT",
+    "amount": 4070.5563093622795,
+    "entryPrice": 2.948
+  },
+  {
+    "timestamp": "2025-08-18T10:50:57.553Z",
+    "symbol": "ALPINEUSDT",
+    "amount": 3942.181340341656,
+    "entryPrice": 2.283
+  },
+  {
+    "timestamp": "2025-08-18T10:50:57.943Z",
+    "symbol": "JUVUSDT",
+    "amount": 6181.318681318681,
+    "entryPrice": 1.456
+  }
+]
