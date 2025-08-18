@@ -1,3 +1,18 @@
+// Define the Article interface based on NewsAPI response
+interface Article {
+    source: {
+        id: string | null;
+        name: string;
+    };
+    author: string | null;
+    title: string;
+    description: string | null;
+    url: string;
+    urlToImage: string | null;
+    publishedAt: string;
+    content: string | null;
+}
+
 export class NewsService {
     private apiKey: string;
     private baseUrl: string = 'https://newsapi.org/v2/everything';
@@ -9,7 +24,7 @@ export class NewsService {
         }
     }
 
-    async getCryptoNews(query: string = 'crypto', pageSize: number = 10): Promise<any[]> {
+    async getCryptoNews(query: string = 'crypto', pageSize: number = 10): Promise<Article[]> {
         try {
             const url = `${this.baseUrl}?q=${query}&apiKey=${this.apiKey}&pageSize=${pageSize}&sortBy=publishedAt&language=en`;
             const response = await fetch(url);

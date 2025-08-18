@@ -10,11 +10,18 @@ interface Decision {
     justification: string;
     pnlPercent: number;
     currentPrice: number;
+}
+
+interface DecisionWithSymbol extends Decision {
     symbol: string;
 }
 
+interface DecisionData {
+    [symbol: string]: Decision[];
+}
+
 export function DecisionLog() {
-    const [allDecisions, setAllDecisions] = useState<Decision[]>([]);
+    const [allDecisions, setAllDecisions] = useState<DecisionWithSymbol[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -23,14 +30,14 @@ export function DecisionLog() {
             try {
                 const response = await fetch('/api/decisions');
                 if (!response.ok) throw new Error('Failed to fetch decisions.');
-                const data = await response.json();
-                const flattenedDecisions = Object.entries(data).flatMap(([symbol, decisionList]: [string, any]) => 
-                    decisionList.map((d: any) => ({ ...d, symbol }))
+                const data: DecisionData = await response.json();
+                const flattenedDecisions = Object.entries(data).flatMap(([symbol, decisionList]) => 
+                    decisionList.map((d: Decision) => ({ ...d, symbol }))
                 ).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
                 
                 setAllDecisions(flattenedDecisions);
                 setCurrentIndex(0); // Reset to the latest decision on refresh
-            } catch (error) {
+            } catch {
                 toast.error("Could not load decision log.");
             } finally {
                 setIsLoading(false);

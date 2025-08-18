@@ -2,8 +2,23 @@
 
 import { useDashboard } from '@/context/DashboardContext';
 
+// Define interfaces for the component props and data structures
+interface Decision {
+    decision: string;
+    amount_to_buy_usd: number;
+    justification: string;
+}
+
+export interface Analysis {
+    PortfolioAllocator?: {
+        response: {
+            [symbol: string]: Decision;
+        };
+    };
+}
+
 interface AnalysisPanelProps {
-    analysis?: any;
+    analysis?: Analysis;
 }
 
 export function AnalysisPanel({ analysis }: AnalysisPanelProps) {
@@ -21,8 +36,30 @@ export function AnalysisPanel({ analysis }: AnalysisPanelProps) {
         );
     }
 
-    const allocations = lastRunAnalysis.PortfolioAllocator?.response || {};
-    const buyDecisions = Object.entries(allocations).filter(([_, decision]: [string, any]) => decision.decision === 'EXECUTE_BUY');
+    const portfolioAllocator = lastRunAnalysis.PortfolioAllocator;
+    const allocations = 
+        portfolioAllocator && 
+        typeof portfolioAllocator === 'object' && 
+        'response' in portfolioAllocator &&
+        portfolioAllocator.response &&
+        typeof portfolioAllocator.response === 'object'
+            ? portfolioAllocator.response 
+            : {};
+    
+    // Type guard to check if an object is a Decision
+    const isDecision = (value: unknown): value is Decision => {
+        return (
+            typeof value === 'object' &&
+            value !== null &&
+            'decision' in value &&
+            'amount_to_buy_usd' in value &&
+            'justification' in value
+        );
+    };
+
+    const buyDecisions = Object.entries(allocations).filter(
+        (entry): entry is [string, Decision] => isDecision(entry[1]) && entry[1].decision === 'EXECUTE_BUY'
+    );
 
     if (buyDecisions.length === 0) {
         return (
@@ -34,7 +71,7 @@ export function AnalysisPanel({ analysis }: AnalysisPanelProps) {
 
     return (
         <>
-            {buyDecisions.map(([symbol, decision]: [string, any]) => (
+            {buyDecisions.map(([symbol, decision]) => (
                 <div key={symbol} className="bg-gray-900 text-white p-4 rounded-lg">
                     <h3 className="font-bold text-lg mb-2 text-blue-400">{symbol}</h3>
                     <div className="space-y-2 text-sm">

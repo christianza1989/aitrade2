@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { KpiCard } from '@/components/kpi-card';
-import { AnalysisPanel } from '@/components/analysis-panel'; // Assuming this can be reused
+import { AnalysisPanel, Analysis } from '@/components/analysis-panel'; // Assuming this can be reused
+
+// Define interfaces for our state
+interface Trade {
+    date: string;
+    action: 'BUY' | 'SELL';
+    price: number;
+}
 
 export default function BacktestPage() {
     const [symbol, setSymbol] = useState('BTCUSDT');
@@ -12,8 +19,8 @@ export default function BacktestPage() {
     const [isLoading, setIsLoading] = useState(false);
     
     const [logs, setLogs] = useState<string[]>([]);
-    const [trades, setTrades] = useState<any[]>([]);
-    const [currentAnalysis, setCurrentAnalysis] = useState<any>(null);
+    const [trades, setTrades] = useState<Trade[]>([]);
+    const [currentAnalysis, setCurrentAnalysis] = useState<Analysis | null>(null);
     const [pnl, setPnl] = useState(0);
 
     const runBacktest = async () => {

@@ -6,21 +6,48 @@ import { calculateRSI, calculateMACD, calculateSMAExported } from '@/core/indica
 import fs from 'fs/promises';
 import path from 'path';
 
+// Define interfaces for better type safety
+interface DecisionLog {
+    [symbol: string]: {
+        timestamp: string;
+        decision: string;
+        justification: string;
+        pnlPercent: number;
+        currentPrice: number;
+    }[];
+}
+
+// This should ideally be imported from where it's defined, e.g., '@/core/portfolio'
+interface Position {
+    symbol: string;
+    amount: number;
+    entryPrice: number;
+    holdCount?: number;
+    takeProfitPercent?: number;
+    stopLossPrice?: number;
+    technicals?: {
+        rsi: string;
+        macdHistogram: string;
+        smaShort: string;
+        smaLong: string;
+    };
+}
+
 export const dynamic = 'force-dynamic';
 
 const configFilePath = path.join(process.cwd(), 'config.json');
 const decisionLogPath = path.join(process.cwd(), 'decision_log.json');
 
-async function getDecisionLog(): Promise<any> {
+async function getDecisionLog(): Promise<DecisionLog> {
     try {
         const data = await fs.readFile(decisionLogPath, 'utf-8');
         return JSON.parse(data);
-    } catch (error) {
+    } catch {
         return {};
     }
 }
 
-async function saveDecisionLog(log: any): Promise<void> {
+async function saveDecisionLog(log: DecisionLog): Promise<void> {
     await fs.writeFile(decisionLogPath, JSON.stringify(log, null, 2));
 }
 
@@ -44,7 +71,7 @@ export async function POST(request: NextRequest) {
         const configData = await fs.readFile(configFilePath, 'utf-8');
         const config = JSON.parse(configData);
         const portfolio = await portfolioService.getPortfolio();
-        const position = portfolio.positions.find(p => p.symbol === symbol);
+        const position: Position | undefined = portfolio.positions.find((p: { symbol: string; }) => p.symbol === symbol);
 
         if (!position) {
             return NextResponse.json({ error: 'Position not found' }, { status: 404 });
@@ -65,10 +92,9 @@ export async function POST(request: NextRequest) {
         const decisionHistory = decisionLog[symbol] || [];
 
         // Get technical data for the specific asset, ensuring resilience
-        (position as any).technicals = {}; // Initialize as empty object
         const candles = await binance.getHistoricalData(symbol, '5m', 100);
         if (candles && candles.length > 0) {
-            (position as any).technicals = {
+            position.technicals = {
                 rsi: calculateRSI(candles, config.rsiPeriod)?.toFixed(2) || 'N/A',
                 macdHistogram: calculateMACD(candles, config.macdShortPeriod, config.macdLongPeriod, config.macdSignalPeriod)?.histogram?.toFixed(4) || 'N/A',
                 smaShort: calculateSMAExported(candles, config.smaShortPeriod)?.toFixed(2) || 'N/A',
@@ -86,35 +112,49 @@ export async function POST(request: NextRequest) {
             decisionHistory
         );
 
-        const decision = decisionResult?.response;
+        const decisionResponse = decisionResult?.response;
+
+        // Type guard for the decision response
+        const isDecisionResponse = (response: unknown): response is { decision: string; justification: string; new_take_profit_percent?: number } => {
+            const res = response as { decision?: unknown; justification?: unknown };
+            return (
+                typeof response === 'object' &&
+                response !== null &&
+                'decision' in response &&
+                'justification' in response &&
+                typeof res.decision === 'string' &&
+                typeof res.justification === 'string'
+            );
+        };
 
         // Log the new decision
-        if (decision) {
+        if (isDecisionResponse(decisionResponse)) {
             const newLogEntry = {
                 timestamp: new Date().toISOString(),
-                decision: decision.decision,
-                justification: decision.justification,
+                decision: decisionResponse.decision,
+                justification: decisionResponse.justification,
                 pnlPercent: (currentPrice - position.entryPrice) / position.entryPrice * 100,
                 currentPrice: currentPrice,
             };
             decisionLog[symbol] = [...decisionHistory, newLogEntry];
             await saveDecisionLog(decisionLog);
-        }
-        if (decision?.decision === 'SELL_NOW') {
-            const pnlPercent = (currentPrice - position.entryPrice) / position.entryPrice * 100;
-            const reason = pnlPercent <= config.stopLossPercent ? 'Stop Loss' : 'Take Profit';
-            await portfolioService.sell(position.symbol, position.amount, currentPrice, { reason });
-            console.log(`SOLD ${position.amount} of ${position.symbol} at ${currentPrice} (${reason})`);
-            return NextResponse.json({ success: true, decision: 'SOLD', reason });
-        } else if (decision?.decision === 'HOLD_AND_INCREASE_TP') {
-            const updates = {
-                takeProfitPercent: decision.new_take_profit_percent as number,
-                holdCount: (position.holdCount || 0) + 1,
-                stopLossPrice: position.entryPrice // Move SL to entry price
-            };
-            await portfolioService.updatePosition(position.symbol, updates);
-            console.log(`HOLDING ${position.symbol}. New TP set to ${decision.new_take_profit_percent}%.`);
-            return NextResponse.json({ success: true, decision: 'HELD', new_tp: decision.new_take_profit_percent });
+        
+            if (decisionResponse.decision === 'SELL_NOW') {
+                const pnlPercent = (currentPrice - position.entryPrice) / position.entryPrice * 100;
+                const reason = pnlPercent <= config.stopLossPercent ? 'Stop Loss' : 'Take Profit';
+                await portfolioService.sell(position.symbol, position.amount, currentPrice, { reason });
+                console.log(`SOLD ${position.amount} of ${position.symbol} at ${currentPrice} (${reason})`);
+                return NextResponse.json({ success: true, decision: 'SOLD', reason });
+            } else if (decisionResponse.decision === 'HOLD_AND_INCREASE_TP' && typeof decisionResponse.new_take_profit_percent === 'number') {
+                const updates = {
+                    takeProfitPercent: decisionResponse.new_take_profit_percent,
+                    holdCount: (position.holdCount || 0) + 1,
+                    stopLossPrice: position.entryPrice // Move SL to entry price
+                };
+                await portfolioService.updatePosition(position.symbol, updates);
+                console.log(`HOLDING ${position.symbol}. New TP set to ${decisionResponse.new_take_profit_percent}%.`);
+                return NextResponse.json({ success: true, decision: 'HELD', new_tp: decisionResponse.new_take_profit_percent });
+            }
         }
 
         return NextResponse.json({ success: true, decision: 'NO_ACTION' });

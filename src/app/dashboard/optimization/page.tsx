@@ -3,6 +3,16 @@
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
+// Define interfaces for our state and props
+interface Settings {
+    [key: string]: string | number;
+}
+
+interface Analysis {
+    analysis_summary: string;
+    suggested_settings: Settings;
+}
+
 const SETTING_DESCRIPTIONS: { [key: string]: string } = {
     sellStrategy: "The strategy for selling assets (e.g., takeProfit).",
     takeProfitPercent: "The percentage gain at which to consider selling.",
@@ -23,9 +33,9 @@ const SETTING_DESCRIPTIONS: { [key: string]: string } = {
 };
 
 export default function OptimizationPage() {
-    const [analysis, setAnalysis] = useState<any>(null);
+    const [analysis, setAnalysis] = useState<Analysis | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [currentSettings, setCurrentSettings] = useState<any>(null);
+    const [currentSettings, setCurrentSettings] = useState<Settings | null>(null);
 
     useEffect(() => {
         async function fetchSettings() {
@@ -80,7 +90,7 @@ export default function OptimizationPage() {
         }
     };
 
-    const renderSettingsTable = (title: string, settings: any) => {
+    const renderSettingsTable = (title: string, settings: Settings | null) => {
         if (!settings) return null;
         return (
             <div className="bg-gray-700 p-4 rounded-lg">

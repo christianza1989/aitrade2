@@ -1,7 +1,18 @@
 import { AIAgent } from './agents';
 
+// Define the Trade interface
+export interface Trade {
+    symbol: string;
+    amount: number;
+    entryPrice: number;
+    exitPrice: number;
+    pnl: number;
+    timestamp: string;
+    reason: string;
+}
+
 export class StrategyOptimizer extends AIAgent {
-    async analyze(trades: any[]): Promise<any> {
+    async analyze(trades: Trade[]): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const prompt = `
         **Persona:** You are a Quantitative Analyst specializing in algorithmic trading strategy optimization.
         **Data:** A log of past trades:

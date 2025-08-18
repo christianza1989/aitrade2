@@ -110,8 +110,34 @@ export class MacroAnalyst extends AIAgent {
     }
 }
 
+// Define interfaces for agent method parameters
+interface Position {
+    symbol: string;
+    amount: number;
+    entryPrice: number;
+    takeProfitPercent?: number;
+    technicals?: Record<string, unknown>;
+}
+
+interface Config {
+    takeProfitPercent: number;
+    stopLossPercent: number;
+    rsiPeriod: number;
+    macdShortPeriod: number;
+    macdLongPeriod: number;
+    macdSignalPeriod: number;
+    smaShortPeriod: number;
+    smaLongPeriod: number;
+}
+
+interface DecisionHistory {
+    timestamp: string;
+    decision: string;
+    justification: string;
+}
+
 export class PositionManager extends AIAgent {
-    async decide(position: any, currentPrice: number, macroAnalysis: any, sentimentAnalysis: any, config: any, decisionHistory: any[]): Promise<{ prompt: string; response: Record<string, any> } | null> {
+    async decide(position: Position, currentPrice: number, macroAnalysis: unknown, sentimentAnalysis: unknown, config: Config, decisionHistory: DecisionHistory[]): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const pnlPercent = (currentPrice - position.entryPrice) / position.entryPrice * 100;
         const atTakeProfit = pnlPercent >= (position.takeProfitPercent || config.takeProfitPercent);
         const atStopLoss = pnlPercent <= config.stopLossPercent;
@@ -151,8 +177,18 @@ export class PositionManager extends AIAgent {
     }
 }
 
+interface BuySignal {
+    symbol: string;
+    [key: string]: unknown;
+}
+
+interface Portfolio {
+    balance: number;
+    positions: Position[];
+}
+
 export class PortfolioAllocator extends AIAgent {
-    async allocate(buySignals: any[], portfolio: any, macroAnalysis: any, sentimentAnalysis: any): Promise<{ prompt: string; response: Record<string, any> } | null> {
+    async allocate(buySignals: BuySignal[], portfolio: Portfolio, macroAnalysis: unknown, sentimentAnalysis: unknown): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const prompt = `
         **Persona:** You are a Chief Investment Officer managing a high-risk, high-reward crypto portfolio. Your primary goal is to maximize returns while managing risk.
 
@@ -193,11 +229,11 @@ export class SentimentAnalyst extends AIAgent {
 }
 
 export class TechnicalAnalyst extends AIAgent {
-    async analyze(symbol: string, candles: Candle[], config: any): Promise<{ prompt: string; response: Record<string, any> } | null> {
+    async analyze(symbol: string, candles: Candle[], config: Config): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         return this.analyzeBatch([{ symbol, candles }], config);
     }
 
-    async analyzeBatch(batchData: { symbol: string, candles: Candle[] }[], config: any): Promise<{ prompt: string; response: Record<string, any> } | null> {
+    async analyzeBatch(batchData: { symbol: string, candles: Candle[] }[], config: Config): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const formattedData = batchData.map(data => {
             const { symbol, candles } = data;
             const rsi = calculateRSI(candles, config.rsiPeriod);
@@ -230,12 +266,18 @@ export class TechnicalAnalyst extends AIAgent {
     }
 }
 
+export interface Analysis {
+    MacroAnalyst: unknown;
+    SentimentAnalyst: unknown;
+    [key: string]: unknown;
+}
+
 export class RiskManager extends AIAgent {
-    async decide(analysis: any): Promise<{ prompt: string; response: Record<string, any> } | null> {
+    async decide(analysis: Analysis): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         return this.decideBatch([analysis], analysis.MacroAnalyst, analysis.SentimentAnalyst);
     }
 
-    async decideBatch(batchAnalyses: any[], macroAnalysis: any, sentimentAnalysis: any): Promise<{ prompt: string; response: Record<string, any> } | null> {
+    async decideBatch(batchAnalyses: Analysis[], macroAnalysis: unknown, sentimentAnalysis: unknown): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const prompt = `
         **Persona:** You are a seasoned Portfolio Manager. Make final decisions for the following batch of assets.
         **Macro Environment:** ${JSON.stringify(macroAnalysis, null, 2)}

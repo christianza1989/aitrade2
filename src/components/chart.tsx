@@ -24,10 +24,26 @@ ChartJS.register(
   Legend
 );
 
+// Define interfaces for our data structures
+interface Candle {
+    time: number;
+    close: number;
+}
+
+interface ChartData {
+    labels: string[];
+    datasets: {
+        label: string;
+        data: number[];
+        borderColor: string;
+        backgroundColor: string;
+    }[];
+}
+
 export function Chart() {
     const { state } = useDashboard();
     const { selectedSymbol } = state;
-    const [chartData, setChartData] = useState<any>({
+    const [chartData, setChartData] = useState<ChartData>({
         labels: [],
         datasets: [],
     });
@@ -37,10 +53,10 @@ export function Chart() {
             if (!selectedSymbol) return;
             try {
                 const response = await fetch(`/api/chart-data?symbol=${selectedSymbol}`);
-                const data = await response.json();
+                const data: Candle[] = await response.json();
                 
-                const labels = data.map((d: any) => new Date(d.time * 1000).toLocaleDateString());
-                const prices = data.map((d: any) => d.close);
+                const labels = data.map((d: Candle) => new Date(d.time * 1000).toLocaleDateString());
+                const prices = data.map((d: Candle) => d.close);
 
                 setChartData({
                     labels,

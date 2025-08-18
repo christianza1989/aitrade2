@@ -49,9 +49,11 @@ export class BinanceService {
     }
 
     async getHistoricalData(symbol: string, interval: string, limit = 100): Promise<Candle[]> {
+        // Define the raw candle type from Binance API
+        type BinanceCandle = [number, string, string, string, string, string, ...unknown[]];
         try {
             const data = await this.fetchApi('klines', { symbol, interval, limit: String(limit) });
-            return data.map((d: any) => ({
+            return data.map((d: BinanceCandle) => ({
                 time: d[0] / 1000,
                 open: parseFloat(d[1]),
                 high: parseFloat(d[2]),
@@ -59,7 +61,7 @@ export class BinanceService {
                 close: parseFloat(d[4]),
                 volume: parseFloat(d[5]),
             }));
-        } catch (error) {
+        } catch {
             return [];
         }
     }
@@ -68,7 +70,7 @@ export class BinanceService {
         try {
             const data = await this.fetchApi('ticker/price', { symbol });
             return parseFloat(data.price);
-        } catch (error) {
+        } catch {
             return null;
         }
     }
@@ -87,7 +89,7 @@ export class BinanceService {
             );
             const sorted = usdtPairs.sort((a, b) => parseFloat(b.quoteVolume) - parseFloat(a.quoteVolume));
             return sorted.slice(0, limit);
-        } catch (error) {
+        } catch {
             return [];
         }
     }

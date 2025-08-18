@@ -1,7 +1,7 @@
 import { BinanceService } from '@/core/binance';
 import { NewsService } from '@/core/news';
 import { PortfolioService } from '@/core/portfolio';
-import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager, PortfolioAllocator, PositionManager } from '@/core/agents';
+import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager, PortfolioAllocator, PositionManager, Analysis } from '@/core/agents';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -134,14 +134,15 @@ export async function GET(request: Request) {
                     sendEvent({ type: 'aiChat', data: { agent: `TechnicalAnalyst-Batch-${index + 1}`, ...techAnalysisResult } });
                     const techAnalyses = techAnalysisResult?.response || {};
 
-                    const riskManagerResult = await riskManager.decideBatch(Object.values(techAnalyses), macroAnalysis, sentimentAnalysis);
+                    const riskManagerResult = await riskManager.decideBatch(Object.values(techAnalyses) as Analysis[], macroAnalysis, sentimentAnalysis);
                     sendEvent({ type: 'aiChat', data: { agent: `RiskManager-Batch-${index + 1}`, ...riskManagerResult } });
                     const finalDecisions = riskManagerResult?.response || {};
 
                     const buySignals = [];
                     for (const symbol in finalDecisions) {
-                        if (finalDecisions[symbol].decision === 'BUY') {
-                            buySignals.push({ symbol, ...finalDecisions[symbol] });
+                        const decision = finalDecisions[symbol] as { decision?: string };
+                        if (decision.decision === 'BUY') {
+                            buySignals.push({ symbol, ...decision });
                         }
                     }
                     sendEvent({ type: 'log', message: `Batch #${index + 1} analysis complete. Found ${buySignals.length} BUY signals.` });
@@ -158,8 +159,8 @@ export async function GET(request: Request) {
                     const allocations = allocationResult?.response || {};
 
                     for (const symbol in allocations) {
-                        const allocation = allocations[symbol];
-                        if (allocation.decision === 'EXECUTE_BUY') {
+                        const allocation = allocations[symbol] as { decision?: string; amount_to_buy_usd?: number };
+                        if (allocation.decision === 'EXECUTE_BUY' && typeof allocation.amount_to_buy_usd === 'number') {
                             const price = await binance.getCurrentPrice(symbol);
                             if (price) {
                                 const amountToBuy = allocation.amount_to_buy_usd / price;

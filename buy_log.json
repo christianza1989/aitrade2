@@ -130,5 +130,11 @@
     "symbol": "MDTUSDT",
     "amount": 16869.095816464236,
     "entryPrice": 0.02964
+  },
+  {
+    "timestamp": "2025-08-18T12:13:04.220Z",
+    "symbol": "MAGICUSDT",
+    "amount": 1599.360255897641,
+    "entryPrice": 0.2501
   }
 ]

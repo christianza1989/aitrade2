@@ -1,8 +1,12 @@
 import { BinanceService } from '@/core/binance';
 import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager } from '@/core/agents';
+import fs from 'fs/promises';
+import path from 'path';
+
+const configFilePath = path.join(process.cwd(), 'config.json');
 
 export async function POST(request: Request) {
-    const { symbol, startDate, endDate, interval } = await request.json();
+    const { symbol, interval } = await request.json();
 
     const stream = new ReadableStream({
         async start(controller) {
@@ -20,6 +24,9 @@ export async function POST(request: Request) {
                 const techAnalyst = new TechnicalAnalyst();
                 const riskManager = new RiskManager();
 
+                const configData = await fs.readFile(configFilePath, 'utf-8');
+                const config = JSON.parse(configData);
+
                 const historicalData = await binance.getHistoricalData(symbol, interval, 200); // Reduced for faster streaming
 
                 let positionOpen = false;
@@ -30,7 +37,7 @@ export async function POST(request: Request) {
 
                 const macroAnalysisResult = await macroAnalyst.analyze(currentCandle, []);
                 const sentimentAnalysisResult = await sentimentAnalyst.analyze([]);
-                const techAnalysisResult = await techAnalyst.analyze(symbol, historicalData.slice(0, i + 1), {});
+                const techAnalysisResult = await techAnalyst.analyze(symbol, historicalData.slice(0, i + 1), config);
 
                 const macroAnalysis = macroAnalysisResult?.response;
                 const sentimentAnalysis = sentimentAnalysisResult?.response;

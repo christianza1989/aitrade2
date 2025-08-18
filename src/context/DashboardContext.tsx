@@ -19,7 +19,12 @@ interface Portfolio {
 interface AiChat {
     agent: string;
     prompt: string;
-    response: Record<string, any>;
+    response: Record<string, unknown>;
+}
+
+// More specific type for analysis data
+interface Analysis {
+    [key: string]: unknown;
 }
 
 interface DashboardState {
@@ -28,11 +33,11 @@ interface DashboardState {
     portfolio: Portfolio;
     isLoading: boolean;
     selectedSymbol: string;
-    analysis: Record<string, any> | null;
+    analysis: Analysis | null;
     botStatus: 'active' | 'inactive';
     aiChat: AiChat[];
     nextCycleIn: string;
-    lastRunAnalysis: Record<string, any> | null;
+    lastRunAnalysis: Analysis | null;
 }
 
 type Action =
@@ -42,10 +47,10 @@ type Action =
     | { type: 'SET_PORTFOLIO'; payload: Portfolio }
     | { type: 'SET_LOADING'; payload: boolean }
     | { type: 'SET_SELECTED_SYMBOL'; payload: string }
-    | { type: 'SET_ANALYSIS'; payload: Record<string, any> | null }
+    | { type: 'SET_ANALYSIS'; payload: Analysis | null }
     | { type: 'SET_BOT_STATUS'; payload: 'active' | 'inactive' }
     | { type: 'SET_TIMER'; payload: string }
-    | { type: 'SET_LAST_RUN_ANALYSIS'; payload: Record<string, any> };
+    | { type: 'SET_LAST_RUN_ANALYSIS'; payload: Analysis | null };
 
 const initialState: DashboardState = {
     logs: [],
@@ -94,9 +99,13 @@ function dashboardReducer(state: DashboardState, action: Action): DashboardState
 const DashboardContext = createContext<{ state: DashboardState; dispatch: React.Dispatch<Action>; } | undefined>(undefined);
 
 // --- PROVIDER ---
+interface Config {
+    cycleIntervalMinutes: number;
+}
+
 export function DashboardProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(dashboardReducer, initialState);
-    const [config, setConfig] = useState<any>(null);
+    const [config, setConfig] = useState<Config | null>(null);
     const timerIdRef = useRef<NodeJS.Timeout | null>(null);
     const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const isCycleRunningRef = useRef(false);
@@ -107,8 +116,8 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
                 const response = await fetch('/api/settings');
                 const data = await response.json();
                 setConfig(data);
-            } catch (error) {
-                console.error("Failed to fetch config", error);
+            } catch {
+                console.error("Failed to fetch config");
             }
         }
         fetchConfig();
@@ -120,7 +129,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
                 const data = await response.json();
                 dispatch({ type: 'SET_MARKET_DATA', payload: data.marketData });
                 dispatch({ type: 'SET_PORTFOLIO', payload: data.portfolio });
-            } catch (error) {
+            } catch {
                 // Don't spam logs for background refresh failures
             }
         }, 5000); // Refresh every 5 seconds
@@ -151,7 +160,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
             dispatch({ type: 'ADD_LOG', payload: 'Response body is valid. Starting to read stream...' });
             const reader = res.body.getReader();
             const decoder = new TextDecoder();
-            let currentAnalysis: Record<string, any> = {};
+            const currentAnalysis: Analysis = {};
 
             while (true) {
                 const { done, value } = await reader.read();
@@ -179,7 +188,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
                                 currentAnalysis.PortfolioAllocator = data;
                             }
                         }
-                    } catch (e) {
+                    } catch {
                         dispatch({ type: 'ADD_LOG', payload: 'Failed to parse stream data.' });
                     }
                 }
@@ -236,6 +245,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
             if (timerIdRef.current) clearTimeout(timerIdRef.current);
             if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.botStatus]);
 
     return (

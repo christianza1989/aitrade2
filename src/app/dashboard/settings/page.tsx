@@ -5,11 +5,16 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { HelpCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+// Define an interface for the settings object
+interface Settings {
+    [key: string]: string | number;
+}
+
 const settingsConfig = [
     { name: 'sellStrategy', label: 'Sell Strategy', type: 'select', options: ['takeProfit', 'trailingStop'], tooltip: 'Choose the strategy for selling assets.' },
-    { name: 'takeProfitPercent', label: 'Take Profit (%)', type: 'number', condition: (s: any) => s.sellStrategy === 'takeProfit', tooltip: 'The percentage of profit at which to automatically sell an asset.' },
+    { name: 'takeProfitPercent', label: 'Take Profit (%)', type: 'number', condition: (s: Settings) => s.sellStrategy === 'takeProfit', tooltip: 'The percentage of profit at which to automatically sell an asset.' },
     { name: 'stopLossPercent', label: 'Stop Loss (%)', type: 'number', tooltip: 'The percentage of loss at which to automatically sell an asset.' },
-    { name: 'trailingStopPercent', label: 'Trailing Stop (%)', type: 'number', condition: (s: any) => s.sellStrategy === 'trailingStop', tooltip: 'The percentage below the highest price at which to sell an asset.' },
+    { name: 'trailingStopPercent', label: 'Trailing Stop (%)', type: 'number', condition: (s: Settings) => s.sellStrategy === 'trailingStop', tooltip: 'The percentage below the highest price at which to sell an asset.' },
     { name: 'riskAmountPercent', label: 'Risk Amount (%)', type: 'number', tooltip: 'The percentage of your total balance to risk on a single trade.' },
     { name: 'rsiPeriod', label: 'RSI Period', type: 'number', tooltip: 'The number of periods to use for the Relative Strength Index (RSI) calculation.' },
     { name: 'symbolsToAnalyze', label: 'Symbols to Analyze', type: 'number', tooltip: 'The number of top symbols to analyze in each cycle.' },
@@ -25,7 +30,7 @@ const settingsConfig = [
 ];
 
 export default function SettingsPage() {
-    const [settings, setSettings] = useState<any>({});
+    const [settings, setSettings] = useState<Settings>({});
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -53,7 +58,7 @@ export default function SettingsPage() {
                 body: JSON.stringify(settings),
             });
             toast.success('Settings saved!', { id: toastId });
-        } catch (error) {
+        } catch {
             toast.error('Failed to save settings.', { id: toastId });
         }
     };

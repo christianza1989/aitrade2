@@ -7,5 +7,14 @@
     "analysisContext": {
       "reason": "Take Profit"
     }
+  },
+  {
+    "symbol": "ARBUSDT",
+    "amount": 2446.183953033268,
+    "entryPrice": 0.511,
+    "exitPrice": 0.5184,
+    "pnl": 16.833659491193647,
+    "timestamp": "2025-08-18T12:13:09.543Z",
+    "reason": "Take Profit"
   }
 ]

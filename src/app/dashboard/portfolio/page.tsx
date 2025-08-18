@@ -1,9 +1,27 @@
 "use client";
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useDashboard } from '@/context/DashboardContext';
 import toast from 'react-hot-toast';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
+// Define interfaces for our state and props
+interface Position {
+    symbol: string;
+    amount: number;
+    entryPrice: number;
+    highPnlPercent?: number;
+    takeProfitPercent?: number;
+    holdCount?: number;
+    stopLossPrice?: number;
+}
+
+interface Settings {
+    trailingProfitPercent: number;
+    takeProfitPercent: number;
+    stopLossPercent: number;
+    [key: string]: string | number; // Allow other properties
+}
 
 const playNotificationSound = () => {
     const audio = new Audio('/sounds/notification.mp3');
@@ -13,8 +31,8 @@ const playNotificationSound = () => {
 export default function PortfolioPage() {
     const { state, dispatch } = useDashboard();
     const { portfolio, marketData } = state;
-    const [settings, setSettings] = useState<any>(null);
-    const triggeredSymbolsRef = useRef(new Set());
+    const [settings, setSettings] = useState<Settings | null>(null);
+    const triggeredSymbolsRef = useRef(new Set<string>());
 
     useEffect(() => {
         async function fetchSettings() {
@@ -29,14 +47,32 @@ export default function PortfolioPage() {
         fetchSettings();
     }, []);
 
+    const handleSell = useCallback(async (symbol: string, amount: number) => {
+        const toastId = toast.loading(`Selling ${amount} of ${symbol}...`);
+        try {
+            const response = await fetch('/api/portfolio/sell', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ symbol, amount }),
+            });
+            if (!response.ok) throw new Error('Failed to sell.');
+            
+            const newPortfolio = await response.json();
+            dispatch({ type: 'SET_PORTFOLIO', payload: newPortfolio });
+            toast.success('Sell successful!', { id: toastId });
+        } catch {
+            toast.error('Sell failed.', { id: toastId });
+        }
+    }, [dispatch]);
+
     // This effect will now only handle the decision triggers, not data fetching
     useEffect(() => {
         if (!portfolio || portfolio.positions.length === 0 || !settings || marketData.length === 0) {
             return;
         }
 
-        const positionsWithMarketData = portfolio.positions.map(pos => {
-            const marketInfo = marketData.find(md => md.symbol === pos.symbol);
+        const positionsWithMarketData = portfolio.positions.map((pos: Position) => {
+            const marketInfo = marketData.find((md: { symbol: string; lastPrice: string; }) => md.symbol === pos.symbol);
             const currentPrice = marketInfo ? parseFloat(marketInfo.lastPrice) : pos.entryPrice;
             const pnl = (currentPrice - pos.entryPrice) * pos.amount;
             const pnlPercent = (pos.entryPrice * pos.amount) === 0 ? 0 : (pnl / (pos.entryPrice * pos.amount)) * 100;
@@ -44,7 +80,7 @@ export default function PortfolioPage() {
         });
 
         for (const pos of positionsWithMarketData) {
-            const currentHigh = (pos as any).highPnlPercent || 0;
+            const currentHigh = pos.highPnlPercent || 0;
             if (pos.pnlPercent > currentHigh) {
                 fetch('/api/portfolio/update', {
                     method: 'POST',
@@ -54,7 +90,7 @@ export default function PortfolioPage() {
             }
 
             const trailingStopPrice = (pos.highPnlPercent || 0) + settings.trailingProfitPercent;
-            if (pos.highPnlPercent > (pos.takeProfitPercent || settings.takeProfitPercent) && pos.pnlPercent < trailingStopPrice) {
+            if (pos.highPnlPercent && pos.highPnlPercent > (pos.takeProfitPercent || settings.takeProfitPercent) && pos.pnlPercent < trailingStopPrice) {
                 if (!triggeredSymbolsRef.current.has(pos.symbol)) {
                     triggeredSymbolsRef.current.add(pos.symbol);
                     playNotificationSound();
@@ -100,32 +136,14 @@ export default function PortfolioPage() {
                 });
             }
         }
-    }, [portfolio, marketData, settings]);
-
-    const handleSell = async (symbol: string, amount: number) => {
-        const toastId = toast.loading(`Selling ${amount} of ${symbol}...`);
-        try {
-            const response = await fetch('/api/portfolio/sell', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ symbol, amount }),
-            });
-            if (!response.ok) throw new Error('Failed to sell.');
-            
-            const newPortfolio = await response.json();
-            dispatch({ type: 'SET_PORTFOLIO', payload: newPortfolio });
-            toast.success('Sell successful!', { id: toastId });
-        } catch (error) {
-            toast.error('Sell failed.', { id: toastId });
-        }
-    };
+    }, [portfolio, marketData, settings, handleSell]);
 
     if (!portfolio) {
         return <div>Loading portfolio...</div>;
     }
 
-    const getPositionDisplayData = (pos: any) => {
-        const marketInfo = marketData.find(md => md.symbol === pos.symbol);
+    const getPositionDisplayData = (pos: Position) => {
+        const marketInfo = marketData.find((md: { symbol: string; lastPrice: string; }) => md.symbol === pos.symbol);
         const currentPrice = marketInfo ? parseFloat(marketInfo.lastPrice) : pos.entryPrice;
         const pnl = (currentPrice - pos.entryPrice) * pos.amount;
         const pnlPercent = (pos.entryPrice * pos.amount) === 0 ? 0 : (pnl / (pos.entryPrice * pos.amount)) * 100;
@@ -152,7 +170,7 @@ export default function PortfolioPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {portfolio.positions.map((pos: any, index: number) => {
+                            {portfolio.positions.map((pos: Position, index: number) => {
                                 const { currentPrice, pnl, pnlPercent } = getPositionDisplayData(pos);
                                 return (
                                     <tr key={index} className="border-b border-gray-700">
@@ -167,7 +185,7 @@ export default function PortfolioPage() {
                                             {pnlPercent.toFixed(2)}%
                                         </td>
                                         <td className="p-2">
-                                            {pos.holdCount > 0 && (
+                                            {pos.holdCount && pos.holdCount > 0 && (
                                                 <TooltipProvider>
                                                     <Tooltip>
                                                         <TooltipTrigger>

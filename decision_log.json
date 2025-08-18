@@ -7,5 +7,14 @@
       "pnlPercent": 1.3406940063091537,
       "currentPrice": 0.1285
     }
+  ],
+  "ARBUSDT": [
+    {
+      "timestamp": "2025-08-18T12:13:09.535Z",
+      "decision": "SELL_NOW",
+      "justification": "The take-profit target (1.5%) has already been achieved by the position's high P/L percentage (1.5068%), and the current P/L (1.45%) indicates a slight retracement from that peak. While the macro environment is moderately bullish and technicals (RSI 50.62) are neutral and not indicative of exhaustion, the primary goal is to be a prudent profit-taker. Locking in profits that have already materialized and met the predefined target is the judicious action rather than holding for potentially more, especially after a slight pullback from the peak.",
+      "pnlPercent": 1.4481409001956873,
+      "currentPrice": 0.5184
+    }
   ]
 }

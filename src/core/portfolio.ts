@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { setTimeout } from 'timers/promises';
+import { Trade } from './optimizer';
 
 const portfolioFilePath = path.join(process.cwd(), 'portfolio.json');
 const lockFilePath = path.join(process.cwd(), 'portfolio.lock');
@@ -23,6 +24,10 @@ interface Portfolio {
     positions: Position[];
 }
 
+interface BuyLog extends Position {
+    timestamp: string;
+}
+
 export class PortfolioService {
     private async withPortfolio(worker: (portfolio: Portfolio) => Promise<void> | void): Promise<void> {
         const lockAcquired = await this.acquireLock();
@@ -35,8 +40,8 @@ export class PortfolioService {
             try {
                 const data = await fs.readFile(portfolioFilePath, 'utf-8');
                 portfolio = JSON.parse(data);
-            } catch (error: any) {
-                if (error.code === 'ENOENT') {
+            } catch (error) {
+                if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
                     console.log('Portfolio file not found. Creating a new one.');
                     portfolio = { balance: 100000, positions: [] };
                 } else {
@@ -58,8 +63,8 @@ export class PortfolioService {
             try {
                 await fs.writeFile(lockFilePath, process.pid.toString(), { flag: 'wx' });
                 return true;
-            } catch (error: any) {
-                if (error.code === 'EEXIST') {
+            } catch (error) {
+                if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'EEXIST') {
                     await setTimeout(delay);
                 } else {
                     throw error;
@@ -72,8 +77,8 @@ export class PortfolioService {
     private async releaseLock(): Promise<void> {
         try {
             await fs.unlink(lockFilePath);
-        } catch (error: any) {
-            if (error.code !== 'ENOENT') {
+        } catch (error) {
+            if (error instanceof Error && (error as NodeJS.ErrnoException).code !== 'ENOENT') {
                 console.error('Failed to release portfolio lock:', error);
             }
         }
@@ -138,7 +143,7 @@ export class PortfolioService {
         });
     }
 
-    async sell(symbol: string, amount: number, price: number, fullAnalysis: any): Promise<void> {
+    async sell(symbol: string, amount: number, price: number, fullAnalysis: Record<string, unknown>): Promise<void> {
         await this.withPortfolio(async (portfolio) => {
             const positionIndex = portfolio.positions.findIndex(p => p.symbol === symbol);
             if (positionIndex === -1) {
@@ -155,12 +160,14 @@ export class PortfolioService {
             const pnl = (price - position.entryPrice) * amount - fee;
             portfolio.balance += (revenue - fee);
 
-            const tradeLog = {
+            const tradeLog: Trade = {
                 symbol,
+                amount,
                 entryPrice: position.entryPrice,
                 exitPrice: price,
                 pnl,
-                analysisContext: fullAnalysis,
+                timestamp: new Date().toISOString(),
+                reason: (fullAnalysis.reason as string) || 'Unknown',
             };
 
             const tradeLogs = await this.getTradeLogs();
@@ -171,20 +178,20 @@ export class PortfolioService {
         });
     }
 
-    async getTradeLogs(): Promise<any[]> {
+    async getTradeLogs(): Promise<Trade[]> {
         try {
             const data = await fs.readFile(tradesLogFilePath, 'utf-8');
             return JSON.parse(data);
-        } catch (error) {
+        } catch {
             return [];
         }
     }
 
-    async getBuyLogs(): Promise<any[]> {
+    async getBuyLogs(): Promise<BuyLog[]> {
         try {
             const data = await fs.readFile(buyLogFilePath, 'utf-8');
             return JSON.parse(data);
-        } catch (error) {
+        } catch {
             return [];
         }
     }
