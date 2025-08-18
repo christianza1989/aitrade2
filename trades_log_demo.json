@@ -1,0 +1,65 @@
+[
+  {
+    "symbol": "BIOUSDT",
+    "amount": 11054.559040523665,
+    "entryPrice": 0.1356906227106227,
+    "exitPrice": 0.1445,
+    "pnl": 95.7863975743138,
+    "timestamp": "2025-08-18T16:04:34.779Z",
+    "reason": "Take Profit"
+  },
+  {
+    "symbol": "AEURUSDT",
+    "amount": 5362.029833873665,
+    "entryPrice": 1.118979227250112,
+    "exitPrice": 1.0972,
+    "pnl": -122.66408540754132,
+    "timestamp": "2025-08-18T16:12:42.796Z",
+    "reason": "Stop Loss"
+  },
+  {
+    "symbol": "LINKUSDT",
+    "amount": 29.702970297029704,
+    "entryPrice": 25.25,
+    "exitPrice": 25,
+    "pnl": -8.16831683168317,
+    "timestamp": "2025-08-18T16:26:41.617Z",
+    "reason": "Take Profit"
+  },
+  {
+    "symbol": "PENDLEUSDT",
+    "amount": 460.76480511955896,
+    "entryPrice": 5.425761629843454,
+    "exitPrice": 5.37,
+    "pnl": -28.167303511460204,
+    "timestamp": "2025-08-18T16:26:46.447Z",
+    "reason": "Stop Loss"
+  },
+  {
+    "symbol": "TONUSDT",
+    "amount": 297.53049687592977,
+    "entryPrice": 3.361,
+    "exitPrice": 3.328,
+    "pnl": -10.808687890508885,
+    "timestamp": "2025-08-18T16:27:18.605Z",
+    "reason": "Take Profit"
+  },
+  {
+    "symbol": "POLUSDT",
+    "amount": 22461.063625342253,
+    "entryPrice": 0.2537724880298559,
+    "exitPrice": 0.2511,
+    "pnl": -65.6668967528829,
+    "timestamp": "2025-08-18T16:33:58.936Z",
+    "reason": "Stop Loss"
+  },
+  {
+    "symbol": "LTCUSDT",
+    "amount": 14.404780069195139,
+    "entryPrice": 118.01638010673125,
+    "exitPrice": 116.76,
+    "pnl": -19.77978124165469,
+    "timestamp": "2025-08-18T16:36:10.304Z",
+    "reason": "Stop Loss"
+  }
+]

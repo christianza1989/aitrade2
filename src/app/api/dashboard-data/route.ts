@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth';
 import { BinanceService } from '@/core/binance';
 import { PortfolioService } from '@/core/portfolio';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
     const session = await getServerSession(authOptions);
     if (!session || !session.user?.name) {

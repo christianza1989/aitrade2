@@ -13,6 +13,41 @@
       "justification": "The initial take-profit target of 1.5% has been not only met but exceeded, with the current P/L at 1.80%. Crucially, the current P/L is higher than the recorded `highPnlPercent` of 1.64%, indicating renewed upward momentum rather than a pullback. Technical indicators (RSI 56.15) are neutral, not signaling overbought conditions, suggesting further room to run. The macro environment is supportive with a 'Risk-On' regime. Given these factors and the absence of technical exhaustion, it's prudent to let profits run further while intelligently protecting gains by increasing the target.",
       "pnlPercent": 1.7982799061766979,
       "currentPrice": 0.1302
+    },
+    {
+      "timestamp": "2025-08-18T15:40:09.273Z",
+      "decision": "HOLD_AND_INCREASE_TP",
+      "justification": "The current P/L (0.74%) is still significantly below the initial take-profit target of 1.5%, indicating that the full profit potential of this position has not yet been realized. Technical indicators (RSI 58.05) are neutral and do not signal overbought conditions or an impending reversal, suggesting there's still room for upward movement. While the MACD histogram is undefined, the overall technical picture does not warrant an immediate 'SELL_NOW' decision, which would be premature profit-taking. To maximize gains in line with the professional trader persona, and given the lack of bearish signals, it is prudent to let the position run further. Increasing the take-profit target to 2.0% allows for capturing greater upside if the asset's positive momentum continues, while still maintaining an intelligent exit strategy.",
+      "pnlPercent": 0.7438813893056572,
+      "currentPrice": 0.1367
+    },
+    {
+      "timestamp": "2025-08-18T15:51:19.086Z",
+      "decision": "HOLD_AND_INCREASE_TP",
+      "justification": "The current P/L (4.72%) is significantly above the existing take-profit target (2%) and has surpassed the previously recorded `highPnlPercent` (4.355%), indicating strong and continued upward momentum. The RSI (61.41) is healthy and not in overbought territory, suggesting further room for upside, while the bullish SMA crossover (short SMA 0.14 > long SMA 0.13) further supports the positive trend. Given the absence of bearish technical signals or a significant pullback from current highs, letting profits run further by increasing the take-profit target is a prudent strategy to maximize gains in line with the current price action.",
+      "pnlPercent": 4.723522643894188,
+      "currentPrice": 0.1421
+    },
+    {
+      "timestamp": "2025-08-18T16:01:39.575Z",
+      "decision": "HOLD_AND_INCREASE_TP",
+      "justification": "The current P/L (6.49%) has not only met but exceeded the existing take-profit target (6%). Crucially, this P/L is also higher than the previously recorded `highPnlPercent` (5.755%), indicating sustained upward momentum and the potential for new highs. Technical indicators support this decision: the RSI at 62.84 is strong but not yet in overbought territory, suggesting further room to run, and the bullish SMA crossover (short SMA 0.14 > long SMA 0.13) confirms the positive trend. Given these factors and the fact that the stop-loss is already at breakeven, it is prudent to let profits run further while intelligently increasing the target to maximize gains.",
+      "pnlPercent": 6.492252090377964,
+      "currentPrice": 0.1445
+    },
+    {
+      "timestamp": "2025-08-18T16:01:58.232Z",
+      "decision": "HOLD_AND_INCREASE_TP",
+      "justification": "The current P/L (6.49%) has not only met but exceeded the existing take-profit target (6%). Crucially, this P/L is also slightly higher than the previously recorded `highPnlPercent` (6.418%), indicating sustained upward momentum. Technical indicators support this decision: the RSI at 62.84 is strong but not yet in overbought territory, suggesting further room to run, and the bullish SMA crossover (short SMA 0.14 > long SMA 0.13) confirms the positive trend. With the stop-loss already at breakeven, capital is protected, allowing for letting profits run further to maximize gains in line with the current price action and momentum.",
+      "pnlPercent": 6.492252090377964,
+      "currentPrice": 0.1445
+    },
+    {
+      "timestamp": "2025-08-18T16:04:34.759Z",
+      "decision": "SELL_NOW",
+      "justification": "The asset has already reached and slightly exceeded its take-profit target of 7%, as evidenced by the `highPnlPercent` of 7.0081%. The current P/L (6.49%) represents a pullback from this high, indicating potential resistance or a temporary exhaustion of momentum at the target level. As a prudent profit-taker, securing profits after the target has been met and a slight pullback occurred is the most intelligent strategy to protect gains and avoid giving back profits, even if some technicals still suggest strength.",
+      "pnlPercent": 6.492252090377964,
+      "currentPrice": 0.1445
     }
   ],
   "ARBUSDT": [
@@ -22,6 +57,81 @@
       "justification": "The take-profit target (1.5%) has already been achieved by the position's high P/L percentage (1.5068%), and the current P/L (1.45%) indicates a slight retracement from that peak. While the macro environment is moderately bullish and technicals (RSI 50.62) are neutral and not indicative of exhaustion, the primary goal is to be a prudent profit-taker. Locking in profits that have already materialized and met the predefined target is the judicious action rather than holding for potentially more, especially after a slight pullback from the peak.",
       "pnlPercent": 1.4481409001956873,
       "currentPrice": 0.5184
+    }
+  ],
+  "POLUSDT": [
+    {
+      "timestamp": "2025-08-18T16:01:05.642Z",
+      "decision": "HOLD_AND_INCREASE_TP",
+      "justification": "Current P/L (1.98%) has exceeded the initial take-profit target and also surpassed the previous high PnL (1.456%), indicating continued positive momentum. The RSI (58.92) is not overbought, suggesting further room for appreciation. Price is also trading above both short and long SMAs, confirming bullish sentiment. No technical indicators suggest exhaustion of the trend. Therefore, increasing the take-profit target is a prudent move to maximize gains while letting the profit run.",
+      "pnlPercent": 1.9811099340100973,
+      "currentPrice": 0.2588
+    },
+    {
+      "timestamp": "2025-08-18T16:05:21.653Z",
+      "decision": "HOLD_AND_INCREASE_TP",
+      "justification": "Current P/L (2.61%) has exceeded the standing take-profit target (2.5%) and is at the high PnL mark, indicating strong momentum. The RSI (60.11) is healthy and not overbought, suggesting there is still room for further upside. The price also remains well above both the short and long-term SMAs, confirming the bullish trend. Given that the stop-loss is already at the entry price, making the trade risk-free, and considering the successful outcome of the previous decision to let profits run, increasing the take-profit target is a prudent move to maximize potential gains while intelligently protecting initial capital.",
+      "pnlPercent": 2.611595930510951,
+      "currentPrice": 0.2604
+    },
+    {
+      "timestamp": "2025-08-18T16:05:41.902Z",
+      "decision": "HOLD_AND_INCREASE_TP",
+      "justification": "The current P/L (2.69%) has exceeded the standing take-profit target (2.5%) and is at a new high for this position, indicating strong positive momentum. The RSI (59.89) is healthy and not in overbought territory, suggesting there is still room for further appreciation. The price also remains well above both the short and long-term SMAs, confirming the bullish trend. Given that the stop-loss is already set at the entry price, making the trade risk-free, and considering the successful outcome of previous decisions to let profits run in similar conditions, increasing the take-profit target is a prudent move to maximize potential gains while intelligently protecting initial capital.",
+      "pnlPercent": 2.6904066800735467,
+      "currentPrice": 0.2606
+    },
+    {
+      "timestamp": "2025-08-18T16:33:58.910Z",
+      "decision": "SELL_NOW",
+      "justification": "The current P/L (-1.05%) has fallen below the predefined stop-loss target of -1%. According to the trading strategy, a stop-loss hit mandates an immediate sale to prevent further losses and protect capital. This decision aligns with the goal of intelligently protecting profits, even if it means realizing a small loss in this instance.",
+      "pnlPercent": -1.0531039241501663,
+      "currentPrice": 0.2511
+    }
+  ],
+  "AEURUSDT": [
+    {
+      "timestamp": "2025-08-18T16:12:42.768Z",
+      "decision": "SELL_NOW",
+      "justification": "The current P/L is -1.95%, which has exceeded the predefined stop-loss target of -1%. Adhering to risk management protocols, the position must be closed immediately to prevent further losses.",
+      "pnlPercent": -1.9463477712302522,
+      "currentPrice": 1.0972
+    }
+  ],
+  "LINKUSDT": [
+    {
+      "timestamp": "2025-08-18T16:26:41.334Z",
+      "decision": "SELL_NOW",
+      "justification": "The position is currently at -0.99% P/L, which is effectively at the -1% stop-loss target. The trade reversed from a high of 0.63% profit to a loss. Technical indicators show the current price is below both short and long-term SMAs (25 < 25.14 < 25.26), indicating a bearish short-term trend and lack of upward momentum. Adhering to the stop-loss is crucial for protecting capital and managing risk, especially when there are no profits to run and the trend is unfavorable.",
+      "pnlPercent": -0.9900990099009901,
+      "currentPrice": 25
+    }
+  ],
+  "PENDLEUSDT": [
+    {
+      "timestamp": "2025-08-18T16:26:46.375Z",
+      "decision": "SELL_NOW",
+      "justification": "The current P/L of -1.03% has breached the predefined stop-loss target of -1%. As per risk management protocols, the position must be closed immediately to prevent further downside.",
+      "pnlPercent": -1.027719860318727,
+      "currentPrice": 5.37
+    }
+  ],
+  "TONUSDT": [
+    {
+      "timestamp": "2025-08-18T16:27:18.570Z",
+      "decision": "SELL_NOW",
+      "justification": "The position is currently at -0.98% P/L, which is effectively at the predefined stop-loss target of -1%. The current price (3.328) is below both the short-term SMA (3.35) and long-term SMA (3.36), with the short-term SMA also below the long-term SMA, indicating a bearish short-term trend or lack of upward momentum. As a prudent trader, adhering to stop-loss limits to protect capital is paramount, especially when technicals do not suggest an immediate reversal for a profitable outcome.",
+      "pnlPercent": -0.9818506396905791,
+      "currentPrice": 3.328
+    }
+  ],
+  "LTCUSDT": [
+    {
+      "timestamp": "2025-08-18T16:36:10.285Z",
+      "decision": "SELL_NOW",
+      "justification": "The position has breached the predefined stop-loss target of -1% (currently at -1.06% P/L). As per the trading strategy, an immediate sale is required to prevent further capital erosion.",
+      "pnlPercent": -1.0645811247514978,
+      "currentPrice": 116.76
     }
   ]
 }

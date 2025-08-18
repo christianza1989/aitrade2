@@ -57,7 +57,7 @@ export function AnalysisPanel({ analysis }: AnalysisPanelProps) {
     }
 
     return (
-        <>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {allDecisions.map(([symbol, dec]) => {
                 const decision = dec as Decision;
                 const isBuy = decision.decision === 'EXECUTE_BUY';
@@ -84,6 +84,6 @@ export function AnalysisPanel({ analysis }: AnalysisPanelProps) {
                     </div>
                 );
             })}
-        </>
+        </div>
     );
 }

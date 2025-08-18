@@ -24,8 +24,8 @@ interface Settings {
 }
 
 const playNotificationSound = () => {
-    const audio = new Audio('/sounds/notification.mp3');
-    audio.play().catch(error => console.error("Audio playback failed.", error));
+    // const audio = new Audio('/sounds/notification.mp3');
+    // audio.play().catch(error => console.error("Audio playback failed.", error));
 };
 
 export default function PortfolioPage() {
@@ -155,7 +155,36 @@ export default function PortfolioPage() {
             <h1 className="text-2xl font-bold mb-4">My Portfolio</h1>
             <div className="bg-gray-800 p-4 rounded-lg">
                 <h2 className="text-xl font-bold mb-4">Open Positions</h2>
-                <div className="overflow-x-auto">
+                {/* Mobile View - Cards */}
+                <div className="md:hidden">
+                    {portfolio.positions.map((pos: Position, index: number) => {
+                        const { currentPrice, pnl, pnlPercent } = getPositionDisplayData(pos);
+                        return (
+                            <div key={index} className="bg-gray-700 rounded-lg p-4 mb-4">
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="font-bold text-lg">{pos.symbol}</span>
+                                    <span className={`font-bold ${pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                        {pnlPercent.toFixed(2)}%
+                                    </span>
+                                </div>
+                                <div className="text-sm space-y-1">
+                                    <p><strong>Amount:</strong> {pos.amount.toLocaleString('en-US', { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</p>
+                                    <p><strong>Entry Price:</strong> €{pos.entryPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                    <p><strong>Current Price:</strong> €{currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                    <p><strong>P/L:</strong> <span className={pnl >= 0 ? 'text-green-400' : 'text-red-400'}>€{pnl.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></p>
+                                    {pos.holdCount && pos.holdCount > 0 && (
+                                        <p><strong>AI Control:</strong> <span className="text-yellow-400">Held ({pos.holdCount}x)</span></p>
+                                    )}
+                                </div>
+                                <button onClick={() => handleSell(pos.symbol, pos.amount)} className="mt-4 w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                    Sell
+                                </button>
+                            </div>
+                        );
+                    })}
+                </div>
+                {/* Desktop View - Table */}
+                <div className="hidden md:block overflow-x-auto">
                     <table className="min-w-full">
                         <thead>
                             <tr>

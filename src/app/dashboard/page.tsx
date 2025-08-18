@@ -31,18 +31,16 @@ export default function Dashboard() {
             </div>
 
             {/* Row 3: Main Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                 {/* Main Content Column */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="xl:col-span-2 space-y-6">
                     <div className="bg-gray-800 rounded-lg p-4">
                         <h2 className="text-lg font-semibold mb-4">{state.selectedSymbol} Price Chart</h2>
                         <Chart />
                     </div>
                     <div>
                         <h2 className="text-lg font-semibold mb-4">AI Analysis Cycle: Latest Buys</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                            <AnalysisPanel />
-                        </div>
+                        <AnalysisPanel />
                     </div>
                     <div className="bg-gray-800 p-4 rounded-lg">
                         <AiChatWindow />
@@ -51,11 +49,11 @@ export default function Dashboard() {
                 </div>
 
                 {/* Side Column */}
-                <div className="lg:col-span-1 space-y-6">
+                <div className="xl:col-span-1 space-y-6">
                     <MarketTable />
                     <div className="bg-gray-800 p-4 rounded-lg">
                         <h2 className="font-semibold text-md mb-2">Live Logs</h2>
-                        <div className="bg-gray-900 text-white p-2 rounded-lg h-[25vh] overflow-y-auto text-xs space-y-1 font-mono">
+                        <div className="bg-gray-900 text-white p-2 rounded-lg h-64 overflow-y-auto text-xs space-y-1 font-mono">
                             {state.logs.map((log, index) => (
                                 <p key={index}>{log}</p>
                             ))}

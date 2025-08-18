@@ -1,10 +1,15 @@
 "use client";
 
 import { useDashboard } from '@/context/DashboardContext';
-import { Power, Timer, Wallet } from 'lucide-react';
+import { Power, Timer, Wallet, Menu } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Dispatch, SetStateAction } from 'react';
 
-export function Header() {
+interface HeaderProps {
+    setSidebarOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export function Header({ setSidebarOpen }: HeaderProps) {
     const { state, dispatch } = useDashboard();
 
     const toggleBotStatus = async () => {
@@ -28,8 +33,16 @@ export function Header() {
 
     return (
         <header className="flex justify-between items-center p-4 bg-gray-900 text-white border-b border-gray-700">
-            <h1 className="text-xl font-semibold">CryptoBot Dashboard</h1>
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center">
+                <button
+                    onClick={() => setSidebarOpen(true)}
+                    className="md:hidden mr-4 text-gray-400 hover:text-white"
+                >
+                    <Menu size={24} />
+                </button>
+                <h1 className="text-xl font-semibold hidden md:block">CryptoBot Dashboard</h1>
+            </div>
+            <div className="flex items-center space-x-2 md:space-x-6">
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger>
@@ -49,7 +62,8 @@ export function Header() {
                         <TooltipTrigger>
                             <div className="flex items-center text-sm">
                                 <Wallet size={16} className="mr-2 text-gray-400" />
-                                <span>Sandbox Balance: <strong>€{state.portfolio.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
+                                <span className="hidden sm:inline">Sandbox Balance: </span>
+                                <strong className="ml-1">€{state.portfolio.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
                             </div>
                         </TooltipTrigger>
                         <TooltipContent>

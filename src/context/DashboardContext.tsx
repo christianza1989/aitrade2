@@ -17,6 +17,13 @@ interface Portfolio {
     positions: Position[];
 }
 
+interface BinanceTickerEvent {
+    s: string; // Symbol
+    c: string; // Last price
+    P: string; // Price change percent
+    q: string; // Quote volume
+}
+
 export interface AiChat {
     agent: string;
     prompt: string;
@@ -47,6 +54,7 @@ type Action =
     | { type: 'ADD_LOG'; payload: string }
     | { type: 'ADD_AI_CHAT'; payload: AiChat }
     | { type: 'SET_MARKET_DATA'; payload: Ticker[] }
+    | { type: 'UPDATE_MARKET_PRICES'; payload: Ticker[] }
     | { type: 'SET_PORTFOLIO'; payload: Portfolio }
     | { type: 'SET_LOADING'; payload: boolean }
     | { type: 'SET_SELECTED_SYMBOL'; payload: string }
@@ -83,6 +91,12 @@ function dashboardReducer(state: DashboardState, action: Action): DashboardState
             return { ...state, aiChat: newChats.slice(-100) };
         case 'SET_MARKET_DATA':
             return { ...state, marketData: action.payload };
+        case 'UPDATE_MARKET_PRICES':
+            const updatedMarketData = state.marketData.map(ticker => {
+                const update = action.payload.find(u => u.symbol === ticker.symbol);
+                return update ? { ...ticker, ...update } : ticker;
+            });
+            return { ...state, marketData: updatedMarketData };
         case 'SET_PORTFOLIO':
             return { ...state, portfolio: action.payload };
         case 'SET_LOADING':
@@ -135,6 +149,67 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
             }
         }
 
+        fetchInitialData();
+
+        const eventSource = new EventSource('/api/market-stream');
+        
+        eventSource.onmessage = (event) => {
+            try {
+                const data: BinanceTickerEvent[] = JSON.parse(event.data);
+                const transformedData: Ticker[] = data.map((item) => ({
+                    symbol: item.s,
+                    lastPrice: item.c,
+                    priceChangePercent: item.P,
+                    quoteVolume: item.q,
+                    // --- Adding dummy data to satisfy the Ticker type ---
+                    priceChange: '',
+                    weightedAvgPrice: '',
+                    prevClosePrice: '',
+                    lastQty: '',
+                    bidPrice: '',
+                    bidQty: '',
+                    askPrice: '',
+                    askQty: '',
+                    openPrice: '',
+                    highPrice: '',
+                    lowPrice: '',
+                    volume: '',
+                    openTime: 0,
+                    closeTime: 0,
+                    firstId: 0,
+                    lastId: 0,
+                    count: 0,
+                }));
+                dispatch({ type: 'UPDATE_MARKET_PRICES', payload: transformedData });
+            } catch (error) {
+                console.error("Failed to parse market stream data:", error);
+            }
+        };
+
+        eventSource.onerror = (error) => {
+            console.error('EventSource failed:', error);
+            dispatch({ type: 'ADD_LOG', payload: 'Market data stream disconnected.' });
+            eventSource.close();
+        };
+
+        const portfolioInterval = setInterval(async () => {
+            try {
+                const response = await fetch('/api/dashboard-data');
+                if (!response.ok) throw new Error('Failed to fetch dashboard data');
+                const data = await response.json();
+                dispatch({ type: 'SET_PORTFOLIO', payload: data.portfolio });
+            } catch (error) {
+                console.error("Failed to fetch updated portfolio data:", error);
+            }
+        }, 1000);
+
+        return () => {
+            eventSource.close();
+            clearInterval(portfolioInterval);
+        };
+    }, []);
+
+    useEffect(() => {
         async function fetchConfig() {
             try {
                 const response = await fetch('/api/settings');
@@ -144,8 +219,6 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
                 console.error("Failed to fetch config");
             }
         }
-        
-        fetchInitialData();
         fetchConfig();
     }, []);
 

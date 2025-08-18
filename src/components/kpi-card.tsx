@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo, useEffect, useState } from 'react';
 import { useDashboard } from '@/context/DashboardContext';
 
 interface KpiCardProps {
@@ -14,6 +14,22 @@ interface KpiCardProps {
 export function KpiCard({ title, icon, kpiKey, value, color: propColor }: KpiCardProps) {
     const { state } = useDashboard();
     const { portfolio, marketData } = state;
+    const [tradeHistory, setTradeHistory] = useState([]);
+
+    useEffect(() => {
+        async function fetchTradeHistory() {
+            try {
+                const response = await fetch('/api/history');
+                const data = await response.json();
+                setTradeHistory(data);
+            } catch (error) {
+                console.error("Failed to fetch trade history:", error);
+            }
+        }
+        fetchTradeHistory();
+        const interval = setInterval(fetchTradeHistory, 10000); // Refetch every 10 seconds
+        return () => clearInterval(interval);
+    }, []);
 
     const kpiValue = useMemo(() => {
         if (value !== undefined) return value;
@@ -33,17 +49,20 @@ export function KpiCard({ title, icon, kpiKey, value, color: propColor }: KpiCar
             case 'freeCollateral':
                 return portfolio.balance;
             case '24h_pnl':
-                const pnl24h = portfolio.positions.reduce((acc, pos) => {
-                    const marketInfo = marketData.find(md => md.symbol === pos.symbol);
-                    if (!marketInfo) return acc;
-                    const priceChange = parseFloat(marketInfo.priceChange);
-                    return acc + (priceChange * pos.amount);
+                const now = new Date().getTime();
+                const twentyFourHoursAgo = now - 24 * 60 * 60 * 1000;
+                const pnl24h = tradeHistory.reduce((acc, trade) => {
+                    const tradeTimestamp = new Date((trade as { timestamp: string }).timestamp).getTime();
+                    if (tradeTimestamp > twentyFourHoursAgo) {
+                        return acc + (trade as { pnl: number }).pnl;
+                    }
+                    return acc;
                 }, 0);
                 return pnl24h;
             default:
                 return 0;
         }
-    }, [portfolio, marketData, kpiKey, value]);
+    }, [portfolio, marketData, kpiKey, value, tradeHistory]);
 
     const formattedValue = typeof kpiValue === 'number' 
         ? `€${kpiValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`

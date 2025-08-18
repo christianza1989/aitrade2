@@ -1,4 +1,157 @@
 {
-  "balance": 100000,
-  "positions": []
+  "balance": 21393.031325938584,
+  "positions": [
+    {
+      "symbol": "BTCUSDT",
+      "amount": 0.20760258910389667,
+      "entryPrice": 115605.49463084477,
+      "highPnlPercent": 0.6403029298208913
+    },
+    {
+      "symbol": "ETHUSDT",
+      "amount": 3.3475837946373534,
+      "entryPrice": 4331.482313669999,
+      "highPnlPercent": 0.6066672890956983
+    },
+    {
+      "symbol": "WBTCUSDT",
+      "amount": 0.06482003752017934,
+      "entryPrice": 115704.96233768995
+    },
+    {
+      "symbol": "BNBUSDT",
+      "amount": 7.153038381447002,
+      "entryPrice": 838.8043905317684,
+      "highPnlPercent": 0.545491835746218
+    },
+    {
+      "symbol": "SOLUSDT",
+      "amount": 21.9259329515599,
+      "entryPrice": 182.43237397637958,
+      "highPnlPercent": 1.0127731078364646
+    },
+    {
+      "symbol": "OGUSDT",
+      "amount": 177.8220357066648,
+      "entryPrice": 14.059
+    },
+    {
+      "symbol": "SUSDT",
+      "amount": 7080.4279822445915,
+      "entryPrice": 0.3177774006941766,
+      "highPnlPercent": 1.5805401186024064,
+      "takeProfitPercent": 2.5,
+      "holdCount": 1,
+      "stopLossPrice": 0.3177774006941766
+    },
+    {
+      "symbol": "PNUTUSDT",
+      "amount": 10121.963613365386,
+      "entryPrice": 0.2222888844442222
+    },
+    {
+      "symbol": "RESOLVUSDT",
+      "amount": 8650.519031141868,
+      "entryPrice": 0.1734
+    },
+    {
+      "symbol": "ZKUSDT",
+      "amount": 15135.462388375963,
+      "entryPrice": 0.06607
+    },
+    {
+      "symbol": "ALPINEUSDT",
+      "amount": 531.6982098739588,
+      "entryPrice": 2.2569193909538736
+    },
+    {
+      "symbol": "TIAUSDT",
+      "amount": 571.1022272986866,
+      "entryPrice": 1.751
+    },
+    {
+      "symbol": "FETUSDT",
+      "amount": 1906.8042941852805,
+      "entryPrice": 0.6817689701897018,
+      "highPnlPercent": 0.47391857822440664
+    },
+    {
+      "symbol": "ONDOUSDT",
+      "amount": 1048.1081647626036,
+      "entryPrice": 0.9541,
+      "highPnlPercent": 0.99570275652448
+    },
+    {
+      "symbol": "MAVUSDT",
+      "amount": 8768.85303402315,
+      "entryPrice": 0.05702
+    },
+    {
+      "symbol": "FLOKIUSDT",
+      "amount": 7368357.817905635,
+      "entryPrice": 0.00010178658780351934,
+      "highPnlPercent": 0.7598370405869092
+    },
+    {
+      "symbol": "ATOMUSDT",
+      "amount": 156.85035262487335,
+      "entryPrice": 4.462852574352414
+    },
+    {
+      "symbol": "HBARUSDT",
+      "amount": 2053.8941833716726,
+      "entryPrice": 0.24344,
+      "highPnlPercent": 1.1707196845218615
+    },
+    {
+      "symbol": "EPICUSDT",
+      "amount": 134.79528491317117,
+      "entryPrice": 2.967462847514743
+    },
+    {
+      "symbol": "SHIBUSDT",
+      "amount": 15847860.53882726,
+      "entryPrice": 0.00001262
+    },
+    {
+      "symbol": "FILUSDT",
+      "amount": 202.75750202757501,
+      "entryPrice": 2.466
+    },
+    {
+      "symbol": "MEMEUSDT",
+      "amount": 482625.4826254826,
+      "entryPrice": 0.002072
+    },
+    {
+      "symbol": "ALGOUSDT",
+      "amount": 590.318772136954,
+      "entryPrice": 0.2541
+    },
+    {
+      "symbol": "EIGENUSDT",
+      "amount": 373.13432835820896,
+      "entryPrice": 1.34
+    },
+    {
+      "symbol": "VETUSDT",
+      "amount": 18912.908311918156,
+      "entryPrice": 0.023793273492286115
+    },
+    {
+      "symbol": "JUVUSDT",
+      "amount": 520.8333333333334,
+      "entryPrice": 1.44
+    },
+    {
+      "symbol": "CFXUSDT",
+      "amount": 4370.629370629371,
+      "entryPrice": 0.1716
+    },
+    {
+      "symbol": "RAYUSDT",
+      "amount": 355.3449807521469,
+      "entryPrice": 3.377
+    }
+  ]
 }
