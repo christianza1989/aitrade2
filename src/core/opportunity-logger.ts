@@ -2,7 +2,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-const missedOpportunitiesPath = path.join(process.cwd(), 'missed_opportunities.json');
+const getMissedOpportunitiesPath = (username: string) => path.join(process.cwd(), `missed_opportunities_${username}.json`);
 
 export interface MissedOpportunity {
     timestamp: string;
@@ -13,9 +13,22 @@ export interface MissedOpportunity {
 }
 
 export class OpportunityLogger {
+    private username: string;
+
+    constructor(username: string) {
+        if (!username) {
+            throw new Error("Username must be provided to OpportunityLogger.");
+        }
+        this.username = username;
+    }
+
+    private getFilePath(): string {
+        return getMissedOpportunitiesPath(this.username);
+    }
+
     public async getLogs(): Promise<MissedOpportunity[]> {
         try {
-            const data = await fs.readFile(missedOpportunitiesPath, 'utf-8');
+            const data = await fs.readFile(this.getFilePath(), 'utf-8');
             return JSON.parse(data);
         } catch {
             // If file doesn't exist or is invalid, start with an empty array
@@ -33,7 +46,7 @@ export class OpportunityLogger {
             logs.push(newLog);
             // Keep the log from growing indefinitely
             const trimmedLogs = logs.slice(-500); 
-            await fs.writeFile(missedOpportunitiesPath, JSON.stringify(trimmedLogs, null, 2));
+            await fs.writeFile(this.getFilePath(), JSON.stringify(trimmedLogs, null, 2));
         } catch (error) {
             console.error("Failed to log missed opportunity:", error);
         }

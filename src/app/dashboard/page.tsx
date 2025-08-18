@@ -10,6 +10,7 @@ import { Chart } from '@/components/chart';
 import { DecisionLog } from '@/components/decision-log';
 import { SharedContextDisplay } from '@/components/shared-context-display';
 import { DynamicRiskDisplay } from '@/components/dynamic-risk-display';
+import { OpportunityLog } from '@/components/opportunity-log';
 import { DollarSign, TrendingUp, Wallet } from 'lucide-react';
 
 export default function Dashboard() {
@@ -60,6 +61,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                     <NewsFeed />
+                    <OpportunityLog />
                 </div>
             </div>
         </div>

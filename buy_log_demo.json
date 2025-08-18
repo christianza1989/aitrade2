@@ -328,5 +328,107 @@
     "symbol": "EPICUSDT",
     "amount": 67.63611768684478,
     "entryPrice": 2.957
+  },
+  {
+    "timestamp": "2025-08-18T17:47:13.414Z",
+    "symbol": "AAVEUSDT",
+    "amount": 6.134551155340468,
+    "entryPrice": 293.42
+  },
+  {
+    "timestamp": "2025-08-18T17:47:14.077Z",
+    "symbol": "TRUMPUSDT",
+    "amount": 164.47368421052633,
+    "entryPrice": 9.12
+  },
+  {
+    "timestamp": "2025-08-18T17:47:15.070Z",
+    "symbol": "RAYUSDT",
+    "amount": 348.6345148169669,
+    "entryPrice": 3.442
+  },
+  {
+    "timestamp": "2025-08-18T17:47:15.526Z",
+    "symbol": "RENDERUSDT",
+    "amount": 316.7062549485352,
+    "entryPrice": 3.789
+  },
+  {
+    "timestamp": "2025-08-18T17:47:16.309Z",
+    "symbol": "ICPUSDT",
+    "amount": 187.6172607879925,
+    "entryPrice": 5.33
+  },
+  {
+    "timestamp": "2025-08-18T17:47:17.431Z",
+    "symbol": "NEARUSDT",
+    "amount": 307.21966205837174,
+    "entryPrice": 2.604
+  },
+  {
+    "timestamp": "2025-08-18T17:47:18.249Z",
+    "symbol": "XLMUSDT",
+    "amount": 1924.9278152069296,
+    "entryPrice": 0.4156
+  },
+  {
+    "timestamp": "2025-08-18T17:47:18.748Z",
+    "symbol": "TAOUSDT",
+    "amount": 2.2383883603805264,
+    "entryPrice": 357.4
+  },
+  {
+    "timestamp": "2025-08-18T17:47:19.325Z",
+    "symbol": "BCHUSDT",
+    "amount": 1.234132581100141,
+    "entryPrice": 567.2
+  },
+  {
+    "timestamp": "2025-08-18T17:47:19.785Z",
+    "symbol": "ETCUSDT",
+    "amount": 32.39241092086997,
+    "entryPrice": 21.61
+  },
+  {
+    "timestamp": "2025-08-18T17:47:20.269Z",
+    "symbol": "VETUSDT",
+    "amount": 25020.850708924103,
+    "entryPrice": 0.02398
+  },
+  {
+    "timestamp": "2025-08-18T17:47:22.196Z",
+    "symbol": "HBARUSDT",
+    "amount": 2028.3975659229209,
+    "entryPrice": 0.2465
+  },
+  {
+    "timestamp": "2025-08-18T17:47:22.573Z",
+    "symbol": "LTCUSDT",
+    "amount": 3.3838084764402336,
+    "entryPrice": 118.21
+  },
+  {
+    "timestamp": "2025-08-18T17:47:22.896Z",
+    "symbol": "PENDLEUSDT",
+    "amount": 73.63770250368188,
+    "entryPrice": 5.432
+  },
+  {
+    "timestamp": "2025-08-18T18:48:54.001Z",
+    "symbol": "BTCUSDT",
+    "amount": 0.1071380320636872,
+    "entryPrice": 116504.38
+  },
+  {
+    "timestamp": "2025-08-18T18:48:54.340Z",
+    "symbol": "WBTCUSDT",
+    "amount": 0.10715791761802347,
+    "entryPrice": 116482.76
+  },
+  {
+    "timestamp": "2025-08-18T18:48:55.087Z",
+    "symbol": "UNIUSDT",
+    "amount": 1179.5549045549044,
+    "entryPrice": 10.582
   }
 ]

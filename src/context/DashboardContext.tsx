@@ -3,6 +3,7 @@
 import { createContext, useContext, useReducer, ReactNode, useEffect, useRef, useState } from 'react';
 import { Ticker } from '@/core/binance';
 import { ISharedContext } from '@/core/context';
+import { Opportunity } from '@/core/opportunity-scanner';
 import toast from 'react-hot-toast';
 
 // --- STATE AND TYPES ---
@@ -48,6 +49,7 @@ interface DashboardState {
     lastRunAnalysis: Analysis | null;
     sharedContext: ISharedContext | null;
     adjustedConfig: Config | null;
+    opportunities: Opportunity[];
 }
 
 type Action =
@@ -63,7 +65,8 @@ type Action =
     | { type: 'SET_TIMER'; payload: string }
     | { type: 'SET_LAST_RUN_ANALYSIS'; payload: Analysis | null }
     | { type: 'SET_SHARED_CONTEXT'; payload: ISharedContext }
-    | { type: 'SET_ADJUSTED_CONFIG'; payload: Config };
+    | { type: 'SET_ADJUSTED_CONFIG'; payload: Config }
+    | { type: 'SET_OPPORTUNITIES'; payload: Opportunity[] };
 
 const initialState: DashboardState = {
     logs: [],
@@ -78,6 +81,7 @@ const initialState: DashboardState = {
     lastRunAnalysis: null,
     sharedContext: null,
     adjustedConfig: null,
+    opportunities: [],
 };
 
 // --- REDUCER ---
@@ -115,6 +119,13 @@ function dashboardReducer(state: DashboardState, action: Action): DashboardState
             return { ...state, sharedContext: action.payload };
         case 'SET_ADJUSTED_CONFIG':
             return { ...state, adjustedConfig: action.payload };
+        case 'SET_OPPORTUNITIES':
+            // To avoid re-rendering the entire list every time, we can be a bit smarter
+            // and only update if the data has actually changed.
+            if (JSON.stringify(state.opportunities) !== JSON.stringify(action.payload)) {
+                return { ...state, opportunities: action.payload };
+            }
+            return state;
         default:
             return state;
     }
@@ -203,9 +214,21 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
             }
         }, 1000);
 
+        const opportunityInterval = setInterval(async () => {
+            try {
+                const response = await fetch('/api/opportunities');
+                if (!response.ok) throw new Error('Failed to fetch opportunities');
+                const data = await response.json();
+                dispatch({ type: 'SET_OPPORTUNITIES', payload: data });
+            } catch (error) {
+                // This can fail if the file doesn't exist yet, which is fine.
+            }
+        }, 2000); // Poll every 2 seconds for responsiveness
+
         return () => {
             eventSource.close();
             clearInterval(portfolioInterval);
+            clearInterval(opportunityInterval);
         };
     }, []);
 

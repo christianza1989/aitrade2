@@ -6,6 +6,7 @@ import { PortfolioService } from '@/core/portfolio';
 import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager, PortfolioAllocator, PositionManager, Analysis } from '@/core/agents';
 import { SharedContext } from '@/core/context';
 import { OpportunityLogger } from '@/core/opportunity-logger';
+import { DecisionLogger } from '@/core/decision-logger';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -70,7 +71,11 @@ export async function GET(req: Request) {
                 sendEvent({ type: 'log', message: 'RiskManager OK.' });
                 const portfolioAllocator = new PortfolioAllocator();
                 sendEvent({ type: 'log', message: 'PortfolioAllocator OK.' });
-                const opportunityLogger = new OpportunityLogger();
+                const positionManager = new PositionManager();
+                sendEvent({ type: 'log', message: 'PositionManager OK.' });
+                const decisionLogger = new DecisionLogger(username);
+                sendEvent({ type: 'log', message: 'DecisionLogger OK.' });
+                const opportunityLogger = new OpportunityLogger(username);
                 sendEvent({ type: 'log', message: 'OpportunityLogger OK.' });
                 sendEvent({ type: 'log', message: 'All services initialized successfully.' });
 
@@ -79,10 +84,53 @@ export async function GET(req: Request) {
                 const config = JSON.parse(configData);
                 let portfolio = await portfolioService.getPortfolio();
 
-                // Position management is now handled by the client-side trigger calling the /api/bot/decision endpoint.
-                // This server-side loop is now only for finding new assets to buy.
+                // --- PHASE 1: MANAGE EXISTING POSITIONS ---
+                sendEvent({ type: 'log', message: `Managing ${portfolio.positions.length} existing positions...` });
+                for (const position of portfolio.positions) {
+                    const currentPrice = await binance.getCurrentPrice(position.symbol);
+                    if (!currentPrice) continue;
 
-                // 2. Analyze new potential trades
+                    const pnlPercent = (currentPrice - position.entryPrice) / position.entryPrice * 100;
+                    const takeProfit = position.takeProfitPercent || config.takeProfitPercent;
+                    const stopLoss = config.stopLossPercent;
+
+                    if (pnlPercent >= takeProfit || pnlPercent <= stopLoss) {
+                        sendEvent({ type: 'log', message: `Position ${position.symbol} hit price target (P/L: ${pnlPercent.toFixed(2)}%). Invoking PositionManager...` });
+                        
+                        // We need macro and sentiment context for the decision
+                        const btcData = await binance.getHistoricalData('BTCUSDT', '4h', 1);
+                        const newsArticles = await newsService.getCryptoNews();
+                        const macroAnalysisResult = await macroAnalyst.analyze(btcData[0] || {}, newsArticles.map(a => a.title), sharedContext);
+                        const sentimentAnalysisResult = await sentimentAnalyst.analyze(newsArticles, sharedContext);
+                        
+                        const decisionResult = await positionManager.decide(position, currentPrice, macroAnalysisResult?.response, sentimentAnalysisResult?.response, config, []);
+                        sendEvent({ type: 'aiChat', data: { agent: `PositionManager-${position.symbol}`, ...decisionResult } });
+
+                        const decisionData = decisionResult?.response as { decision?: string; new_take_profit_percent?: number; justification?: string };
+                        if (decisionData?.decision) {
+                            await decisionLogger.log({
+                                symbol: position.symbol,
+                                decision: decisionData.decision as any,
+                                pnlPercent,
+                                currentPrice,
+                                newTakeProfitPercent: decisionData.new_take_profit_percent,
+                                justification: decisionData.justification || 'N/A',
+                            });
+
+                            if (decisionData.decision === 'SELL_NOW') {
+                                await portfolioService.sell(position.symbol, position.amount, currentPrice, { reason: 'PositionManager decision' });
+                                sendEvent({ type: 'log', message: `SOLD ${position.symbol} based on PositionManager decision.` });
+                            } else if (decisionData.decision === 'HOLD_AND_INCREASE_TP' && decisionData.new_take_profit_percent) {
+                                await portfolioService.updatePosition(position.symbol, { takeProfitPercent: decisionData.new_take_profit_percent });
+                                sendEvent({ type: 'log', message: `HOLDING ${position.symbol}, new take-profit is ${decisionData.new_take_profit_percent}%.` });
+                            }
+                        }
+                    }
+                }
+                // Refresh portfolio state after management phase
+                portfolio = await portfolioService.getPortfolio();
+
+                // --- PHASE 2: ANALYZE NEW TRADES ---
                 if (portfolio.balance < config.minimumBalance) {
                     sendEvent({ type: 'log', message: `Balance is below ${config.minimumBalance}. Skipping new trade analysis.` });
                     controller.close();

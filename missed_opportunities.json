@@ -1559,5 +1559,138 @@
     "reason": "AVOID decision by RiskManager",
     "confidenceScore": 7.8,
     "finalSummary": "A sideways trend with a bearish bias and weak momentum indicates a lack of positive conviction, making it an asset to avoid."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:17.758Z",
+    "symbol": "API3USDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 8,
+    "finalSummary": "The slightly bearish momentum and position below the 50-SMA indicate relative weakness, making it an avoid despite the strong market."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:17.764Z",
+    "symbol": "PONDUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 7.5,
+    "finalSummary": "Sideways trend with bearish momentum indicates underperformance against the bullish market, warranting an avoid decision."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:17.769Z",
+    "symbol": "ALPINEUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 9,
+    "finalSummary": "A clear downtrend with price below descending moving averages makes this an unequivocal avoid, irrespective of the broader market sentiment."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:17.774Z",
+    "symbol": "EURUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 8.5,
+    "finalSummary": "The bearish momentum and bearish SMA configuration, even in a sideways trend, signal weakness, warranting an avoid decision."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:26.916Z",
+    "symbol": "GALAUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 5,
+    "finalSummary": "Despite some bullish RSI divergence, GALAUSDT remains in a downtrend with price below moving averages, making it an avoid for now."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:26.925Z",
+    "symbol": "CTSIUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 9,
+    "finalSummary": "CTSIUSDT is in a clear downtrend with bearish momentum, making it a strong avoid in the current market."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:26.930Z",
+    "symbol": "ASRUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 9.5,
+    "finalSummary": "ASRUSDT is in a pronounced downtrend with strong bearish momentum, making it a definite avoid."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:26.934Z",
+    "symbol": "JUVUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 7,
+    "finalSummary": "JUVUSDT exhibits a sideways trend with a slight bearish bias and no clear bullish catalyst, offering no compelling reason to buy."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:26.939Z",
+    "symbol": "SPKUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 7.5,
+    "finalSummary": "SPKUSDT is in a sideways trend with no clear bullish catalyst and price below SMAs, warranting an avoid."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:26.943Z",
+    "symbol": "TSTUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 8,
+    "finalSummary": "TSTUSDT's sideways trend combined with bearish momentum makes it an unattractive option for buying."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:27.579Z",
+    "symbol": "AEURUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 7,
+    "finalSummary": "In a strong Risk-On environment, assets showing perfectly neutral momentum and no clear directional bias are not ideal for new capital deployment."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:27.585Z",
+    "symbol": "BFUSDUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 9,
+    "finalSummary": "Exhibiting stablecoin-like behavior with neutral momentum, this asset offers no capital appreciation potential for active trading in a bullish market."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:27.590Z",
+    "symbol": "SKLUSDT",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 8.5,
+    "finalSummary": "Slight bearish momentum and consolidation below key moving averages make this asset unattractive for new positions in a predominantly bullish market."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:28.073Z",
+    "symbol": "Asset_2",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 6,
+    "finalSummary": "Despite consolidating, the presence of bearish momentum suggests weakness and underperformance in a bullish environment."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:28.079Z",
+    "symbol": "Asset_4",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 7.5,
+    "finalSummary": "Consolidating in a downtrend with bearish momentum indicates significant weakness that we should avoid."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:28.083Z",
+    "symbol": "Asset_5",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 8.5,
+    "finalSummary": "A strong downtrend with persistent bearish momentum presents too much risk in a market focused on strength."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:28.088Z",
+    "symbol": "Asset_13",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 7,
+    "finalSummary": "A weak or declining trend with bearish momentum does not align with our strategy in a Risk-On market."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:28.092Z",
+    "symbol": "Asset_15",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 6.5,
+    "finalSummary": "Neutral momentum and price below moving averages signal underperformance that is best avoided during a bullish rally."
+  },
+  {
+    "timestamp": "2025-08-18T17:46:28.101Z",
+    "symbol": "Asset_19",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 6.5,
+    "finalSummary": "Bearish momentum despite being marginally above MAs indicates underlying weakness that we should steer clear of."
   }
 ]

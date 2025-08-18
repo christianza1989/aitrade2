@@ -1,0 +1,65 @@
+[
+  {
+    "timestamp": "2025-08-18T18:48:31.947Z",
+    "symbol": "Asset 3",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 6,
+    "finalSummary": "AVOID due to the lack of comprehensive trend analysis from missing SMA data, despite mildly bullish momentum and a moderately bullish macro environment, leading to significant caution."
+  },
+  {
+    "timestamp": "2025-08-18T18:48:31.952Z",
+    "symbol": "Asset 9",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 8,
+    "finalSummary": "AVOID given the weakening trend and potential for further downside indicated by bearish divergence in technicals, which conflicts with the moderately bullish macro environment and offers no compelling reason to engage with neutral sentiment."
+  },
+  {
+    "timestamp": "2025-08-18T18:48:31.956Z",
+    "symbol": "Asset 10",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 8.5,
+    "finalSummary": "AVOID due to strong bearish technicals with price below SMAs and bearish RSI, which provides no justification for engagement despite a moderately bullish macro and neutral sentiment."
+  },
+  {
+    "timestamp": "2025-08-18T18:48:31.960Z",
+    "symbol": "Asset 11",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 9,
+    "finalSummary": "AVOID for speculative trading, as its technicals indicate a stablecoin, which does not align with a moderately bullish 'Risk-On' macro environment seeking capital appreciation, despite neutral market sentiment."
+  },
+  {
+    "timestamp": "2025-08-18T18:48:31.964Z",
+    "symbol": "Asset 13",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 8.5,
+    "finalSummary": "AVOID given the strong bearish technical signals, including price well below SMAs and bearish RSI, which directly contradicts a moderately bullish macro and offers no reason for engagement despite neutral market sentiment."
+  },
+  {
+    "timestamp": "2025-08-18T18:48:31.968Z",
+    "symbol": "Asset 14",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 9,
+    "finalSummary": "AVOID due to strong bearish technicals, including a clear downtrend and bearish momentum, which makes it unsuitable for investment in a moderately bullish macro environment with neutral market sentiment."
+  },
+  {
+    "timestamp": "2025-08-18T18:48:31.972Z",
+    "symbol": "Asset 15",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 7,
+    "finalSummary": "AVOID as the asset shows sideways consolidation with neutral to mildly bearish momentum and no clear direction, which does not align with a 'Risk-On' macro environment seeking growth, despite neutral market sentiment."
+  },
+  {
+    "timestamp": "2025-08-18T18:48:31.975Z",
+    "symbol": "Asset 16",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 7.5,
+    "finalSummary": "AVOID, as the asset exhibits a weakening trend with mildly bearish momentum and price below SMAs, offering no justifiable entry despite a moderately bullish macro and neutral market sentiment."
+  },
+  {
+    "timestamp": "2025-08-18T18:48:31.979Z",
+    "symbol": "Asset 19",
+    "reason": "AVOID decision by RiskManager",
+    "confidenceScore": 7,
+    "finalSummary": "AVOID due to mixed technical signals, including a mildly bearish RSI suggesting weakening within consolidation, which does not align with a 'Risk-On' macro environment seeking growth despite neutral market sentiment."
+  }
+]

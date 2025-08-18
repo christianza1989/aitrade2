@@ -110,10 +110,11 @@ export class MacroAnalyst extends AIAgent {
         2.  **Top News Headlines:** ${JSON.stringify(newsHeadlines)}
         3.  **Simulated On-Chain Data:** "Exchange Netflow: -1500 BTC (Neutral), Stablecoin Supply Ratio: Rising (Bullish)"
 
-        **Task:** Provide a general market assessment in JSON format.
+        **Task:** Provide a critical market assessment in JSON format.
         - \`market_regime\`: "Risk-On" (favorable for risky assets) or "Risk-Off" (avoid risk).
-        - \`regime_score\`: A number from 0.0 (very bad) to 10.0 (very good).
-        - \`summary\`: A one-sentence summary.
+        - \`regime_score\`: A number from 0.0 (extreme fear) to 10.0 (extreme greed).
+        - \`reasoning\`: A brief explanation of why you chose this regime, referencing the provided data (e.g., "BTC price action is bullish, but news sentiment is neutral, leading to a cautiously optimistic score.").
+        - \`summary\`: A one-sentence, actionable summary for the portfolio manager.
         `;
         const result = await this.safeGenerate(prompt);
         if (result?.response) {
@@ -190,8 +191,11 @@ export class PositionManager extends AIAgent {
         **Your Decision History For This Asset (Memory):**
         ${JSON.stringify(decisionHistory, null, 2)}
 
-        **Task:** ${taskDescription} 
-        Your primary task is to decide between "SELL_NOW" to lock in profits or "HOLD_AND_INCREASE_TP" to let profits run. Do not hold indefinitely. If the asset's technical indicators (like a very high RSI or weakening MACD) suggest the trend is exhausted, you should lean towards "SELL_NOW" even if the macro/sentiment is positive. Be a prudent profit-taker, not just a trend-follower.
+        **Task:** ${taskDescription}
+        Critically evaluate the situation. Your primary goal is to protect capital and maximize profit.
+        1.  **Review Initial Thesis:** Was the original reason for buying this asset still valid, based on the current macro and sentiment data?
+        2.  **Analyze Technical Health:** Do the technical indicators (RSI, MACD) show strength, or are they suggesting the trend is exhausted (e.g., bearish divergence)?
+        3.  **Make a Prudent Decision:** Decide between "SELL_NOW" to lock in profits or "HOLD_AND_INCREASE_TP" to let profits run. If holding, the new take-profit must be realistic. Be a disciplined profit-taker, not a greedy gambler.
 
         **Format (JSON):**
         - \`decision\`: "SELL_NOW" or "HOLD_AND_INCREASE_TP".
@@ -224,10 +228,13 @@ export class PortfolioAllocator extends AIAgent {
         - **Candidate Assets with "BUY" Signals:**
         ${JSON.stringify(buySignals, null, 2)}
 
-        **Task:**
-        1.  **Holistic Review:** Synthesize all available data. Do not just look at the signals in isolation.
-        2.  **Strategic Capital Allocation:** Based on the available balance (\`portfolio.balance\`), decide on the total capital to deploy in this cycle. Then, allocate this capital across the strongest opportunities.
-        3.  **Prioritize and Justify:** You must prioritize. Not all "BUY" signals are equal. Allocate more capital to high-conviction plays. If no signal is strong enough, it is perfectly acceptable to "PASS" on all of them.
+        **Task & Rules:**
+        1.  **Holistic Review:** Synthesize all available data. A high technical score is not enough if the macro environment is poor.
+        2.  **Risk Management First:**
+            - Do not deploy more than 50% of the available \`portfolio.balance\` in a single cycle.
+            - Do not allocate more than 25% of the *deployable capital* to a single asset to ensure diversification.
+        3.  **Strategic Capital Allocation:** Based on the rules above, decide on the total capital to deploy. Then, allocate this capital across the opportunities with the highest conviction (strong alignment between macro, sentiment, and technicals).
+        4.  **Prioritize and Justify:** You must prioritize. If no signal is strong enough to meet your high standards, it is mandatory to "PASS" on all of them to preserve capital.
 
         **Format (JSON):** An object where each key is the symbol. The value should be an object with:
         - \`decision\`: "EXECUTE_BUY" or "PASS".
@@ -255,10 +262,11 @@ export class SentimentAnalyst extends AIAgent {
         const prompt = `
         **Persona:** You are an AI that analyzes text sentiment.
         **Data:** These news headlines: ${JSON.stringify(headlines.slice(0, 10))}
-        **Task:** Evaluate the overall sentiment in JSON format.
+        **Task:** Evaluate the overall sentiment from the headlines and provide a structured analysis in JSON format.
         - \`sentiment\`: "Bullish", "Bearish", or "Neutral".
-        - \`sentiment_score\`: A number from -1.0 (very negative) to 1.0 (very positive).
-        - \`key_topics\`: [List, of, key, topics].
+        - \`sentiment_score\`: A number from -1.0 (extremely negative) to 1.0 (extremely positive).
+        - \`dominant_narrative\`: A short phrase describing the main story in the news (e.g., "Regulatory concerns" or "Bitcoin ETF hype").
+        - \`key_topics\`: [List, of, key, topics, driving, the, narrative].
         `;
         const result = await this.safeGenerate(prompt);
         if (result?.response) {
@@ -302,12 +310,12 @@ export class TechnicalAnalyst extends AIAgent {
         **Data:**
         ${JSON.stringify(formattedData, null, 2)}
 
-        **Task:** For each asset, provide a technical analysis and a score.
+        **Task:** For each asset, provide a concise technical analysis and a score.
         **Format (JSON):** An object where each key is the symbol (e.g., "BTCUSDT"). The value should be an object with:
-        - \`technical_score\`: 0.0 to 10.0.
+        - \`technical_score\`: 0.0 (strong sell) to 10.0 (strong buy).
         - \`trend\`: "Uptrend", "Downtrend", "Sideways".
         - \`momentum\`: "Bullish", "Bearish", "Neutral".
-        - \`summary\`: A one-sentence summary.
+        - \`summary\`: A one-sentence summary, including any warning signs like potential trend exhaustion or divergence.
         `;
         return await this.safeGenerate(prompt);
     }
@@ -357,11 +365,17 @@ export class RiskManager extends AIAgent {
         **Batch Technical Analysis:**
         ${JSON.stringify(batchAnalyses, null, 2)}
 
-        **Task:** For each asset, provide a final trading decision.
+        **Task:** Act as the final decision-maker. For each asset, synthesize all analysis layers (Macro, Sentiment, Technical) to make a final, risk-assessed trading decision.
+        **Your Thought Process:**
+        1.  Is the **Macro Environment** favorable for this trade? (\`regime_score\`)
+        2.  Does the **Market Sentiment** support this trade? (\`sentiment_score\`)
+        3.  Is the **Technical Score** high enough and does the summary indicate a good entry point?
+        4.  A "BUY" signal requires a strong alignment across ALL THREE layers. Do not issue a BUY if one layer is strongly negative.
+
         **Format (JSON):** An object where each key is the symbol. The value should be an object with:
         - \`decision\`: "BUY", "HOLD", or "AVOID".
-        - \`confidence_score\`: 0.0 to 10.0.
-        - \`final_summary\`: A one-sentence justification.
+        - \`confidence_score\`: 0.0 (low) to 10.0 (high). This score must reflect the alignment of all three analysis layers.
+        - \`final_summary\`: A one-sentence justification that explicitly references why the macro, sentiment, and technical data support your decision.
         `;
         return await this.safeGenerate(prompt);
     }

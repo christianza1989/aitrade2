@@ -133,5 +133,23 @@
       "pnlPercent": -1.0645811247514978,
       "currentPrice": 116.76
     }
+  ],
+  "ONDOUSDT": [
+    {
+      "timestamp": "2025-08-18T17:47:32.224Z",
+      "decision": "HOLD_AND_INCREASE_TP",
+      "justification": "The initial take-profit target has been exceeded. Current technical indicators (RSI 56.84) are neutral and do not signal overbought conditions or trend exhaustion. Furthermore, the current profit (1.58%) is higher than the previously recorded high PnL percent (0.9957%), indicating recent positive momentum. Allowing the trade to run slightly further with an increased take-profit target of 2.5% is a prudent move to capture additional gains while maintaining profit protection.",
+      "pnlPercent": 1.5826433287915318,
+      "currentPrice": 0.9692
+    }
+  ],
+  "SOLUSDT": [
+    {
+      "timestamp": "2025-08-18T17:52:50.312Z",
+      "decision": "SELL_NOW",
+      "justification": "The position's current P/L (1.49%) is virtually at the take-profit target (1.5%), indicating the initial objective has been met. While the RSI is neutral (56.65) and SMAs suggest an ongoing short-term uptrend, there are no strong signals for significant immediate upside continuation that would justify holding and risking giving back profits. The current P/L is also very close to the `highPnlPercent` for this position, suggesting it's finding resistance at this level. As a prudent profit-taker, securing the achieved target profit is prioritized.",
+      "pnlPercent": 1.489662149532895,
+      "currentPrice": 185.15
+    }
   ]
 }

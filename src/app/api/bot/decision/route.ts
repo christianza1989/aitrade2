@@ -1,179 +1,77 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { BinanceService } from '@/core/binance';
-import { PortfolioService } from '@/core/portfolio';
-import { MacroAnalyst, SentimentAnalyst, PositionManager } from '@/core/agents';
+import { TechnicalAnalyst, RiskManager, Analysis } from '@/core/agents';
 import { SharedContext } from '@/core/context';
-import { calculateRSI, calculateMACD, calculateSMAExported } from '@/core/indicators';
+import { OpportunityScanner } from '@/core/opportunity-scanner';
 import fs from 'fs/promises';
 import path from 'path';
 
-// Define interfaces for better type safety
-interface DecisionLog {
-    [symbol: string]: {
-        timestamp: string;
-        decision: string;
-        justification: string;
-        pnlPercent: number;
-        currentPrice: number;
-    }[];
-}
-
-// This should ideally be imported from where it's defined, e.g., '@/core/portfolio'
-interface Position {
-    symbol: string;
-    amount: number;
-    entryPrice: number;
-    holdCount?: number;
-    takeProfitPercent?: number;
-    stopLossPrice?: number;
-    technicals?: {
-        rsi: string;
-        macdHistogram: string;
-        smaShort: string;
-        smaLong: string;
-    };
-}
-
-export const dynamic = 'force-dynamic';
-
 const configFilePath = path.join(process.cwd(), 'config.json');
-const decisionLogPath = path.join(process.cwd(), 'decision_log.json');
 
-async function getDecisionLog(): Promise<DecisionLog> {
-    try {
-        const data = await fs.readFile(decisionLogPath, 'utf-8');
-        return JSON.parse(data);
-    } catch {
-        return {};
+export async function POST(req: Request) {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user?.name) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-}
 
-async function saveDecisionLog(log: DecisionLog): Promise<void> {
-    await fs.writeFile(decisionLogPath, JSON.stringify(log, null, 2));
-}
+    const { symbol } = await req.json();
+    if (!symbol) {
+        return NextResponse.json({ error: 'Symbol is required' }, { status: 400 });
+    }
 
-export async function POST(request: NextRequest) {
     try {
-        const session = await getServerSession(authOptions);
-        if (!session || !session.user?.name) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-        const username = session.user.name;
-
-        const { symbol } = await request.json();
-        if (!symbol) {
-            return NextResponse.json({ error: 'Symbol is required' }, { status: 400 });
-        }
-
-        console.log(`Decision trigger received for symbol: ${symbol} for user: ${username}`);
+        const opportunityScanner = OpportunityScanner.getInstance();
+        await opportunityScanner.updateOpportunityStatus(symbol, 'analyzing');
 
         // Initialize services and agents
         const binance = new BinanceService();
-        const portfolioService = new PortfolioService(username);
-        const macroAnalyst = new MacroAnalyst();
-        const sentimentAnalyst = new SentimentAnalyst();
-        const positionManager = new PositionManager();
+        const techAnalyst = new TechnicalAnalyst();
+        const riskManager = new RiskManager();
+        const sharedContext = new SharedContext(); // Using a default context for quick analysis
 
-        // Load config and portfolio
+        // Load config
         const configData = await fs.readFile(configFilePath, 'utf-8');
         const config = JSON.parse(configData);
-        const portfolio = await portfolioService.getPortfolio();
-        const position: Position | undefined = portfolio.positions.find((p: { symbol: string; }) => p.symbol === symbol);
 
-        if (!position) {
-            return NextResponse.json({ error: 'Position not found' }, { status: 404 });
-        }
-
-        // Get current data
-        const currentPrice = await binance.getCurrentPrice(symbol);
-        if (!currentPrice) {
-            return NextResponse.json({ error: 'Could not fetch current price' }, { status: 500 });
-        }
-
-        // These are simplified for the decision trigger, as a full analysis is not needed
-        const dummyContext = new SharedContext();
-        const macroAnalysisResult = await macroAnalyst.analyze({}, [], dummyContext);
-        const sentimentAnalysisResult = await sentimentAnalyst.analyze([], dummyContext);
-        const macroAnalysis = macroAnalysisResult?.response;
-        const sentimentAnalysis = sentimentAnalysisResult?.response;
-
-        // Get decision history for the symbol
-        const decisionLog = await getDecisionLog();
-        const decisionHistory = decisionLog[symbol] || [];
-
-        // Get technical data for the specific asset, ensuring resilience
+        // Fetch necessary data
         const candles = await binance.getHistoricalData(symbol, '5m', 100);
-        if (candles && candles.length > 0) {
-            position.technicals = {
-                rsi: calculateRSI(candles, config.rsiPeriod)?.toFixed(2) || 'N/A',
-                macdHistogram: calculateMACD(candles, config.macdShortPeriod, config.macdLongPeriod, config.macdSignalPeriod)?.histogram?.toFixed(4) || 'N/A',
-                smaShort: calculateSMAExported(candles, config.smaShortPeriod)?.toFixed(2) || 'N/A',
-                smaLong: calculateSMAExported(candles, config.smaLongPeriod)?.toFixed(2) || 'N/A',
-            };
+        if (candles.length === 0) {
+            throw new Error(`Could not fetch historical data for ${symbol}`);
         }
 
-        // Consult the Position Manager AI, now with memory and technicals
-        const decisionResult = await positionManager.decide(
-            position,
-            currentPrice,
-            macroAnalysis?.response,
-            sentimentAnalysis?.response,
-            config,
-            decisionHistory
-        );
+        // Perform analysis
+        const techAnalysisResult = await techAnalyst.analyze(symbol, candles, config);
+        const techAnalysis = techAnalysisResult?.response?.[symbol] as Analysis;
 
-        const decisionResponse = decisionResult?.response;
-
-        // Type guard for the decision response
-        const isDecisionResponse = (response: unknown): response is { decision: string; justification: string; new_take_profit_percent?: number } => {
-            const res = response as { decision?: unknown; justification?: unknown };
-            return (
-                typeof response === 'object' &&
-                response !== null &&
-                'decision' in response &&
-                'justification' in response &&
-                typeof res.decision === 'string' &&
-                typeof res.justification === 'string'
-            );
-        };
-
-        // Log the new decision
-        if (isDecisionResponse(decisionResponse)) {
-            const newLogEntry = {
-                timestamp: new Date().toISOString(),
-                decision: decisionResponse.decision,
-                justification: decisionResponse.justification,
-                pnlPercent: (currentPrice - position.entryPrice) / position.entryPrice * 100,
-                currentPrice: currentPrice,
-            };
-            decisionLog[symbol] = [...decisionHistory, newLogEntry];
-            await saveDecisionLog(decisionLog);
+        if (!techAnalysis) {
+            throw new Error(`Technical analysis failed for ${symbol}`);
+        }
         
-            if (decisionResponse.decision === 'SELL_NOW') {
-                const pnlPercent = (currentPrice - position.entryPrice) / position.entryPrice * 100;
-                const reason = pnlPercent <= config.stopLossPercent ? 'Stop Loss' : 'Take Profit';
-                await portfolioService.sell(position.symbol, position.amount, currentPrice, { reason });
-                console.log(`SOLD ${position.amount} of ${position.symbol} at ${currentPrice} (${reason})`);
-                return NextResponse.json({ success: true, decision: 'SOLD', reason });
-            } else if (decisionResponse.decision === 'HOLD_AND_INCREASE_TP' && typeof decisionResponse.new_take_profit_percent === 'number') {
-                const updates = {
-                    takeProfitPercent: decisionResponse.new_take_profit_percent,
-                    holdCount: (position.holdCount || 0) + 1,
-                    stopLossPrice: position.entryPrice // Move SL to entry price
-                };
-                await portfolioService.updatePosition(position.symbol, updates);
-                console.log(`HOLDING ${position.symbol}. New TP set to ${decisionResponse.new_take_profit_percent}%.`);
-                return NextResponse.json({ success: true, decision: 'HELD', new_tp: decisionResponse.new_take_profit_percent });
-            }
+        // For a quick decision, we use a simplified, neutral context
+        const mockMacro = { market_regime: 'Risk-On', regime_score: 6.0, summary: 'Neutral context for tactical decision.' };
+        const mockSentiment = { sentiment: 'Neutral', sentiment_score: 0.0, key_topics: [] };
+
+        const riskManagerResult = await riskManager.decide({ ...techAnalysis, MacroAnalyst: mockMacro, SentimentAnalyst: mockSentiment });
+        const finalDecision = riskManagerResult?.response?.[symbol] as { decision?: string };
+
+        if (finalDecision?.decision === 'BUY') {
+            await opportunityScanner.updateOpportunityStatus(symbol, 'bought');
+            // In a real implementation, you would trigger the buy logic here.
+            // For now, we just log the decision.
+        } else {
+            await opportunityScanner.updateOpportunityStatus(symbol, 'ignored');
         }
 
-        return NextResponse.json({ success: true, decision: 'NO_ACTION' });
+        return NextResponse.json({ symbol, decision: finalDecision?.decision || 'AVOID' });
 
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        console.error(`Error in decision API: ${errorMessage}`);
+        console.error(`[Decision API] Error analyzing ${symbol}:`, errorMessage);
+        // If analysis fails, mark as ignored to prevent retries
+        const opportunityScanner = OpportunityScanner.getInstance();
+        await opportunityScanner.updateOpportunityStatus(symbol, 'ignored');
         return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }
