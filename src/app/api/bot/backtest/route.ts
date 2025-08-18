@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
                 const macroAnalysisResult = await macroAnalyst.analyze(currentCandle, []);
                 const sentimentAnalysisResult = await sentimentAnalyst.analyze([]);
-                const techAnalysisResult = await techAnalyst.analyze(symbol, historicalData.slice(0, i + 1));
+                const techAnalysisResult = await techAnalyst.analyze(symbol, historicalData.slice(0, i + 1), {});
 
                 const macroAnalysis = macroAnalysisResult?.response;
                 const sentimentAnalysis = sentimentAnalysisResult?.response;

@@ -40,5 +40,95 @@
     "symbol": "MEMEUSDT",
     "amount": 1966568.3382497544,
     "entryPrice": 0.002034
+  },
+  {
+    "timestamp": "2025-08-18T11:29:10.607Z",
+    "symbol": "BTCUSDT",
+    "amount": 0.04349395651474228,
+    "entryPrice": 114958.5
+  },
+  {
+    "timestamp": "2025-08-18T11:29:11.082Z",
+    "symbol": "ETHUSDT",
+    "amount": 0.936989779783977,
+    "entryPrice": 4268.99
+  },
+  {
+    "timestamp": "2025-08-18T11:29:12.348Z",
+    "symbol": "TRUMPUSDT",
+    "amount": 331.1258278145695,
+    "entryPrice": 9.06
+  },
+  {
+    "timestamp": "2025-08-18T11:29:13.248Z",
+    "symbol": "LTCUSDT",
+    "amount": 21.43530823973249,
+    "entryPrice": 116.63
+  },
+  {
+    "timestamp": "2025-08-18T11:29:14.008Z",
+    "symbol": "DOTUSDT",
+    "amount": 511.6398055768739,
+    "entryPrice": 3.909
+  },
+  {
+    "timestamp": "2025-08-18T11:29:15.151Z",
+    "symbol": "LINKUSDT",
+    "amount": 70.79288025889969,
+    "entryPrice": 24.72
+  },
+  {
+    "timestamp": "2025-08-18T11:29:15.728Z",
+    "symbol": "BIOUSDT",
+    "amount": 11727.912431587176,
+    "entryPrice": 0.1279
+  },
+  {
+    "timestamp": "2025-08-18T11:29:16.674Z",
+    "symbol": "SOLUSDT",
+    "amount": 8.294166436273155,
+    "entryPrice": 180.85
+  },
+  {
+    "timestamp": "2025-08-18T11:29:17.205Z",
+    "symbol": "BNBUSDT",
+    "amount": 1.5040850951183413,
+    "entryPrice": 831.07
+  },
+  {
+    "timestamp": "2025-08-18T11:29:18.264Z",
+    "symbol": "ARBUSDT",
+    "amount": 2446.183953033268,
+    "entryPrice": 0.511
+  },
+  {
+    "timestamp": "2025-08-18T11:29:19.108Z",
+    "symbol": "PEPEUSDT",
+    "amount": 93720712.27741331,
+    "entryPrice": 0.00001067
+  },
+  {
+    "timestamp": "2025-08-18T11:29:20.429Z",
+    "symbol": "AIXBTUSDT",
+    "amount": 6504.770164787511,
+    "entryPrice": 0.1153
+  },
+  {
+    "timestamp": "2025-08-18T11:29:21.171Z",
+    "symbol": "AVAXUSDT",
+    "amount": 31.632222690847744,
+    "entryPrice": 23.71
+  },
+  {
+    "timestamp": "2025-08-18T11:29:22.102Z",
+    "symbol": "CRVUSDT",
+    "amount": 578.1015146259683,
+    "entryPrice": 0.8649
+  },
+  {
+    "timestamp": "2025-08-18T11:29:22.708Z",
+    "symbol": "MDTUSDT",
+    "amount": 16869.095816464236,
+    "entryPrice": 0.02964
   }
 ]

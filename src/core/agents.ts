@@ -231,6 +231,10 @@ export class TechnicalAnalyst extends AIAgent {
 }
 
 export class RiskManager extends AIAgent {
+    async decide(analysis: any): Promise<{ prompt: string; response: Record<string, any> } | null> {
+        return this.decideBatch([analysis], analysis.MacroAnalyst, analysis.SentimentAnalyst);
+    }
+
     async decideBatch(batchAnalyses: any[], macroAnalysis: any, sentimentAnalysis: any): Promise<{ prompt: string; response: Record<string, any> } | null> {
         const prompt = `
         **Persona:** You are a seasoned Portfolio Manager. Make final decisions for the following batch of assets.

@@ -1,0 +1,11 @@
+[
+  {
+    "symbol": "BIOUSDT",
+    "entryPrice": 0.1268,
+    "exitPrice": 0.1285,
+    "pnl": 74.36119873817069,
+    "analysisContext": {
+      "reason": "Take Profit"
+    }
+  }
+]
