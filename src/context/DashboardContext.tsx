@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useReducer, ReactNode, useEffect, useRef, useState } from 'react';
 import { Ticker } from '@/core/binance';
+import { ISharedContext } from '@/core/context';
 import toast from 'react-hot-toast';
 
 // --- STATE AND TYPES ---
@@ -16,7 +17,7 @@ interface Portfolio {
     positions: Position[];
 }
 
-interface AiChat {
+export interface AiChat {
     agent: string;
     prompt: string;
     response: Record<string, unknown>;
@@ -38,6 +39,8 @@ interface DashboardState {
     aiChat: AiChat[];
     nextCycleIn: string;
     lastRunAnalysis: Analysis | null;
+    sharedContext: ISharedContext | null;
+    adjustedConfig: Config | null;
 }
 
 type Action =
@@ -50,19 +53,23 @@ type Action =
     | { type: 'SET_ANALYSIS'; payload: Analysis | null }
     | { type: 'SET_BOT_STATUS'; payload: 'active' | 'inactive' }
     | { type: 'SET_TIMER'; payload: string }
-    | { type: 'SET_LAST_RUN_ANALYSIS'; payload: Analysis | null };
+    | { type: 'SET_LAST_RUN_ANALYSIS'; payload: Analysis | null }
+    | { type: 'SET_SHARED_CONTEXT'; payload: ISharedContext }
+    | { type: 'SET_ADJUSTED_CONFIG'; payload: Config };
 
 const initialState: DashboardState = {
     logs: [],
     aiChat: [],
     marketData: [],
-    portfolio: { balance: 10000, positions: [] },
-    isLoading: false,
+    portfolio: { balance: 0, positions: [] },
+    isLoading: true,
     selectedSymbol: 'BTCUSDT',
     analysis: null,
     botStatus: 'inactive',
     nextCycleIn: 'N/A',
     lastRunAnalysis: null,
+    sharedContext: null,
+    adjustedConfig: null,
 };
 
 // --- REDUCER ---
@@ -90,6 +97,10 @@ function dashboardReducer(state: DashboardState, action: Action): DashboardState
             return { ...state, nextCycleIn: action.payload };
         case 'SET_LAST_RUN_ANALYSIS':
             return { ...state, lastRunAnalysis: action.payload };
+        case 'SET_SHARED_CONTEXT':
+            return { ...state, sharedContext: action.payload };
+        case 'SET_ADJUSTED_CONFIG':
+            return { ...state, adjustedConfig: action.payload };
         default:
             return state;
     }
@@ -101,6 +112,7 @@ const DashboardContext = createContext<{ state: DashboardState; dispatch: React.
 // --- PROVIDER ---
 interface Config {
     cycleIntervalMinutes: number;
+    [key: string]: unknown;
 }
 
 export function DashboardProvider({ children }: { children: ReactNode }) {
@@ -111,6 +123,18 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     const isCycleRunningRef = useRef(false);
 
     useEffect(() => {
+        async function fetchInitialData() {
+            try {
+                const response = await fetch('/api/dashboard-data');
+                if (!response.ok) throw new Error('Failed to fetch dashboard data');
+                const data = await response.json();
+                dispatch({ type: 'SET_MARKET_DATA', payload: data.marketData });
+                dispatch({ type: 'SET_PORTFOLIO', payload: data.portfolio });
+            } catch (error) {
+                console.error("Failed to fetch initial dashboard data:", error);
+            }
+        }
+
         async function fetchConfig() {
             try {
                 const response = await fetch('/api/settings');
@@ -120,21 +144,9 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
                 console.error("Failed to fetch config");
             }
         }
+        
+        fetchInitialData();
         fetchConfig();
-
-        const fetchDataInterval = setInterval(async () => {
-            try {
-                const response = await fetch('/api/dashboard-data');
-                if (!response.ok) throw new Error('Failed to fetch dashboard data');
-                const data = await response.json();
-                dispatch({ type: 'SET_MARKET_DATA', payload: data.marketData });
-                dispatch({ type: 'SET_PORTFOLIO', payload: data.portfolio });
-            } catch {
-                // Don't spam logs for background refresh failures
-            }
-        }, 5000); // Refresh every 5 seconds
-
-        return () => clearInterval(fetchDataInterval);
     }, []);
 
     const CYCLE_INTERVAL = (config?.cycleIntervalMinutes || 20) * 60 * 1000;
@@ -182,6 +194,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
                             dispatch({ type: 'ADD_LOG', payload: message });
                         } else if (type === 'analysis') {
                             dispatch({ type: 'SET_ANALYSIS', payload: data });
+                        } else if (type === 'context') {
+                            dispatch({ type: 'SET_SHARED_CONTEXT', payload: data });
+                        } else if (type === 'adjusted_config') {
+                            dispatch({ type: 'SET_ADJUSTED_CONFIG', payload: data });
                         } else if (type === 'aiChat' && data) {
                             dispatch({ type: 'ADD_AI_CHAT', payload: data });
                             if (data.agent.startsWith('PortfolioAllocator')) {
@@ -198,6 +214,16 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
             dispatch({ type: 'ADD_LOG', payload: `[CYCLE ERROR] ${errorMessage}` });
         } finally {
             isCycleRunningRef.current = false;
+            // Fetch the latest portfolio data after a cycle run
+            try {
+                const response = await fetch('/api/dashboard-data');
+                if (!response.ok) throw new Error('Failed to fetch dashboard data');
+                const data = await response.json();
+                dispatch({ type: 'SET_PORTFOLIO', payload: data.portfolio });
+            } catch (error) {
+                console.error("Failed to fetch updated portfolio data:", error);
+            }
+
             if (state.botStatus === 'active') {
                 scheduleNextCycle();
             }

@@ -30,16 +30,20 @@ interface BuyLog extends Position {
 
 export class PortfolioService {
     private async withPortfolio(worker: (portfolio: Portfolio) => Promise<void> | void): Promise<void> {
+        console.log('[PortfolioService] Attempting to acquire lock...');
         const lockAcquired = await this.acquireLock();
         if (!lockAcquired) {
+            console.error('[PortfolioService] Failed to acquire portfolio lock.');
             throw new Error('Failed to acquire portfolio lock after multiple retries.');
         }
+        console.log('[PortfolioService] Lock acquired.');
 
         let portfolio: Portfolio;
         try {
             try {
                 const data = await fs.readFile(portfolioFilePath, 'utf-8');
                 portfolio = JSON.parse(data);
+                console.log('[PortfolioService] Read portfolio:', JSON.stringify(portfolio));
             } catch (error) {
                 if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
                     console.log('Portfolio file not found. Creating a new one.');
@@ -52,9 +56,12 @@ export class PortfolioService {
 
             await worker(portfolio);
 
+            console.log('[PortfolioService] Portfolio after worker:', JSON.stringify(portfolio));
             await fs.writeFile(portfolioFilePath, JSON.stringify(portfolio, null, 2));
+            console.log('[PortfolioService] Successfully wrote to portfolio.json.');
         } finally {
             await this.releaseLock();
+            console.log('[PortfolioService] Lock released.');
         }
     }
 
@@ -91,7 +98,7 @@ export class PortfolioService {
         try {
             const data = await fs.readFile(portfolioFilePath, 'utf-8');
             return JSON.parse(data);
-        } catch (error) {
+        } catch {
             return { balance: 100000, positions: [] };
         }
     }
@@ -105,6 +112,8 @@ export class PortfolioService {
             }
             portfolio.balance -= (cost + fee);
 
+            const logEntry = { symbol, amount, entryPrice: price };
+
             const existingPosition = portfolio.positions.find(p => p.symbol === symbol);
             if (existingPosition) {
                 const totalAmount = existingPosition.amount + amount;
@@ -112,10 +121,10 @@ export class PortfolioService {
                 existingPosition.entryPrice = newEntryPrice;
                 existingPosition.amount = totalAmount;
             } else {
-                const newPosition = { symbol, amount, entryPrice: price };
-                portfolio.positions.push(newPosition);
-                await this.logBuy(newPosition);
+                portfolio.positions.push(logEntry);
             }
+            
+            await this.logBuy(logEntry);
         });
     }
 
