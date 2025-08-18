@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold, GenerativeModel } from "@google/generative-ai";
 import { Candle } from "./binance";
+import { SharedContext } from "./context";
 import { calculateRSI, calculateMACD, calculateSMAExported } from "./indicators";
 class KeyRotator {
     private keys: string[];
@@ -90,10 +91,18 @@ export class AIAgent {
         }
         return null;
     }
+
+    // Placeholder for a more complex consultation mechanism
+    async consult(agentName: string, query: Record<string, unknown>): Promise<Record<string, unknown> | null> {
+        console.log(`Consultation requested from ${agentName} with query:`, query);
+        // In a real implementation, this would dynamically call another agent instance.
+        // For now, it's a conceptual placeholder for the architecture.
+        return { response: `Consultation response placeholder for ${agentName}.` };
+    }
 }
 
 export class MacroAnalyst extends AIAgent {
-    async analyze(btcData: Record<string, unknown>, newsHeadlines: string[]): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
+    async analyze(btcData: Record<string, unknown>, newsHeadlines: string[], sharedContext: SharedContext): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const prompt = `
         **Persona:** You are a Macroeconomic and Crypto Market Cycle Analyst. Your task is to assess the overall market environment.
         **Data:**
@@ -106,7 +115,14 @@ export class MacroAnalyst extends AIAgent {
         - \`regime_score\`: A number from 0.0 (very bad) to 10.0 (very good).
         - \`summary\`: A one-sentence summary.
         `;
-        return await this.safeGenerate(prompt);
+        const result = await this.safeGenerate(prompt);
+        if (result?.response) {
+            const { market_regime, regime_score } = result.response;
+            if (typeof market_regime === 'string' && (market_regime === 'Risk-On' || market_regime === 'Risk-Off') && typeof regime_score === 'number') {
+                sharedContext.updateContext({ marketRegime: market_regime, regimeScore: regime_score });
+            }
+        }
+        return result;
     }
 }
 
@@ -120,6 +136,7 @@ interface Position {
 }
 
 interface Config {
+    riskAmountPercent: number;
     takeProfitPercent: number;
     stopLossPercent: number;
     rsiPeriod: number;
@@ -137,6 +154,14 @@ interface DecisionHistory {
 }
 
 export class PositionManager extends AIAgent {
+    // Placeholder for a more complex consultation mechanism
+    async consult(agentName: string, query: Record<string, unknown>): Promise<Record<string, unknown> | null> {
+        console.log(`Consultation requested from ${agentName} with query:`, query);
+        // In a real implementation, this would dynamically call another agent.
+        // For now, it's a conceptual placeholder.
+        return { response: "Consultation response placeholder." };
+    }
+
     async decide(position: Position, currentPrice: number, macroAnalysis: unknown, sentimentAnalysis: unknown, config: Config, decisionHistory: DecisionHistory[]): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const pnlPercent = (currentPrice - position.entryPrice) / position.entryPrice * 100;
         const atTakeProfit = pnlPercent >= (position.takeProfitPercent || config.takeProfitPercent);
@@ -188,7 +213,7 @@ interface Portfolio {
 }
 
 export class PortfolioAllocator extends AIAgent {
-    async allocate(buySignals: BuySignal[], portfolio: Portfolio, macroAnalysis: unknown, sentimentAnalysis: unknown): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
+    async allocate(buySignals: BuySignal[], portfolio: Portfolio, macroAnalysis: unknown, sentimentAnalysis: unknown, sharedContext: SharedContext): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const prompt = `
         **Persona:** You are a Chief Investment Officer managing a high-risk, high-reward crypto portfolio. Your primary goal is to maximize returns while managing risk.
 
@@ -209,12 +234,23 @@ export class PortfolioAllocator extends AIAgent {
         - \`amount_to_buy_usd\`: The amount in USD to invest. Must be a number.
         - \`justification\`: A professional, concise reason for your decision, referencing the provided data.
         `;
-        return await this.safeGenerate(prompt);
+        const result = await this.safeGenerate(prompt);
+        if (result?.response) {
+            const allocations = result.response;
+            const executedBuys = Object.entries(allocations)
+                .filter(([, decision]) => (decision as { decision: string }).decision === 'EXECUTE_BUY')
+                .map(([symbol]) => symbol);
+            
+            if (executedBuys.length > 0) {
+                sharedContext.updateContext({ activeOpportunities: executedBuys });
+            }
+        }
+        return result;
     }
 }
 
 export class SentimentAnalyst extends AIAgent {
-    async analyze(newsArticles: { title?: string }[]): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
+    async analyze(newsArticles: { title?: string }[], sharedContext: SharedContext): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const headlines = newsArticles.map(article => article.title || '');
         const prompt = `
         **Persona:** You are an AI that analyzes text sentiment.
@@ -224,7 +260,18 @@ export class SentimentAnalyst extends AIAgent {
         - \`sentiment_score\`: A number from -1.0 (very negative) to 1.0 (very positive).
         - \`key_topics\`: [List, of, key, topics].
         `;
-        return await this.safeGenerate(prompt);
+        const result = await this.safeGenerate(prompt);
+        if (result?.response) {
+            const { sentiment, sentiment_score, key_topics } = result.response;
+            if (typeof sentiment === 'string' && (sentiment === 'Bullish' || sentiment === 'Bearish' || sentiment === 'Neutral') && typeof sentiment_score === 'number' && Array.isArray(key_topics)) {
+                sharedContext.updateContext({
+                    sentiment: sentiment,
+                    sentimentScore: sentiment_score,
+                    keyTopics: key_topics as string[]
+                });
+            }
+        }
+        return result;
     }
 }
 
@@ -273,11 +320,36 @@ export interface Analysis {
 }
 
 export class RiskManager extends AIAgent {
+    determineRiskParameters(baseConfig: Config, sharedContext: SharedContext): Config {
+        const { regimeScore } = sharedContext.getContext();
+        const newConfig = { ...baseConfig };
+
+        // Example of dynamic adjustment:
+        // If market regime is very bullish (e.g., score > 7.5), slightly increase risk.
+        if (regimeScore > 7.5) {
+            newConfig.riskAmountPercent = baseConfig.riskAmountPercent * 1.25; // Risk 25% more
+            newConfig.takeProfitPercent = baseConfig.takeProfitPercent * 0.9; // Take profit sooner
+        } 
+        // If market regime is bearish (e.g., score < 4.0), decrease risk significantly.
+        else if (regimeScore < 4.0) {
+            newConfig.riskAmountPercent = baseConfig.riskAmountPercent * 0.5; // Risk 50% less
+            newConfig.stopLossPercent = baseConfig.stopLossPercent * 0.8; // Tighter stop loss
+        }
+        
+        return newConfig;
+    }
+
     async decide(analysis: Analysis): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         return this.decideBatch([analysis], analysis.MacroAnalyst, analysis.SentimentAnalyst);
     }
 
     async decideBatch(batchAnalyses: Analysis[], macroAnalysis: unknown, sentimentAnalysis: unknown): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
+        // Conceptual example of using consultation
+        // if (some_condition_of_uncertainty) {
+        //     const deeperAnalysis = await this.consult('TechnicalAnalyst', { query: 'Re-analyze BTCUSDT on 1D timeframe' });
+        //     // ... incorporate deeperAnalysis into the decision prompt
+        // }
+
         const prompt = `
         **Persona:** You are a seasoned Portfolio Manager. Make final decisions for the following batch of assets.
         **Macro Environment:** ${JSON.stringify(macroAnalysis, null, 2)}

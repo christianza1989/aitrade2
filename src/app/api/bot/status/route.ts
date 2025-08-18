@@ -8,7 +8,7 @@ async function getBotStatus() {
     try {
         const data = await fs.readFile(statusFilePath, 'utf-8');
         return JSON.parse(data).status;
-    } catch (error) {
+    } catch {
         return 'inactive';
     }
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { MissedOpportunity } from '@/core/opportunity-logger';
 
 // Define interfaces for our state and props
 interface Settings {
@@ -36,19 +37,25 @@ export default function OptimizationPage() {
     const [analysis, setAnalysis] = useState<Analysis | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [currentSettings, setCurrentSettings] = useState<Settings | null>(null);
+    const [missedOpportunities, setMissedOpportunities] = useState<MissedOpportunity[]>([]);
 
     useEffect(() => {
-        async function fetchSettings() {
+        async function fetchData() {
             try {
-                const response = await fetch('/api/settings');
-                const data = await response.json();
-                setCurrentSettings(data);
+                const settingsResponse = await fetch('/api/settings');
+                const settingsData = await settingsResponse.json();
+                setCurrentSettings(settingsData);
+
+                const opportunitiesResponse = await fetch('/api/missed-opportunities');
+                const opportunitiesData = await opportunitiesResponse.json();
+                setMissedOpportunities(opportunitiesData);
+
             } catch (error) {
-                console.error("Failed to fetch current settings:", error);
-                toast.error("Could not load current settings.");
+                console.error("Failed to fetch page data:", error);
+                toast.error("Could not load page data.");
             }
         }
-        fetchSettings();
+        fetchData();
     }, []);
 
     const runOptimization = async () => {
@@ -134,6 +141,7 @@ export default function OptimizationPage() {
                         {renderSettingsTable("Current Settings", currentSettings)}
                         {renderSettingsTable("AI's Proposed New Settings", analysis.suggested_settings)}
                     </div>
+                    {renderMissedOpportunitiesTable()}
                     <div className="bg-gray-800 p-4 rounded-lg text-center">
                         <h2 className="text-xl font-bold mb-4">Authorize AI Self-Modification</h2>
                         <p className="mb-4">
@@ -147,4 +155,35 @@ export default function OptimizationPage() {
             )}
         </div>
     );
+
+    function renderMissedOpportunitiesTable() {
+        if (missedOpportunities.length === 0) return null;
+        return (
+            <div className="bg-gray-700 p-4 rounded-lg">
+                <h3 className="text-lg font-bold mb-2">Recent Missed Opportunities (for AI learning)</h3>
+                <div className="overflow-y-auto h-48">
+                    <table className="min-w-full text-sm">
+                        <thead>
+                            <tr className="text-left text-gray-400">
+                                <th className="p-2">Symbol</th>
+                                <th className="p-2">Reason</th>
+                                <th className="p-2">Confidence</th>
+                                <th className="p-2">Summary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {missedOpportunities.map((opp, index) => (
+                                <tr key={index} className="border-b border-gray-600">
+                                    <td className="p-2 font-semibold">{opp.symbol}</td>
+                                    <td className="p-2">{opp.reason}</td>
+                                    <td className="p-2">{opp.confidenceScore?.toFixed(1)}</td>
+                                    <td className="p-2 text-gray-400">{opp.finalSummary}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        );
+    }
 }

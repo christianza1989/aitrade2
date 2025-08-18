@@ -1,20 +1,65 @@
 [
   {
-    "symbol": "BIOUSDT",
-    "entryPrice": 0.1268,
-    "exitPrice": 0.1285,
-    "pnl": 74.36119873817069,
-    "analysisContext": {
-      "reason": "Take Profit"
-    }
+    "symbol": "PENDLEUSDT",
+    "amount": 2213.613724405091,
+    "entryPrice": 5.421,
+    "exitPrice": 5.396,
+    "pnl": -67.28500276701793,
+    "timestamp": "2025-08-18T14:43:00.707Z",
+    "reason": "Manual sell"
   },
   {
-    "symbol": "ARBUSDT",
-    "amount": 2446.183953033268,
-    "entryPrice": 0.511,
-    "exitPrice": 0.5184,
-    "pnl": 16.833659491193647,
-    "timestamp": "2025-08-18T12:13:09.543Z",
-    "reason": "Take Profit"
+    "symbol": "SUSDT",
+    "amount": 31496.062992125982,
+    "entryPrice": 0.3175,
+    "exitPrice": 0.317,
+    "pnl": -25.73228346456694,
+    "timestamp": "2025-08-18T14:43:01.813Z",
+    "reason": "Manual sell"
+  },
+  {
+    "symbol": "FETUSDT",
+    "amount": 11764.70588235294,
+    "entryPrice": 0.68,
+    "exitPrice": 0.677,
+    "pnl": -43.2588235294118,
+    "timestamp": "2025-08-18T14:43:03.174Z",
+    "reason": "Manual sell"
+  },
+  {
+    "symbol": "TONUSDT",
+    "amount": 1786.7778439547349,
+    "entryPrice": 3.358,
+    "exitPrice": 3.352,
+    "pnl": -16.709946396665085,
+    "timestamp": "2025-08-18T14:43:04.216Z",
+    "reason": "Manual sell"
+  },
+  {
+    "symbol": "TIAUSDT",
+    "amount": 2860.411899313501,
+    "entryPrice": 1.748,
+    "exitPrice": 1.745,
+    "pnl": -13.572654462242253,
+    "timestamp": "2025-08-18T14:43:05.360Z",
+    "reason": "Manual sell"
+  },
+  {
+    "symbol": "PNUTUSDT",
+    "amount": 9041.591320072332,
+    "entryPrice": 0.2212,
+    "exitPrice": 0.2207,
+    "pnl": -6.516274864376134,
+    "timestamp": "2025-08-18T14:43:06.421Z",
+    "reason": "Manual sell"
+  },
+  {
+    "symbol": "EPICUSDT",
+    "amount": 683.293474547318,
+    "entryPrice": 2.927,
+    "exitPrice": 2.903,
+    "pnl": -18.382644345746513,
+    "timestamp": "2025-08-18T14:43:07.375Z",
+    "reason": "Manual sell"
   }
 ]

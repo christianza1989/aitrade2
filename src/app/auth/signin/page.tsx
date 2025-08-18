@@ -3,69 +3,94 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
-export default function SignIn() {
+export default function SignInPage() {
+    const [isRegister, setIsRegister] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
+        setIsLoading(true);
 
-        const result = await signIn('credentials', {
-            redirect: false,
-            username,
-            password,
-        });
+        if (isRegister) {
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                });
 
-        if (result?.error) {
-            setError('Invalid username or password');
+                if (res.ok) {
+                    toast.success('Registration successful! Please sign in.');
+                    setIsRegister(false);
+                } else {
+                    const data = await res.json();
+                    toast.error(data.error || 'Registration failed.');
+                }
+            } catch (error) {
+                toast.error('An error occurred during registration.');
+            }
         } else {
-            router.push('/dashboard');
+            const result = await signIn('credentials', {
+                redirect: false,
+                username,
+                password,
+            });
+
+            if (result?.ok) {
+                router.push('/dashboard');
+            } else {
+                toast.error(result?.error || 'Invalid credentials.');
+            }
         }
+        setIsLoading(false);
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-900">
-            <div className="p-8 bg-gray-800 rounded-lg shadow-xl w-96">
-                <h1 className="text-2xl font-bold text-white mb-6">Sign In</h1>
-                {error && <p className="bg-red-500 text-white p-2 rounded mb-4">{error}</p>}
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block text-gray-300 mb-2" htmlFor="username">
-                            Username
-                        </label>
+        <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+            <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg">
+                <h1 className="text-2xl font-bold text-center">
+                    {isRegister ? 'Register' : 'Sign In'}
+                </h1>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                        <label className="block text-sm font-medium">Username</label>
                         <input
-                            id="username"
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500"
+                            className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-indigo-500"
                             required
                         />
                     </div>
-                    <div className="mb-6">
-                        <label className="block text-gray-300 mb-2" htmlFor="password">
-                            Password
-                        </label>
+                    <div>
+                        <label className="block text-sm font-medium">Password</label>
                         <input
-                            id="password"
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500"
+                            className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-indigo-500"
                             required
                         />
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        disabled={isLoading}
+                        className="w-full py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:opacity-50"
                     >
-                        Sign In
+                        {isLoading ? 'Loading...' : (isRegister ? 'Register' : 'Sign In')}
                     </button>
                 </form>
+                <p className="text-sm text-center">
+                    {isRegister ? 'Already have an account?' : "Don't have an account?"}
+                    <button onClick={() => setIsRegister(!isRegister)} className="ml-1 font-semibold text-indigo-400 hover:underline">
+                        {isRegister ? 'Sign In' : 'Register'}
+                    </button>
+                </p>
             </div>
         </div>
     );

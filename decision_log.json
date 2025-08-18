@@ -6,6 +6,13 @@
       "justification": "The initial take-profit target of 1.5% was already reached (High PnL Percent was 1.57%). The asset has since pulled back slightly from that high, currently at 1.34% P/L. While technical indicators like RSI are neutral, the price action confirms resistance at or around the target profit level. As a prudent profit-taker, securing profits after the target has been met and a slight pullback occurred is the most intelligent strategy to protect gains.",
       "pnlPercent": 1.3406940063091537,
       "currentPrice": 0.1285
+    },
+    {
+      "timestamp": "2025-08-18T12:17:02.674Z",
+      "decision": "HOLD_AND_INCREASE_TP",
+      "justification": "The initial take-profit target of 1.5% has been not only met but exceeded, with the current P/L at 1.80%. Crucially, the current P/L is higher than the recorded `highPnlPercent` of 1.64%, indicating renewed upward momentum rather than a pullback. Technical indicators (RSI 56.15) are neutral, not signaling overbought conditions, suggesting further room to run. The macro environment is supportive with a 'Risk-On' regime. Given these factors and the absence of technical exhaustion, it's prudent to let profits run further while intelligently protecting gains by increasing the target.",
+      "pnlPercent": 1.7982799061766979,
+      "currentPrice": 0.1302
     }
   ],
   "ARBUSDT": [

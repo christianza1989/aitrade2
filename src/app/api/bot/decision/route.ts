@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/auth';
 import { BinanceService } from '@/core/binance';
 import { PortfolioService } from '@/core/portfolio';
 import { MacroAnalyst, SentimentAnalyst, PositionManager } from '@/core/agents';
+import { SharedContext } from '@/core/context';
 import { calculateRSI, calculateMACD, calculateSMAExported } from '@/core/indicators';
 import fs from 'fs/promises';
 import path from 'path';
@@ -53,16 +56,22 @@ async function saveDecisionLog(log: DecisionLog): Promise<void> {
 
 export async function POST(request: NextRequest) {
     try {
+        const session = await getServerSession(authOptions);
+        if (!session || !session.user?.name) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+        const username = session.user.name;
+
         const { symbol } = await request.json();
         if (!symbol) {
             return NextResponse.json({ error: 'Symbol is required' }, { status: 400 });
         }
 
-        console.log(`Decision trigger received for symbol: ${symbol}`);
+        console.log(`Decision trigger received for symbol: ${symbol} for user: ${username}`);
 
         // Initialize services and agents
         const binance = new BinanceService();
-        const portfolioService = new PortfolioService();
+        const portfolioService = new PortfolioService(username);
         const macroAnalyst = new MacroAnalyst();
         const sentimentAnalyst = new SentimentAnalyst();
         const positionManager = new PositionManager();
@@ -84,8 +93,11 @@ export async function POST(request: NextRequest) {
         }
 
         // These are simplified for the decision trigger, as a full analysis is not needed
-        const macroAnalysis = await macroAnalyst.analyze({}, []);
-        const sentimentAnalysis = await sentimentAnalyst.analyze([]);
+        const dummyContext = new SharedContext();
+        const macroAnalysisResult = await macroAnalyst.analyze({}, [], dummyContext);
+        const sentimentAnalysisResult = await sentimentAnalyst.analyze([], dummyContext);
+        const macroAnalysis = macroAnalysisResult?.response;
+        const sentimentAnalysis = sentimentAnalysisResult?.response;
 
         // Get decision history for the symbol
         const decisionLog = await getDecisionLog();

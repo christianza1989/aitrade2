@@ -1,7 +1,11 @@
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/auth';
 import { BinanceService } from '@/core/binance';
 import { NewsService } from '@/core/news';
 import { PortfolioService } from '@/core/portfolio';
 import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager, PortfolioAllocator, PositionManager, Analysis } from '@/core/agents';
+import { SharedContext } from '@/core/context';
+import { OpportunityLogger } from '@/core/opportunity-logger';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -14,12 +18,21 @@ async function getBotStatus() {
     try {
         const data = await fs.readFile(statusFilePath, 'utf-8');
         return JSON.parse(data).status;
-    } catch (error) {
+    } catch {
         return 'inactive';
     }
 }
 
-export async function GET(request: Request) {
+export async function GET(req: Request) {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user?.name) {
+        // Although this is a stream, we can't easily return a 401 here.
+        // The client will simply see the stream end prematurely.
+        // Proper handling would involve sending an error event through the stream.
+        return new Response(null, { status: 401 });
+    }
+    const username = session.user.name;
+
     const stream = new ReadableStream({
         async start(controller) {
             const encoder = new TextEncoder();
@@ -31,6 +44,8 @@ export async function GET(request: Request) {
             sendEvent({ type: 'aiChat', data: { agent: 'System', response: { summary: 'Hello! AI analysis cycle starting now...' } } });
 
             try {
+                const sharedContext = new SharedContext();
+                
                 const status = await getBotStatus();
                 if (status !== 'active') {
                     sendEvent({ type: 'log', message: 'Bot is not active. Skipping cycle.' });
@@ -43,7 +58,7 @@ export async function GET(request: Request) {
                 sendEvent({ type: 'log', message: 'BinanceService OK.' });
                 const newsService = new NewsService();
                 sendEvent({ type: 'log', message: 'NewsService OK.' });
-                const portfolioService = new PortfolioService();
+                const portfolioService = new PortfolioService(username);
                 sendEvent({ type: 'log', message: 'PortfolioService OK.' });
                 const macroAnalyst = new MacroAnalyst();
                 sendEvent({ type: 'log', message: 'MacroAnalyst OK.' });
@@ -55,8 +70,8 @@ export async function GET(request: Request) {
                 sendEvent({ type: 'log', message: 'RiskManager OK.' });
                 const portfolioAllocator = new PortfolioAllocator();
                 sendEvent({ type: 'log', message: 'PortfolioAllocator OK.' });
-                const positionManager = new PositionManager();
-                sendEvent({ type: 'log', message: 'PositionManager OK.' });
+                const opportunityLogger = new OpportunityLogger();
+                sendEvent({ type: 'log', message: 'OpportunityLogger OK.' });
                 sendEvent({ type: 'log', message: 'All services initialized successfully.' });
 
                 // 1. Load config
@@ -90,11 +105,20 @@ export async function GET(request: Request) {
 
                 sendEvent({ type: 'log', message: 'Running macro and sentiment analysis...' });
                 const btcLastCandle = btcData && btcData.length > 0 ? btcData[0] : {};
-                const macroAnalysisResult = await macroAnalyst.analyze(btcLastCandle, newsArticles.map(a => a.title));
-                const sentimentAnalysisResult = await sentimentAnalyst.analyze(newsArticles);
+                const macroAnalysisResult = await macroAnalyst.analyze(btcLastCandle, newsArticles.map(a => a.title), sharedContext);
+                sendEvent({ type: 'context', data: sharedContext.getContext() });
+                const sentimentAnalysisResult = await sentimentAnalyst.analyze(newsArticles, sharedContext);
+                sendEvent({ type: 'context', data: sharedContext.getContext() });
 
                 const macroAnalysis = macroAnalysisResult?.response;
                 const sentimentAnalysis = sentimentAnalysisResult?.response;
+
+                // Phase 3: Dynamic Risk Management
+                const adjustedConfig = riskManager.determineRiskParameters(config, sharedContext);
+                if (JSON.stringify(config) !== JSON.stringify(adjustedConfig)) {
+                    sendEvent({ type: 'log', message: `Risk parameters dynamically adjusted based on market context.` });
+                    sendEvent({ type: 'adjusted_config', data: adjustedConfig });
+                }
 
                 sendEvent({ type: 'aiChat', data: { agent: 'MacroAnalyst', ...macroAnalysisResult } });
                 sendEvent({ type: 'aiChat', data: { agent: 'SentimentAnalyst', ...sentimentAnalysisResult } });
@@ -130,7 +154,7 @@ export async function GET(request: Request) {
                     const batchData = await Promise.all(batchDataPromises);
                     const validBatchData = batchData.filter(d => d.candles.length > 0);
 
-                    const techAnalysisResult = await techAnalyst.analyzeBatch(validBatchData, config);
+                    const techAnalysisResult = await techAnalyst.analyzeBatch(validBatchData, adjustedConfig);
                     sendEvent({ type: 'aiChat', data: { agent: `TechnicalAnalyst-Batch-${index + 1}`, ...techAnalysisResult } });
                     const techAnalyses = techAnalysisResult?.response || {};
 
@@ -140,9 +164,16 @@ export async function GET(request: Request) {
 
                     const buySignals = [];
                     for (const symbol in finalDecisions) {
-                        const decision = finalDecisions[symbol] as { decision?: string };
+                        const decision = finalDecisions[symbol] as { decision?: string, confidence_score?: number, final_summary?: string };
                         if (decision.decision === 'BUY') {
                             buySignals.push({ symbol, ...decision });
+                        } else if (decision.decision === 'AVOID') {
+                            await opportunityLogger.log({
+                                symbol,
+                                reason: 'AVOID decision by RiskManager',
+                                confidenceScore: decision.confidence_score,
+                                finalSummary: decision.final_summary,
+                            });
                         }
                     }
                     sendEvent({ type: 'log', message: `Batch #${index + 1} analysis complete. Found ${buySignals.length} BUY signals.` });
@@ -154,24 +185,27 @@ export async function GET(request: Request) {
 
                 if (allBuySignals.length > 0) {
                     sendEvent({ type: 'log', message: `Found ${allBuySignals.length} total BUY signals. Allocating portfolio...` });
-                    const allocationResult = await portfolioAllocator.allocate(allBuySignals, portfolio, macroAnalysis, sentimentAnalysis);
+                    const allocationResult = await portfolioAllocator.allocate(allBuySignals, portfolio, macroAnalysis, sentimentAnalysis, sharedContext);
+                    sendEvent({ type: 'context', data: sharedContext.getContext() });
                     sendEvent({ type: 'aiChat', data: { agent: 'PortfolioAllocator', ...allocationResult } });
                     const allocations = allocationResult?.response || {};
+
+                    console.log('[RUN ROUTE] Allocations received:', JSON.stringify(allocations, null, 2));
 
                     for (const symbol in allocations) {
                         const allocation = allocations[symbol] as { decision?: string; amount_to_buy_usd?: number };
                         if (allocation.decision === 'EXECUTE_BUY' && typeof allocation.amount_to_buy_usd === 'number') {
-                            const price = await binance.getCurrentPrice(symbol);
-                            if (price) {
-                                const amountToBuy = allocation.amount_to_buy_usd / price;
-                                const currentPortfolio = await portfolioService.getPortfolio();
-                                if (currentPortfolio.balance >= allocation.amount_to_buy_usd) {
+                            try {
+                                const price = await binance.getCurrentPrice(symbol);
+                                if (price) {
+                                    const amountToBuy = allocation.amount_to_buy_usd / price;
                                     await portfolioService.buy(symbol, amountToBuy, price);
                                     sendEvent({ type: 'log', message: `BOUGHT ${amountToBuy.toFixed(5)} of ${symbol} for ${allocation.amount_to_buy_usd.toFixed(2)} USD` });
-                                    portfolio = await portfolioService.getPortfolio(); // Refresh portfolio after buy
-                                } else {
-                                    sendEvent({ type: 'log', message: `Insufficient balance to execute allocated buy for ${symbol}.` });
+                                    portfolio = await portfolioService.getPortfolio(); // Refresh portfolio state for the next iteration
                                 }
+                            } catch (e) {
+                                const errorMessage = e instanceof Error ? e.message : String(e);
+                                sendEvent({ type: 'log', message: `Failed to buy ${symbol}: ${errorMessage}` });
                             }
                         }
                     }

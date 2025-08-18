@@ -21,7 +21,7 @@ export function Header() {
             } else {
                 dispatch({ type: 'ADD_LOG', payload: 'Error updating bot status' });
             }
-        } catch (error) {
+        } catch {
             dispatch({ type: 'ADD_LOG', payload: 'Error updating bot status' });
         }
     };

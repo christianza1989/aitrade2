@@ -12,7 +12,7 @@ import { SharedContextDisplay } from '@/components/shared-context-display';
 import { DynamicRiskDisplay } from '@/components/dynamic-risk-display';
 import { DollarSign, TrendingUp, Wallet } from 'lucide-react';
 
-export default function Dashboard() {
+export function DashboardClient() {
     const { state } = useDashboard();
 
     return (

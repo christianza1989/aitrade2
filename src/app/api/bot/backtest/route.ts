@@ -1,5 +1,6 @@
 import { BinanceService } from '@/core/binance';
 import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager } from '@/core/agents';
+import { SharedContext } from '@/core/context';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -35,8 +36,9 @@ export async function POST(request: Request) {
                 const currentCandle = historicalData[i];
                 sendEvent({ type: 'log', message: `Analyzing data for ${new Date(currentCandle.time * 1000).toISOString()}` });
 
-                const macroAnalysisResult = await macroAnalyst.analyze(currentCandle, []);
-                const sentimentAnalysisResult = await sentimentAnalyst.analyze([]);
+                const dummyContext = new SharedContext();
+                const macroAnalysisResult = await macroAnalyst.analyze(currentCandle, [], dummyContext);
+                const sentimentAnalysisResult = await sentimentAnalyst.analyze([], dummyContext);
                 const techAnalysisResult = await techAnalyst.analyze(symbol, historicalData.slice(0, i + 1), config);
 
                 const macroAnalysis = macroAnalysisResult?.response;

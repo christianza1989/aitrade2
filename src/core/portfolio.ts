@@ -3,10 +3,11 @@ import path from 'path';
 import { setTimeout } from 'timers/promises';
 import { Trade } from './optimizer';
 
-const portfolioFilePath = path.join(process.cwd(), 'portfolio.json');
-const lockFilePath = path.join(process.cwd(), 'portfolio.lock');
-const tradesLogFilePath = path.join(process.cwd(), 'trades_log.json');
-const buyLogFilePath = path.join(process.cwd(), 'buy_log.json');
+// DYNAMIC FILE PATHS BASED ON USERNAME
+const getPortfolioFilePath = (username: string) => path.join(process.cwd(), `portfolio_${username}.json`);
+const getLockFilePath = (username: string) => path.join(process.cwd(), `portfolio_${username}.lock`);
+const getTradesLogFilePath = (username: string) => path.join(process.cwd(), `trades_log_${username}.json`);
+const getBuyLogFilePath = (username: string) => path.join(process.cwd(), `buy_log_${username}.json`);
 
 interface Position {
     symbol: string;
@@ -29,9 +30,28 @@ interface BuyLog extends Position {
 }
 
 export class PortfolioService {
+    private username: string;
+
+    constructor(username: string) {
+        if (!username) {
+            throw new Error("Username must be provided to PortfolioService.");
+        }
+        this.username = username;
+    }
+
+    private getFilePaths() {
+        return {
+            portfolioFilePath: getPortfolioFilePath(this.username),
+            lockFilePath: getLockFilePath(this.username),
+            tradesLogFilePath: getTradesLogFilePath(this.username),
+            buyLogFilePath: getBuyLogFilePath(this.username),
+        };
+    }
+
     private async withPortfolio(worker: (portfolio: Portfolio) => Promise<void> | void): Promise<void> {
-        console.log('[PortfolioService] Attempting to acquire lock...');
-        const lockAcquired = await this.acquireLock();
+        const { lockFilePath, portfolioFilePath } = this.getFilePaths();
+        console.log(`[PortfolioService] Attempting to acquire lock for ${this.username}...`);
+        const lockAcquired = await this.acquireLock(lockFilePath);
         if (!lockAcquired) {
             console.error('[PortfolioService] Failed to acquire portfolio lock.');
             throw new Error('Failed to acquire portfolio lock after multiple retries.');
@@ -43,10 +63,10 @@ export class PortfolioService {
             try {
                 const data = await fs.readFile(portfolioFilePath, 'utf-8');
                 portfolio = JSON.parse(data);
-                console.log('[PortfolioService] Read portfolio:', JSON.stringify(portfolio));
+                console.log(`[PortfolioService] Read portfolio for ${this.username}:`, JSON.stringify(portfolio));
             } catch (error) {
                 if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
-                    console.log('Portfolio file not found. Creating a new one.');
+                    console.log(`Portfolio file for ${this.username} not found. Creating a new one.`);
                     portfolio = { balance: 100000, positions: [] };
                 } else {
                     console.error("Failed to read or parse portfolio.json:", error);
@@ -56,16 +76,16 @@ export class PortfolioService {
 
             await worker(portfolio);
 
-            console.log('[PortfolioService] Portfolio after worker:', JSON.stringify(portfolio));
+            console.log(`[PortfolioService] Portfolio for ${this.username} after worker:`, JSON.stringify(portfolio));
             await fs.writeFile(portfolioFilePath, JSON.stringify(portfolio, null, 2));
-            console.log('[PortfolioService] Successfully wrote to portfolio.json.');
+            console.log(`[PortfolioService] Successfully wrote to portfolio for ${this.username}.`);
         } finally {
-            await this.releaseLock();
-            console.log('[PortfolioService] Lock released.');
+            await this.releaseLock(lockFilePath);
+            console.log(`[PortfolioService] Lock for ${this.username} released.`);
         }
     }
 
-    private async acquireLock(retries = 10, delay = 100): Promise<boolean> {
+    private async acquireLock(lockFilePath: string, retries = 10, delay = 100): Promise<boolean> {
         for (let i = 0; i < retries; i++) {
             try {
                 await fs.writeFile(lockFilePath, process.pid.toString(), { flag: 'wx' });
@@ -81,20 +101,18 @@ export class PortfolioService {
         return false;
     }
 
-    private async releaseLock(): Promise<void> {
+    private async releaseLock(lockFilePath: string): Promise<void> {
         try {
             await fs.unlink(lockFilePath);
         } catch (error) {
             if (error instanceof Error && (error as NodeJS.ErrnoException).code !== 'ENOENT') {
-                console.error('Failed to release portfolio lock:', error);
+                console.error(`Failed to release portfolio lock for ${this.username}:`, error);
             }
         }
     }
 
     async getPortfolio(): Promise<Portfolio> {
-        // This is now a safe, read-only operation for display purposes.
-        // It doesn't use the lock to prevent blocking the UI, but it might be slightly stale.
-        // All mutation operations MUST use withPortfolio.
+        const { portfolioFilePath } = this.getFilePaths();
         try {
             const data = await fs.readFile(portfolioFilePath, 'utf-8');
             return JSON.parse(data);
@@ -129,7 +147,7 @@ export class PortfolioService {
     }
 
     async logBuy(position: Position): Promise<void> {
-        // This is a non-critical log, so it doesn't need the portfolio lock.
+        const { buyLogFilePath } = this.getFilePaths();
         const buyLogs = await this.getBuyLogs();
         const logEntry = {
             timestamp: new Date().toISOString(),
@@ -179,6 +197,7 @@ export class PortfolioService {
                 reason: (fullAnalysis.reason as string) || 'Unknown',
             };
 
+            const { tradesLogFilePath } = this.getFilePaths();
             const tradeLogs = await this.getTradeLogs();
             tradeLogs.push(tradeLog);
             await fs.writeFile(tradesLogFilePath, JSON.stringify(tradeLogs, null, 2));
@@ -188,6 +207,7 @@ export class PortfolioService {
     }
 
     async getTradeLogs(): Promise<Trade[]> {
+        const { tradesLogFilePath } = this.getFilePaths();
         try {
             const data = await fs.readFile(tradesLogFilePath, 'utf-8');
             return JSON.parse(data);
@@ -197,6 +217,7 @@ export class PortfolioService {
     }
 
     async getBuyLogs(): Promise<BuyLog[]> {
+        const { buyLogFilePath } = this.getFilePaths();
         try {
             const data = await fs.readFile(buyLogFilePath, 'utf-8');
             return JSON.parse(data);

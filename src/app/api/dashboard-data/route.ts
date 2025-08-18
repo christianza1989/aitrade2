@@ -5,14 +5,14 @@ import { BinanceService } from '@/core/binance';
 import { PortfolioService } from '@/core/portfolio';
 
 export async function GET() {
-    // const session = await getServerSession(authOptions);
-    // if (!session) {
-    //     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // }
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user?.name) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     try {
         const binance = new BinanceService();
-        const portfolioService = new PortfolioService();
+        const portfolioService = new PortfolioService(session.user.name);
 
         const marketData = await binance.getTopSymbols(50);
         const portfolio = await portfolioService.getPortfolio();

@@ -1,123 +1,55 @@
 {
-  "balance": 3787.7448582293673,
+  "balance": 7120.94237016997,
   "positions": [
     {
-      "symbol": "API3USDT",
-      "amount": 13979.22077922078,
-      "entryPrice": 0.8798773690078038
-    },
-    {
-      "symbol": "EPICUSDT",
-      "amount": 7667.724029162491,
-      "entryPrice": 2.9604612677328466
-    },
-    {
-      "symbol": "ALPINEUSDT",
-      "amount": 5119.77712979278,
-      "entryPrice": 2.2852557256674078,
-      "highPnlPercent": 1.0512483574244424
-    },
-    {
-      "symbol": "JUVUSDT",
-      "amount": 6181.318681318681,
-      "entryPrice": 1.456
-    },
-    {
       "symbol": "RESOLVUSDT",
-      "amount": 43823.88703266611,
-      "entryPrice": 0.1711395430170203
-    },
-    {
-      "symbol": "MEMEUSDT",
-      "amount": 2956667.3481507446,
-      "entryPrice": 0.002029311820875864
-    },
-    {
-      "symbol": "BTCUSDT",
-      "amount": 0.04349395651474228,
-      "entryPrice": 114958.5,
-      "highPnlPercent": 0.19508779255122857
-    },
-    {
-      "symbol": "ETHUSDT",
-      "amount": 0.936989779783977,
-      "entryPrice": 4268.99,
-      "highPnlPercent": 0.8798334032171639
-    },
-    {
-      "symbol": "TRUMPUSDT",
-      "amount": 347.6638653007878,
-      "entryPrice": 9.060475690433687,
-      "highPnlPercent": 0.11037527593818748
-    },
-    {
-      "symbol": "LTCUSDT",
-      "amount": 21.43530823973249,
-      "entryPrice": 116.63,
-      "highPnlPercent": 0.28294606876446743
-    },
-    {
-      "symbol": "DOTUSDT",
-      "amount": 587.6854329532998,
-      "entryPrice": 3.913658346850276,
-      "highPnlPercent": 0.895369659759533
-    },
-    {
-      "symbol": "LINKUSDT",
-      "amount": 70.79288025889969,
-      "entryPrice": 24.72,
-      "highPnlPercent": 0.5663430420711997
-    },
-    {
-      "symbol": "BIOUSDT",
-      "amount": 11727.912431587176,
-      "entryPrice": 0.1279,
-      "highPnlPercent": 0.8600469116497182
-    },
-    {
-      "symbol": "SOLUSDT",
-      "amount": 8.294166436273155,
-      "entryPrice": 180.85,
-      "highPnlPercent": 0.6027094277025178
+      "amount": 40462.42774566474,
+      "entryPrice": 0.173
     },
     {
       "symbol": "BNBUSDT",
-      "amount": 1.5040850951183413,
-      "entryPrice": 831.07,
-      "highPnlPercent": 0.42234709470922915
+      "amount": 7.171114749787854,
+      "entryPrice": 836.69
     },
     {
-      "symbol": "PEPEUSDT",
-      "amount": 93720712.27741331,
-      "entryPrice": 0.00001067,
-      "highPnlPercent": 1.0309278350515523
+      "symbol": "OGUSDT",
+      "amount": 355.49235691432636,
+      "entryPrice": 14.065
     },
     {
-      "symbol": "AIXBTUSDT",
-      "amount": 6504.770164787511,
-      "entryPrice": 0.1153
+      "symbol": "ETHUSDT",
+      "amount": 1.1635998054461125,
+      "entryPrice": 4297.01
     },
     {
-      "symbol": "AVAXUSDT",
-      "amount": 31.632222690847744,
-      "entryPrice": 23.71,
-      "highPnlPercent": 0.4639392661324312
+      "symbol": "BTCUSDT",
+      "amount": 0.04343500338315241,
+      "entryPrice": 115114.53
     },
     {
-      "symbol": "CRVUSDT",
-      "amount": 749.3148464374053,
-      "entryPrice": 0.8674591236119307,
-      "highPnlPercent": 1.375881604809807
+      "symbol": "BIOUSDT",
+      "amount": 22607.385079125845,
+      "entryPrice": 0.1327
     },
     {
-      "symbol": "MDTUSDT",
-      "amount": 16869.095816464236,
-      "entryPrice": 0.02964
+      "symbol": "POLUSDT",
+      "amount": 11947.431302270012,
+      "entryPrice": 0.2511
     },
     {
-      "symbol": "MAGICUSDT",
-      "amount": 1599.360255897641,
-      "entryPrice": 0.2501
+      "symbol": "ALPINEUSDT",
+      "amount": 1323.918799646955,
+      "entryPrice": 2.266
+    },
+    {
+      "symbol": "LINKUSDT",
+      "amount": 111.06703689012296,
+      "entryPrice": 25.21
+    },
+    {
+      "symbol": "PENDLEUSDT",
+      "amount": 519.4805194805195,
+      "entryPrice": 5.39
     }
   ]
 }
