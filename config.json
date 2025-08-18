@@ -1,1 +1,19 @@
-{}
+{
+  "sellStrategy": "takeProfit",
+  "takeProfitPercent": 1.5,
+  "stopLossPercent": -1,
+  "trailingStopPercent": -2.5,
+  "trailingProfitPercent": -2.5,
+  "riskAmountPercent": 1,
+  "rsiPeriod": 14,
+  "symbolsToAnalyze": 100,
+  "batchSize": 20,
+  "macroScoreThreshold": 6.5,
+  "minimumBalance": 2000,
+  "cycleIntervalMinutes": 30,
+  "smaShortPeriod": 20,
+  "smaLongPeriod": 50,
+  "macdShortPeriod": 12,
+  "macdLongPeriod": 26,
+  "macdSignalPeriod": 9
+}
