@@ -193,6 +193,10 @@ export class SentimentAnalyst extends AIAgent {
 }
 
 export class TechnicalAnalyst extends AIAgent {
+    async analyze(symbol: string, candles: Candle[], config: any): Promise<{ prompt: string; response: Record<string, any> } | null> {
+        return this.analyzeBatch([{ symbol, candles }], config);
+    }
+
     async analyzeBatch(batchData: { symbol: string, candles: Candle[] }[], config: any): Promise<{ prompt: string; response: Record<string, any> } | null> {
         const formattedData = batchData.map(data => {
             const { symbol, candles } = data;
