@@ -1,5 +1,5 @@
 {
-  "balance": 57958,
+  "balance": 34935,
   "positions": [
     {
       "symbol": "API3USDT",
@@ -8,8 +8,8 @@
     },
     {
       "symbol": "EPICUSDT",
-      "amount": 4070.5563093622795,
-      "entryPrice": 2.948
+      "amount": 6434.622503215707,
+      "entryPrice": 2.9527761714855436
     },
     {
       "symbol": "ALPINEUSDT",
@@ -21,6 +21,22 @@
       "symbol": "JUVUSDT",
       "amount": 6181.318681318681,
       "entryPrice": 1.456
+    },
+    {
+      "symbol": "RESOLVUSDT",
+      "amount": 35087.71929824561,
+      "entryPrice": 0.171
+    },
+    {
+      "symbol": "BIOUSDT",
+      "amount": 47318.61198738171,
+      "entryPrice": 0.1268,
+      "highPnlPercent": 0.2365930599369044
+    },
+    {
+      "symbol": "MEMEUSDT",
+      "amount": 1966568.3382497544,
+      "entryPrice": 0.002034
     }
   ]
 }
