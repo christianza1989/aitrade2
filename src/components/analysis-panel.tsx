@@ -2,9 +2,13 @@
 
 import { useDashboard } from '@/context/DashboardContext';
 
-export function AnalysisPanel() {
+interface AnalysisPanelProps {
+    analysis?: any;
+}
+
+export function AnalysisPanel({ analysis }: AnalysisPanelProps) {
     const { state } = useDashboard();
-    const { lastRunAnalysis } = state;
+    const lastRunAnalysis = analysis || state.lastRunAnalysis;
 
     if (!lastRunAnalysis || Object.keys(lastRunAnalysis).length === 0) {
         return (
