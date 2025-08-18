@@ -6,15 +6,18 @@ import { useDashboard } from '@/context/DashboardContext';
 interface KpiCardProps {
     title: string;
     icon: ReactNode;
-    kpiKey: 'totalValue' | '24h_pnl' | 'freeCollateral';
+    kpiKey?: 'totalValue' | '24h_pnl' | 'freeCollateral';
+    value?: string | number;
+    color?: string;
 }
 
-export function KpiCard({ title, icon, kpiKey }: KpiCardProps) {
+export function KpiCard({ title, icon, kpiKey, value, color: propColor }: KpiCardProps) {
     const { state } = useDashboard();
     const { portfolio, marketData } = state;
 
     const kpiValue = useMemo(() => {
-        if (!portfolio) return 0;
+        if (value !== undefined) return value;
+        if (!portfolio || !kpiKey) return 0;
 
         const positionsValue = portfolio.positions.reduce((acc, pos) => {
             const marketInfo = marketData.find(md => md.symbol === pos.symbol);
@@ -40,12 +43,14 @@ export function KpiCard({ title, icon, kpiKey }: KpiCardProps) {
             default:
                 return 0;
         }
-    }, [portfolio, marketData, kpiKey]);
+    }, [portfolio, marketData, kpiKey, value]);
 
-    const formattedValue = `€${kpiValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const formattedValue = typeof kpiValue === 'number' 
+        ? `€${kpiValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+        : kpiValue;
     
-    let color = 'text-white';
-    if (kpiKey === '24h_pnl') {
+    let color = propColor || 'text-white';
+    if (kpiKey === '24h_pnl' && typeof kpiValue === 'number') {
         if (kpiValue > 0) color = 'text-green-400';
         if (kpiValue < 0) color = 'text-red-400';
     }

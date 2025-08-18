@@ -36,7 +36,7 @@
       "symbol": "BTCUSDT",
       "amount": 0.04349395651474228,
       "entryPrice": 114958.5,
-      "highPnlPercent": 0.016092763910454642
+      "highPnlPercent": 0.025183000822033244
     },
     {
       "symbol": "ETHUSDT",
@@ -52,12 +52,14 @@
     {
       "symbol": "LTCUSDT",
       "amount": 21.43530823973249,
-      "entryPrice": 116.63
+      "entryPrice": 116.63,
+      "highPnlPercent": 0.12861184943839982
     },
     {
       "symbol": "DOTUSDT",
       "amount": 511.6398055768739,
-      "entryPrice": 3.909
+      "entryPrice": 3.909,
+      "highPnlPercent": 0.02558199027885224
     },
     {
       "symbol": "LINKUSDT",
@@ -68,13 +70,13 @@
       "symbol": "BIOUSDT",
       "amount": 11727.912431587176,
       "entryPrice": 0.1279,
-      "highPnlPercent": 0.07818608287723923
+      "highPnlPercent": 0.8600469116497182
     },
     {
       "symbol": "SOLUSDT",
       "amount": 8.294166436273155,
       "entryPrice": 180.85,
-      "highPnlPercent": 0.005529444290859457
+      "highPnlPercent": 0.016588332872546938
     },
     {
       "symbol": "BNBUSDT",
