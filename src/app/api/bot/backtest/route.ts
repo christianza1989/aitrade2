@@ -9,7 +9,7 @@ import path from 'path';
 
 const configFilePath = path.join(process.cwd(), 'config.json');
 
-export async function POST(request: Request) {
+export async function POST(request: Request) { // Trigger Vercel rebuild
     const { symbol, interval } = await request.json();
 
     const stream = new ReadableStream({
