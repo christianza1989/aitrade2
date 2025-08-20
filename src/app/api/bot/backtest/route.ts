@@ -1,7 +1,7 @@
 // src/app/api/bot/backtest/route.ts
 
 import { BinanceService } from '@/core/binance';
-import { AgentService } from '@/core/agent-service'; // 1. IMPORTUOJAME AgentService
+import { AgentService } from '@/core/agent-service';
 import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager, Analysis } from '@/core/agents';
 import { SharedContext } from '@/core/context';
 import fs from 'fs/promises';
@@ -9,7 +9,7 @@ import path from 'path';
 
 const configFilePath = path.join(process.cwd(), 'config.json');
 
-export async function POST(request: Request) { // Trigger Vercel rebuild
+export async function POST(request: Request) {
     const { symbol, interval } = await request.json();
 
     const stream = new ReadableStream({
@@ -24,14 +24,13 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
             try {
                 const binance = new BinanceService();
                 
-                // 2. SUKURIAME AgentService IR AGENTUS PERDUODAMI JĮ
+                // THE FIX IS HERE: Create AgentService and pass it to all agents
                 const agentService = new AgentService();
                 const macroAnalyst = new MacroAnalyst(agentService);
                 const sentimentAnalyst = new SentimentAnalyst(agentService);
                 const techAnalyst = new TechnicalAnalyst(agentService);
                 const riskManager = new RiskManager(agentService);
 
-                // Register agents for potential (though unlikely in backtest) cross-communication
                 agentService.register(macroAnalyst);
                 agentService.register(sentimentAnalyst);
                 agentService.register(techAnalyst);
@@ -50,12 +49,12 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
 
                 let positionOpen = false;
 
-                for (let i = 1; i < historicalData.length; i++) {
+                for (let i = 20; i < historicalData.length; i++) { // Start with enough data for indicators
                     const currentCandle = historicalData[i];
+                    const dataSlice = historicalData.slice(0, i + 1);
                     sendEvent({ type: 'log', message: `Analyzing data for ${new Date(currentCandle.time * 1000).toISOString()}` });
 
                     const dummyContext = new SharedContext();
-                    // Mock data for backtesting since we don't have live news/metrics
                     const mockNews = ["Market is stable", "Bitcoin price holds steady"];
                     const mockFearAndGreed = { value: "50", classification: "Neutral" };
                     const mockGlobalMetrics = { btc_dominance: 50, quote: { USD: { total_market_cap: 2.5e12 } } };
@@ -63,7 +62,7 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
 
                     const macroAnalysisResult = await macroAnalyst.analyze(currentCandle, mockNews, mockFearAndGreed, mockGlobalMetrics, dummyContext);
                     const sentimentAnalysisResult = await sentimentAnalyst.analyze(mockNews.map(title => ({title})), mockTrending, dummyContext);
-                    const techAnalysisResult = await techAnalyst.analyzeBatch([{ symbol, candles: historicalData.slice(0, i + 1) }], config);
+                    const techAnalysisResult = await techAnalyst.analyzeBatch([{ symbol, candles: dataSlice }], config);
 
                     const macroAnalysis = macroAnalysisResult?.response;
                     const sentimentAnalysis = sentimentAnalysisResult?.response;
@@ -78,8 +77,7 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
                     
                     sendEvent({ type: 'analysis', data: fullAnalysis });
                     
-                    // We need to fetch fundamental data for the risk manager, even if it's mock
-                    const mockFundamentalData = { [symbol.replace('USDT', '')]: { tags: ['test'], description: 'Backtesting asset', urls: {} } };
+                    const mockFundamentalData: Record<string, any> = { [symbol.replace('USDT', '')]: { tags: ['test'], description: 'Backtesting asset', urls: {} } };
 
                     const finalDecisionResult = await riskManager.decideBatch(techAnalyses, macroAnalysis, sentimentAnalysis, mockFundamentalData);
                     const finalDecisions = finalDecisionResult?.response as any;
@@ -90,12 +88,12 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
                     if (finalDecision?.decision === 'BUY' && !positionOpen) {
                         sendEvent({ type: 'trade', data: { date: new Date(currentCandle.time * 1000).toISOString(), action: 'BUY', price: currentCandle.close } });
                         positionOpen = true;
-                    } else if (finalDecision?.decision === 'AVOID' && positionOpen) { // Assuming AVOID acts as SELL in a simple backtest
+                    } else if (finalDecision?.decision === 'AVOID' && positionOpen) { // In a simple backtest, AVOID can act as a SELL signal
                         sendEvent({ type: 'trade', data: { date: new Date(currentCandle.time * 1000).toISOString(), action: 'SELL', price: currentCandle.close } });
                         positionOpen = false;
                     }
                     
-                    await new Promise(resolve => setTimeout(resolve, 50)); // Shortened delay for faster backtest
+                    await new Promise(resolve => setTimeout(resolve, 50));
                 }
 
                 sendEvent({ type: 'log', message: 'Backtest finished.' });
