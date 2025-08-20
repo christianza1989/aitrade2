@@ -24,7 +24,7 @@ export async function POST(request: Request) {
             try {
                 const binance = new BinanceService();
                 
-                // THE FIX IS HERE: Create AgentService and pass it to all agents
+                // PATAISYMAS YRA ČIA: Sukuriame AgentService ir perduodame jį visiems agentams
                 const agentService = new AgentService();
                 const macroAnalyst = new MacroAnalyst(agentService);
                 const sentimentAnalyst = new SentimentAnalyst(agentService);
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
                 let positionOpen = false;
 
-                for (let i = 20; i < historicalData.length; i++) { // Start with enough data for indicators
+                for (let i = 20; i < historicalData.length; i++) { // Pradedame su pakankamai duomenų indikatoriams
                     const currentCandle = historicalData[i];
                     const dataSlice = historicalData.slice(0, i + 1);
                     sendEvent({ type: 'log', message: `Analyzing data for ${new Date(currentCandle.time * 1000).toISOString()}` });
@@ -88,7 +88,7 @@ export async function POST(request: Request) {
                     if (finalDecision?.decision === 'BUY' && !positionOpen) {
                         sendEvent({ type: 'trade', data: { date: new Date(currentCandle.time * 1000).toISOString(), action: 'BUY', price: currentCandle.close } });
                         positionOpen = true;
-                    } else if (finalDecision?.decision === 'AVOID' && positionOpen) { // In a simple backtest, AVOID can act as a SELL signal
+                    } else if (finalDecision?.decision === 'AVOID' && positionOpen) {
                         sendEvent({ type: 'trade', data: { date: new Date(currentCandle.time * 1000).toISOString(), action: 'SELL', price: currentCandle.close } });
                         positionOpen = false;
                     }

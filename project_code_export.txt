@@ -450,7 +450,7 @@ export { handler as GET, handler as POST }
 // src/app/api/bot/backtest/route.ts
 
 import { BinanceService } from '@/core/binance';
-import { AgentService } from '@/core/agent-service'; // 1. IMPORTUOJAME AgentService
+import { AgentService } from '@/core/agent-service';
 import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager, Analysis } from '@/core/agents';
 import { SharedContext } from '@/core/context';
 import fs from 'fs/promises';
@@ -458,7 +458,7 @@ import path from 'path';
 
 const configFilePath = path.join(process.cwd(), 'config.json');
 
-export async function POST(request: Request) { // Trigger Vercel rebuild
+export async function POST(request: Request) {
     const { symbol, interval } = await request.json();
 
     const stream = new ReadableStream({
@@ -473,14 +473,13 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
             try {
                 const binance = new BinanceService();
                 
-                // 2. SUKURIAME AgentService IR AGENTUS PERDUODAMI JĮ
+                // THE FIX IS HERE: Create AgentService and pass it to all agents
                 const agentService = new AgentService();
                 const macroAnalyst = new MacroAnalyst(agentService);
                 const sentimentAnalyst = new SentimentAnalyst(agentService);
                 const techAnalyst = new TechnicalAnalyst(agentService);
                 const riskManager = new RiskManager(agentService);
 
-                // Register agents for potential (though unlikely in backtest) cross-communication
                 agentService.register(macroAnalyst);
                 agentService.register(sentimentAnalyst);
                 agentService.register(techAnalyst);
@@ -499,12 +498,12 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
 
                 let positionOpen = false;
 
-                for (let i = 1; i < historicalData.length; i++) {
+                for (let i = 20; i < historicalData.length; i++) { // Start with enough data for indicators
                     const currentCandle = historicalData[i];
+                    const dataSlice = historicalData.slice(0, i + 1);
                     sendEvent({ type: 'log', message: `Analyzing data for ${new Date(currentCandle.time * 1000).toISOString()}` });
 
                     const dummyContext = new SharedContext();
-                    // Mock data for backtesting since we don't have live news/metrics
                     const mockNews = ["Market is stable", "Bitcoin price holds steady"];
                     const mockFearAndGreed = { value: "50", classification: "Neutral" };
                     const mockGlobalMetrics = { btc_dominance: 50, quote: { USD: { total_market_cap: 2.5e12 } } };
@@ -512,7 +511,7 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
 
                     const macroAnalysisResult = await macroAnalyst.analyze(currentCandle, mockNews, mockFearAndGreed, mockGlobalMetrics, dummyContext);
                     const sentimentAnalysisResult = await sentimentAnalyst.analyze(mockNews.map(title => ({title})), mockTrending, dummyContext);
-                    const techAnalysisResult = await techAnalyst.analyzeBatch([{ symbol, candles: historicalData.slice(0, i + 1) }], config);
+                    const techAnalysisResult = await techAnalyst.analyzeBatch([{ symbol, candles: dataSlice }], config);
 
                     const macroAnalysis = macroAnalysisResult?.response;
                     const sentimentAnalysis = sentimentAnalysisResult?.response;
@@ -527,8 +526,7 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
                     
                     sendEvent({ type: 'analysis', data: fullAnalysis });
                     
-                    // We need to fetch fundamental data for the risk manager, even if it's mock
-                    const mockFundamentalData = { [symbol.replace('USDT', '')]: { tags: ['test'], description: 'Backtesting asset', urls: {} } };
+                    const mockFundamentalData: Record<string, any> = { [symbol.replace('USDT', '')]: { tags: ['test'], description: 'Backtesting asset', urls: {} } };
 
                     const finalDecisionResult = await riskManager.decideBatch(techAnalyses, macroAnalysis, sentimentAnalysis, mockFundamentalData);
                     const finalDecisions = finalDecisionResult?.response as any;
@@ -539,12 +537,12 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
                     if (finalDecision?.decision === 'BUY' && !positionOpen) {
                         sendEvent({ type: 'trade', data: { date: new Date(currentCandle.time * 1000).toISOString(), action: 'BUY', price: currentCandle.close } });
                         positionOpen = true;
-                    } else if (finalDecision?.decision === 'AVOID' && positionOpen) { // Assuming AVOID acts as SELL in a simple backtest
+                    } else if (finalDecision?.decision === 'AVOID' && positionOpen) { // In a simple backtest, AVOID can act as a SELL signal
                         sendEvent({ type: 'trade', data: { date: new Date(currentCandle.time * 1000).toISOString(), action: 'SELL', price: currentCandle.close } });
                         positionOpen = false;
                     }
                     
-                    await new Promise(resolve => setTimeout(resolve, 50)); // Shortened delay for faster backtest
+                    await new Promise(resolve => setTimeout(resolve, 50));
                 }
 
                 sendEvent({ type: 'log', message: 'Backtest finished.' });
@@ -566,7 +564,6 @@ export async function POST(request: Request) { // Trigger Vercel rebuild
         },
     });
 }
-
 --- END FILE: {relative_filepath} ---
 
 --- FILE: src\app\api\bot\decision\route.ts ---
@@ -5629,7 +5626,7 @@ export class BinanceService {
 
 --- END FILE: {relative_filepath} ---
 
---- FILE: src\core\coinmarketcap.ts ---
+--- FILE: src\core\coinmarketcap - need pro plan.ts ---
 // src/core/coinmarketcap.ts
 
 interface FearAndGreedData {
@@ -5740,6 +5737,122 @@ export class CoinMarketCapService {
 
     async getLatestDexPairs(): Promise<any[] | null> {
         // CORRECTED ENDPOINT based on documentation and strategic plan
+        return this.fetchApi<any[]>('/v4/dex/spot-pairs/latest', { sort: 'volume_24h', limit: '100' });
+    }
+}
+--- END FILE: {relative_filepath} ---
+
+--- FILE: src\core\coinmarketcap.ts ---
+// src/core/coinmarketcap.ts
+
+interface FearAndGreedData {
+    value: string;
+    value_classification: string;
+    timestamp: string;
+}
+
+interface GlobalMetricsQuote {
+    total_market_cap: number;
+    btc_dominance: number;
+    defi_market_cap: number;
+    stablecoin_market_cap: number;
+}
+
+interface GlobalMetricsData {
+    quote: {
+        USD: GlobalMetricsQuote;
+    };
+}
+
+export class CoinMarketCapService {
+    private apiKey: string;
+    private baseUrl: string = 'https://pro-api.coinmarketcap.com';
+
+    constructor() {
+        this.apiKey = process.env.CMC_API_KEY || '';
+        if (!this.apiKey) {
+            console.warn('CMC_API_KEY is not defined. CMC features will be limited.');
+        }
+    }
+
+    private async fetchApi<T>(endpoint: string, params: Record<string, string> = {}): Promise<T | null> {
+        if (!this.apiKey) return null;
+        
+        const url = new URL(`${this.baseUrl}${endpoint}`);
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+        try {
+            const response = await fetch(url.toString(), {
+                headers: {
+                    'X-CMC_PRO_API_KEY': this.apiKey,
+                    'Accept': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+
+            // THE FIX IS HERE: We now check for any non-zero error code.
+            // If the plan doesn't support the endpoint (403 Forbidden -> error_code 1006)
+            // or if there's a bad request (400 -> error_code 400), we log it but don't crash.
+            if (!response.ok || data.status.error_code !== 0) {
+                console.warn(`CoinMarketCap API warning for ${endpoint}: ${data.status.error_message || response.statusText}. The system will proceed with available data.`);
+                return null; // Return null instead of throwing an error.
+            }
+            
+            return data.data as T;
+        } catch (error) {
+            console.error(`Error fetching from CoinMarketCap API endpoint ${endpoint}:`, error);
+            return null; // Return null on network or parsing errors as well.
+        }
+    }
+
+    async getFearAndGreedIndex(): Promise<FearAndGreedData | null> {
+        try {
+            const response = await fetch('https://api.alternative.me/fng/?limit=1');
+             if (!response.ok) return null;
+             const data = await response.json();
+             return data.data[0] ? {
+                 value: data.data[0].value,
+                 value_classification: data.data[0].value_classification,
+                 timestamp: new Date(data.data[0].timestamp * 1000).toISOString(),
+             } : null;
+        } catch (error) {
+            console.error('Error fetching Fear and Greed Index:', error);
+            return null;
+        }
+    }
+    
+    async getGlobalMetrics(): Promise<GlobalMetricsData | null> {
+        return this.fetchApi<GlobalMetricsData>('/v1/global-metrics/quotes/latest');
+    }
+    
+    async getTrendingTokens(): Promise<any[] | null> {
+        return this.fetchApi<any[]>('/v1/cryptocurrency/trending/most-visited', { limit: '10' });
+    }
+    
+    async getTrendingGainersAndLosers(): Promise<any | null> {
+        return this.fetchApi<any>('/v1/cryptocurrency/trending/gainers-losers', { time_period: '24h' });
+    }
+
+    async getCategories(): Promise<any[] | null> {
+        // THE FIX IS HERE: Removed the "sort" parameter that was causing a 400 Bad Request error.
+        return this.fetchApi<any[]>('/v1/cryptocurrency/categories', { limit: '10' });
+    }
+    
+    async getCategoryById(id: string): Promise<any | null> {
+        return this.fetchApi<any>(`/v1/cryptocurrency/category`, { id });
+    }
+
+    async getAirdrops(): Promise<any[] | null> {
+        return this.fetchApi<any[]>('/v1/cryptocurrency/airdrops', { status: 'upcoming' });
+    }
+
+    async getCryptocurrencyInfo(symbols: string[]): Promise<any | null> {
+        if (symbols.length === 0) return null;
+        return this.fetchApi<any>('/v2/cryptocurrency/info', { symbol: symbols.join(',') });
+    }
+
+    async getLatestDexPairs(): Promise<any[] | null> {
         return this.fetchApi<any[]>('/v4/dex/spot-pairs/latest', { sort: 'volume_24h', limit: '100' });
     }
 }

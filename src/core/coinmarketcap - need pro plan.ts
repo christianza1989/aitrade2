@@ -44,20 +44,20 @@ export class CoinMarketCapService {
                 },
             });
 
-            const data = await response.json();
-
-            // THE FIX IS HERE: We now check for any non-zero error code.
-            // If the plan doesn't support the endpoint (403 Forbidden -> error_code 1006)
-            // or if there's a bad request (400 -> error_code 400), we log it but don't crash.
-            if (!response.ok || data.status.error_code !== 0) {
-                console.warn(`CoinMarketCap API warning for ${endpoint}: ${data.status.error_message || response.statusText}. The system will proceed with available data.`);
-                return null; // Return null instead of throwing an error.
+            if (!response.ok) {
+                console.error(`CoinMarketCap API error for ${endpoint}: ${response.statusText}`, await response.text());
+                return null;
             }
-            
+
+            const data = await response.json();
+            if (data.status.error_code !== 0) {
+                console.error('CoinMarketCap API error status:', data.status);
+                return null;
+            }
             return data.data as T;
         } catch (error) {
             console.error(`Error fetching from CoinMarketCap API endpoint ${endpoint}:`, error);
-            return null; // Return null on network or parsing errors as well.
+            return null;
         }
     }
 
@@ -86,12 +86,11 @@ export class CoinMarketCapService {
     }
     
     async getTrendingGainersAndLosers(): Promise<any | null> {
-        return this.fetchApi<any>('/v1/cryptocurrency/trending/gainers-losers', { time_period: '24h' });
+        return this.fetchApi<any>('/v1/cryptocurrency/trending/gainers-losers', { limit: '10', sort_dir: 'desc', time_period: '24h' });
     }
 
     async getCategories(): Promise<any[] | null> {
-        // THE FIX IS HERE: Removed the "sort" parameter that was causing a 400 Bad Request error.
-        return this.fetchApi<any[]>('/v1/cryptocurrency/categories', { limit: '10' });
+        return this.fetchApi<any[]>('/v1/cryptocurrency/categories', { limit: '10', sort: 'market_cap', sort_dir: 'desc' });
     }
     
     async getCategoryById(id: string): Promise<any | null> {
@@ -108,6 +107,7 @@ export class CoinMarketCapService {
     }
 
     async getLatestDexPairs(): Promise<any[] | null> {
+        // CORRECTED ENDPOINT based on documentation and strategic plan
         return this.fetchApi<any[]>('/v4/dex/spot-pairs/latest', { sort: 'volume_24h', limit: '100' });
     }
 }
