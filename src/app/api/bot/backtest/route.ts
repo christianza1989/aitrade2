@@ -1,5 +1,8 @@
+// src/app/api/bot/backtest/route.ts
+
 import { BinanceService } from '@/core/binance';
-import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager } from '@/core/agents';
+import { AgentService } from '@/core/agent-service'; // 1. IMPORTUOJAME AgentService
+import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager, Analysis } from '@/core/agents';
 import { SharedContext } from '@/core/context';
 import fs from 'fs/promises';
 import path from 'path';
@@ -20,58 +23,79 @@ export async function POST(request: Request) {
 
             try {
                 const binance = new BinanceService();
-                const macroAnalyst = new MacroAnalyst();
-                const sentimentAnalyst = new SentimentAnalyst();
-                const techAnalyst = new TechnicalAnalyst();
-                const riskManager = new RiskManager();
+                
+                // 2. SUKURIAME AgentService IR AGENTUS PERDUODAMI JĮ
+                const agentService = new AgentService();
+                const macroAnalyst = new MacroAnalyst(agentService);
+                const sentimentAnalyst = new SentimentAnalyst(agentService);
+                const techAnalyst = new TechnicalAnalyst(agentService);
+                const riskManager = new RiskManager(agentService);
+
+                // Register agents for potential (though unlikely in backtest) cross-communication
+                agentService.register(macroAnalyst);
+                agentService.register(sentimentAnalyst);
+                agentService.register(techAnalyst);
+                agentService.register(riskManager);
 
                 const configData = await fs.readFile(configFilePath, 'utf-8');
                 const config = JSON.parse(configData);
 
-                const historicalData = await binance.getHistoricalData(symbol, interval, 200); // Reduced for faster streaming
+                const historicalData = await binance.getHistoricalData(symbol, interval, 200); 
+
+                if (historicalData.length === 0) {
+                    sendEvent({ type: 'error', message: `Could not fetch historical data for ${symbol}.` });
+                    controller.close();
+                    return;
+                }
 
                 let positionOpen = false;
 
-            for (let i = 1; i < historicalData.length; i++) {
-                const currentCandle = historicalData[i];
-                sendEvent({ type: 'log', message: `Analyzing data for ${new Date(currentCandle.time * 1000).toISOString()}` });
+                for (let i = 1; i < historicalData.length; i++) {
+                    const currentCandle = historicalData[i];
+                    sendEvent({ type: 'log', message: `Analyzing data for ${new Date(currentCandle.time * 1000).toISOString()}` });
 
-                const dummyContext = new SharedContext();
-                const macroAnalysisResult = await macroAnalyst.analyze(currentCandle, [], dummyContext);
-                const sentimentAnalysisResult = await sentimentAnalyst.analyze([], dummyContext);
-                const techAnalysisResult = await techAnalyst.analyze(symbol, historicalData.slice(0, i + 1), config);
+                    const dummyContext = new SharedContext();
+                    // Mock data for backtesting since we don't have live news/metrics
+                    const mockNews = ["Market is stable", "Bitcoin price holds steady"];
+                    const mockFearAndGreed = { value: "50", classification: "Neutral" };
+                    const mockGlobalMetrics = { btc_dominance: 50, quote: { USD: { total_market_cap: 2.5e12 } } };
+                    const mockTrending = [{ name: "Bitcoin", symbol: "BTC" }];
 
-                const macroAnalysis = macroAnalysisResult?.response;
-                const sentimentAnalysis = sentimentAnalysisResult?.response;
-                const techAnalysis = techAnalysisResult?.response;
+                    const macroAnalysisResult = await macroAnalyst.analyze(currentCandle, mockNews, mockFearAndGreed, mockGlobalMetrics, dummyContext);
+                    const sentimentAnalysisResult = await sentimentAnalyst.analyze(mockNews.map(title => ({title})), mockTrending, dummyContext);
+                    const techAnalysisResult = await techAnalyst.analyzeBatch([{ symbol, candles: historicalData.slice(0, i + 1) }], config);
 
-                sendEvent({ type: 'aiChat', data: { agent: 'MacroAnalyst', ...macroAnalysisResult } });
-                sendEvent({ type: 'aiChat', data: { agent: 'SentimentAnalyst', ...sentimentAnalysisResult } });
-                sendEvent({ type: 'aiChat', data: { agent: 'TechnicalAnalyst', ...techAnalysisResult } });
+                    const macroAnalysis = macroAnalysisResult?.response;
+                    const sentimentAnalysis = sentimentAnalysisResult?.response;
+                    const techAnalyses = techAnalysisResult?.response || {};
+                    const symbolTechAnalysis = (techAnalyses as any)[symbol];
 
-                const fullAnalysis = {
-                        Symbol: symbol,
+                    const fullAnalysis: Analysis = {
+                        [symbol]: symbolTechAnalysis,
                         MacroAnalyst: macroAnalysis,
-                        SentimentAnalyst: sentimentAnalysis,
-                        TechnicalAnalyst: techAnalysis,
+                        SentimentAnalyst: sentimentAnalysis
                     };
                     
                     sendEvent({ type: 'analysis', data: fullAnalysis });
+                    
+                    // We need to fetch fundamental data for the risk manager, even if it's mock
+                    const mockFundamentalData = { [symbol.replace('USDT', '')]: { tags: ['test'], description: 'Backtesting asset', urls: {} } };
 
-                    const finalDecisionResult = await riskManager.decide(fullAnalysis);
-                    const finalDecision = finalDecisionResult?.response;
+                    const finalDecisionResult = await riskManager.decideBatch(techAnalyses, macroAnalysis, sentimentAnalysis, mockFundamentalData);
+                    const finalDecisions = finalDecisionResult?.response as any;
+                    const finalDecision = finalDecisions ? finalDecisions[symbol] : null;
+
                     sendEvent({ type: 'aiChat', data: { agent: 'RiskManager', ...finalDecisionResult } });
 
                     if (finalDecision?.decision === 'BUY' && !positionOpen) {
                         sendEvent({ type: 'trade', data: { date: new Date(currentCandle.time * 1000).toISOString(), action: 'BUY', price: currentCandle.close } });
                         positionOpen = true;
-                    } else if (finalDecision?.decision === 'SELL' && positionOpen) {
+                    } else if (finalDecision?.decision === 'AVOID' && positionOpen) { // Assuming AVOID acts as SELL in a simple backtest
                         sendEvent({ type: 'trade', data: { date: new Date(currentCandle.time * 1000).toISOString(), action: 'SELL', price: currentCandle.close } });
                         positionOpen = false;
                     }
                     
-                    // Add a small delay to make the stream visible
-                    await new Promise(resolve => setTimeout(resolve, 200));
+                    await new Promise(resolve => setTimeout(resolve, 50)); // Shortened delay for faster backtest
                 }
 
                 sendEvent({ type: 'log', message: 'Backtest finished.' });
