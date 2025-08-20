@@ -1,0 +1,74 @@
+[
+  {
+    "symbol": "RADUSDT",
+    "amount": 35751.26865550843,
+    "entryPrice": 0.7864231412573395,
+    "exitPrice": 0.777,
+    "pnl": -364.66799041527827,
+    "timestamp": "2025-08-19T16:47:59.296Z",
+    "reason": "Manual sell"
+  },
+  {
+    "symbol": "OGUSDT",
+    "amount": 2474.4526582133713,
+    "entryPrice": 12.356415427271227,
+    "exitPrice": 12.654,
+    "pnl": 705.0472130949717,
+    "timestamp": "2025-08-19T18:15:51.514Z",
+    "reason": "PositionManager decision"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "amount": 29747.299193787498,
+    "entryPrice": 1.3376298379487852,
+    "exitPrice": 1.384,
+    "pnl": 1338.2168221176926,
+    "timestamp": "2025-08-19T18:15:52.543Z",
+    "reason": "PositionManager decision"
+  },
+  {
+    "symbol": "CTSIUSDT",
+    "amount": 28907.92291220557,
+    "entryPrice": 0.0934,
+    "exitPrice": 0.0915,
+    "pnl": -57.570128479657356,
+    "timestamp": "2025-08-19T18:21:04.948Z",
+    "reason": "Manual sell"
+  },
+  {
+    "symbol": "RADUSDT",
+    "amount": 3452.6854219948846,
+    "entryPrice": 0.782,
+    "exitPrice": 0.761,
+    "pnl": -75.13388746803075,
+    "timestamp": "2025-08-19T18:21:05.284Z",
+    "reason": "Manual sell"
+  },
+  {
+    "symbol": "IOUSDT",
+    "amount": 19354.83870967742,
+    "entryPrice": 0.62,
+    "exitPrice": 0.633,
+    "pnl": 239.36129032258089,
+    "timestamp": "2025-08-19T19:31:50.484Z",
+    "reason": "PositionManager decision"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "amount": 8752.7352297593,
+    "entryPrice": 1.371,
+    "exitPrice": 1.39,
+    "pnl": 154.13566739606046,
+    "timestamp": "2025-08-19T19:31:57.311Z",
+    "reason": "PositionManager decision"
+  },
+  {
+    "symbol": "OGUSDT",
+    "amount": 939.261114589856,
+    "entryPrice": 12.776,
+    "exitPrice": 13.087,
+    "pnl": 279.8180964308077,
+    "timestamp": "2025-08-19T19:31:57.857Z",
+    "reason": "PositionManager decision"
+  }
+]

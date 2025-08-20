@@ -1,0 +1,314 @@
+[
+  {
+    "symbol": "PEOPLEBTC",
+    "priceChangePercent": 6.249999999999989,
+    "timestamp": "2025-08-20T00:47:20.825Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "BABYFDUSD",
+    "priceChangePercent": 2.0791683326669315,
+    "timestamp": "2025-08-20T00:42:47.905Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PEOPLEBTC",
+    "priceChangePercent": 6.666666666666673,
+    "timestamp": "2025-08-20T00:41:26.843Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PHABTC",
+    "priceChangePercent": 2.000000000000002,
+    "timestamp": "2025-08-20T00:40:52.140Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PHATRY",
+    "priceChangePercent": 2.4070021881837946,
+    "timestamp": "2025-08-20T00:40:45.862Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "COTIBTC",
+    "priceChangePercent": 2.2727272727272627,
+    "timestamp": "2025-08-20T00:40:39.834Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PHAUSDT",
+    "priceChangePercent": 2.066486972147359,
+    "timestamp": "2025-08-20T00:40:32.842Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PHABTC",
+    "priceChangePercent": 2.0408163265306145,
+    "timestamp": "2025-08-20T00:40:29.830Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "RAREBTC",
+    "priceChangePercent": 2.000000000000002,
+    "timestamp": "2025-08-20T00:39:54.819Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PEOPLEBTC",
+    "priceChangePercent": 6.666666666666673,
+    "timestamp": "2025-08-19T23:17:46.226Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "priceChangePercent": 2.004008016032051,
+    "timestamp": "2025-08-19T23:17:32.330Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "priceChangePercent": 2.025658338960149,
+    "timestamp": "2025-08-19T23:07:56.205Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "ATABTC",
+    "priceChangePercent": 2.5000000000000027,
+    "timestamp": "2025-08-19T23:07:06.201Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "MAVBTC",
+    "priceChangePercent": 2.000000000000002,
+    "timestamp": "2025-08-19T21:09:38.660Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "DENTETH",
+    "priceChangePercent": 5.555555555555562,
+    "timestamp": "2025-08-19T21:05:05.995Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "DENTETH",
+    "priceChangePercent": 5.555555555555562,
+    "timestamp": "2025-08-19T20:54:19.789Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "ACATRY",
+    "priceChangePercent": 2.4150943396226436,
+    "timestamp": "2025-08-19T20:53:10.951Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "ACAUSDT",
+    "priceChangePercent": 2.1538461538461515,
+    "timestamp": "2025-08-19T20:53:09.715Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "NILTRY",
+    "priceChangePercent": 2.4066390041493704,
+    "timestamp": "2025-08-19T20:30:21.970Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "NILUSDC",
+    "priceChangePercent": 2.040816326530614,
+    "timestamp": "2025-08-19T20:30:20.943Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "NILUSDT",
+    "priceChangePercent": 2.312925170068037,
+    "timestamp": "2025-08-19T20:30:20.208Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "MAVUSDC",
+    "priceChangePercent": 2.699764450081533,
+    "timestamp": "2025-08-19T20:28:53.854Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "MAVBTC",
+    "priceChangePercent": 2.0408163265306145,
+    "timestamp": "2025-08-19T20:28:21.299Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "NILFDUSD",
+    "priceChangePercent": 2.5499655410061894,
+    "timestamp": "2025-08-19T20:26:31.892Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "VETBTC",
+    "priceChangePercent": 5.000000000000005,
+    "timestamp": "2025-08-19T20:24:05.887Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "OGNBTC",
+    "priceChangePercent": 3.174603174603178,
+    "timestamp": "2025-08-19T20:23:51.955Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "OGNUSDT",
+    "priceChangePercent": 2.094972067039108,
+    "timestamp": "2025-08-19T20:23:29.412Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "OGNTRY",
+    "priceChangePercent": 2.0519835841313285,
+    "timestamp": "2025-08-19T20:23:06.865Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "OGNTRY",
+    "priceChangePercent": 2.1379310344827682,
+    "timestamp": "2025-08-19T20:16:50.078Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "MAVBTC",
+    "priceChangePercent": 2.0408163265306145,
+    "timestamp": "2025-08-19T19:43:59.889Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "VETBTC",
+    "priceChangePercent": 5.000000000000005,
+    "timestamp": "2025-08-19T19:43:27.884Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PEOPLEBTC",
+    "priceChangePercent": 6.249999999999989,
+    "timestamp": "2025-08-19T19:40:07.908Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "ACHBTC",
+    "priceChangePercent": null,
+    "timestamp": "2025-08-19T19:29:05.900Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "DATABTC",
+    "priceChangePercent": 7.6923076923077,
+    "timestamp": "2025-08-19T19:18:04.784Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PEOPLEBTC",
+    "priceChangePercent": 6.249999999999989,
+    "timestamp": "2025-08-19T18:15:37.477Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PEOPLEBTC",
+    "priceChangePercent": 6.249999999999989,
+    "timestamp": "2025-08-19T17:00:48.630Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "DATABTC",
+    "priceChangePercent": 7.142857142857132,
+    "timestamp": "2025-08-19T15:20:37.963Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "CTSIBTC",
+    "priceChangePercent": 5.000000000000005,
+    "timestamp": "2025-08-19T15:20:12.379Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "DATABTC",
+    "priceChangePercent": 13.33333333333333,
+    "timestamp": "2025-08-19T15:10:44.923Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PEOPLEBTC",
+    "priceChangePercent": 6.249999999999989,
+    "timestamp": "2025-08-19T15:09:36.978Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "DATABTC",
+    "priceChangePercent": 6.249999999999989,
+    "timestamp": "2025-08-19T15:05:09.979Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "PEOPLEBTC",
+    "priceChangePercent": 6.249999999999989,
+    "timestamp": "2025-08-19T14:59:38.922Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "DATABTC",
+    "priceChangePercent": 6.666666666666673,
+    "timestamp": "2025-08-19T14:54:15.782Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "ASTRBTC",
+    "priceChangePercent": 5.000000000000005,
+    "timestamp": "2025-08-19T14:52:51.936Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "VETBTC",
+    "priceChangePercent": 5.000000000000005,
+    "timestamp": "2025-08-19T14:47:33.964Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "PEOPLEBTC",
+    "priceChangePercent": 6.249999999999989,
+    "timestamp": "2025-08-19T14:40:22.941Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "ARPABTC",
+    "priceChangePercent": 5.263157894736834,
+    "timestamp": "2025-08-19T14:38:22.950Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "WAXPBTC",
+    "priceChangePercent": 5.882352941176476,
+    "timestamp": "2025-08-19T14:03:35.030Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "VETBTC",
+    "priceChangePercent": 5.000000000000005,
+    "timestamp": "2025-08-19T12:44:30.007Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "DATABTC",
+    "priceChangePercent": 6.666666666666673,
+    "timestamp": "2025-08-19T12:36:59.051Z",
+    "status": "detected"
+  },
+  {
+    "symbol": "ARPABTC",
+    "priceChangePercent": 5.263157894736834,
+    "timestamp": "2025-08-19T10:14:52.099Z",
+    "status": "ignored"
+  },
+  {
+    "symbol": "PEOPLEBTC",
+    "priceChangePercent": 6.249999999999989,
+    "timestamp": "2025-08-19T10:07:56.181Z",
+    "status": "ignored"
+  }
+]

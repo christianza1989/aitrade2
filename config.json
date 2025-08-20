@@ -1,0 +1,23 @@
+{
+  "sellStrategy": "trailingStop",
+  "takeProfitPercent": 0.5,
+  "stopLossPercent": -5,
+  "trailingStopPercent": -2.5,
+  "trailingProfitPercent": -2.5,
+  "riskAmountPercent": 1,
+  "rsiPeriod": 14,
+  "symbolsToAnalyze": 100,
+  "batchSize": 20,
+  "macroScoreThreshold": 6.5,
+  "minimumBalance": 2000,
+  "cycleIntervalMinutes": 15,
+  "smaShortPeriod": 20,
+  "smaLongPeriod": 50,
+  "macdShortPeriod": 12,
+  "macdLongPeriod": 26,
+  "macdSignalPeriod": 9,
+  "enablePartialProfitTaking": true,
+  "partialProfitPercent": 50,
+  "fastMoverTimeMinutes": 5,
+  "fastMoverPriceChangePercent": 2
+}

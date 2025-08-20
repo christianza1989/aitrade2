@@ -1,0 +1,620 @@
+[
+  {
+    "timestamp": "2025-08-18T14:57:30.886Z",
+    "symbol": "BTCUSDT",
+    "amount": 0.17304391162301344,
+    "entryPrice": 115577.6
+  },
+  {
+    "timestamp": "2025-08-18T14:57:31.206Z",
+    "symbol": "ETHUSDT",
+    "amount": 2.7694501949000574,
+    "entryPrice": 4332.99
+  },
+  {
+    "timestamp": "2025-08-18T14:57:32.042Z",
+    "symbol": "WBTCUSDT",
+    "amount": 0.05190342399102555,
+    "entryPrice": 115599.31
+  },
+  {
+    "timestamp": "2025-08-18T14:57:32.449Z",
+    "symbol": "POLUSDT",
+    "amount": 15797.788309636651,
+    "entryPrice": 0.2532
+  },
+  {
+    "timestamp": "2025-08-18T14:57:33.120Z",
+    "symbol": "AEURUSDT",
+    "amount": 3575.5787968177347,
+    "entryPrice": 1.1187
+  },
+  {
+    "timestamp": "2025-08-18T14:57:33.518Z",
+    "symbol": "BNBUSDT",
+    "amount": 3.579567826844372,
+    "entryPrice": 838.09
+  },
+  {
+    "timestamp": "2025-08-18T14:57:33.896Z",
+    "symbol": "SOLUSDT",
+    "amount": 16.43655489809336,
+    "entryPrice": 182.52
+  },
+  {
+    "timestamp": "2025-08-18T14:57:34.278Z",
+    "symbol": "OGUSDT",
+    "amount": 177.8220357066648,
+    "entryPrice": 14.059
+  },
+  {
+    "timestamp": "2025-08-18T14:57:34.606Z",
+    "symbol": "SUSDT",
+    "amount": 6291.286568103177,
+    "entryPrice": 0.3179
+  },
+  {
+    "timestamp": "2025-08-18T14:57:35.078Z",
+    "symbol": "PNUTUSDT",
+    "amount": 8996.85110211426,
+    "entryPrice": 0.2223
+  },
+  {
+    "timestamp": "2025-08-18T14:57:36.336Z",
+    "symbol": "RESOLVUSDT",
+    "amount": 8650.519031141868,
+    "entryPrice": 0.1734
+  },
+  {
+    "timestamp": "2025-08-18T14:57:36.636Z",
+    "symbol": "BIOUSDT",
+    "amount": 7412.898443291328,
+    "entryPrice": 0.1349
+  },
+  {
+    "timestamp": "2025-08-18T14:57:36.970Z",
+    "symbol": "ZKUSDT",
+    "amount": 15135.462388375963,
+    "entryPrice": 0.06607
+  },
+  {
+    "timestamp": "2025-08-18T14:57:37.289Z",
+    "symbol": "ALPINEUSDT",
+    "amount": 441.8912947414936,
+    "entryPrice": 2.263
+  },
+  {
+    "timestamp": "2025-08-18T14:57:37.643Z",
+    "symbol": "TIAUSDT",
+    "amount": 571.1022272986866,
+    "entryPrice": 1.751
+  },
+  {
+    "timestamp": "2025-08-18T14:57:38.615Z",
+    "symbol": "FETUSDT",
+    "amount": 1466.275659824047,
+    "entryPrice": 0.682
+  },
+  {
+    "timestamp": "2025-08-18T14:57:39.124Z",
+    "symbol": "LTCUSDT",
+    "amount": 8.479606546256253,
+    "entryPrice": 117.93
+  },
+  {
+    "timestamp": "2025-08-18T14:57:39.507Z",
+    "symbol": "ONDOUSDT",
+    "amount": 1048.1081647626036,
+    "entryPrice": 0.9541
+  },
+  {
+    "timestamp": "2025-08-18T14:57:39.913Z",
+    "symbol": "TONUSDT",
+    "amount": 297.53049687592977,
+    "entryPrice": 3.361
+  },
+  {
+    "timestamp": "2025-08-18T14:57:40.365Z",
+    "symbol": "MAVUSDT",
+    "amount": 8768.85303402315,
+    "entryPrice": 0.05702
+  },
+  {
+    "timestamp": "2025-08-18T14:57:40.692Z",
+    "symbol": "FLOKIUSDT",
+    "amount": 4909180.166912126,
+    "entryPrice": 0.00010185
+  },
+  {
+    "timestamp": "2025-08-18T14:57:41.093Z",
+    "symbol": "ATOMUSDT",
+    "amount": 112.10762331838565,
+    "entryPrice": 4.46
+  },
+  {
+    "timestamp": "2025-08-18T14:57:41.517Z",
+    "symbol": "HBARUSDT",
+    "amount": 2053.8941833716726,
+    "entryPrice": 0.24344
+  },
+  {
+    "timestamp": "2025-08-18T15:38:35.383Z",
+    "symbol": "BTCUSDT",
+    "amount": 0.03455867748088322,
+    "entryPrice": 115745.17
+  },
+  {
+    "timestamp": "2025-08-18T15:38:35.933Z",
+    "symbol": "ETHUSDT",
+    "amount": 0.5781335997372961,
+    "entryPrice": 4324.26
+  },
+  {
+    "timestamp": "2025-08-18T15:38:36.480Z",
+    "symbol": "POLUSDT",
+    "amount": 5889.281507656066,
+    "entryPrice": 0.2547
+  },
+  {
+    "timestamp": "2025-08-18T15:38:36.790Z",
+    "symbol": "AEURUSDT",
+    "amount": 896.1376467425397,
+    "entryPrice": 1.1159
+  },
+  {
+    "timestamp": "2025-08-18T15:38:37.205Z",
+    "symbol": "BNBUSDT",
+    "amount": 3.57347055460263,
+    "entryPrice": 839.52
+  },
+  {
+    "timestamp": "2025-08-18T15:38:37.696Z",
+    "symbol": "SOLUSDT",
+    "amount": 5.489378053466543,
+    "entryPrice": 182.17
+  },
+  {
+    "timestamp": "2025-08-18T15:38:38.159Z",
+    "symbol": "SUSDT",
+    "amount": 789.1414141414141,
+    "entryPrice": 0.3168
+  },
+  {
+    "timestamp": "2025-08-18T15:38:38.624Z",
+    "symbol": "PNUTUSDT",
+    "amount": 1125.1125112511252,
+    "entryPrice": 0.2222
+  },
+  {
+    "timestamp": "2025-08-18T15:38:38.968Z",
+    "symbol": "BIOUSDT",
+    "amount": 3641.6605972323378,
+    "entryPrice": 0.1373
+  },
+  {
+    "timestamp": "2025-08-18T15:38:39.336Z",
+    "symbol": "FETUSDT",
+    "amount": 440.52863436123346,
+    "entryPrice": 0.681
+  },
+  {
+    "timestamp": "2025-08-18T15:38:39.704Z",
+    "symbol": "FLOKIUSDT",
+    "amount": 2459177.650993508,
+    "entryPrice": 0.00010166
+  },
+  {
+    "timestamp": "2025-08-18T15:38:40.006Z",
+    "symbol": "LINKUSDT",
+    "amount": 29.702970297029704,
+    "entryPrice": 25.25
+  },
+  {
+    "timestamp": "2025-08-18T15:38:40.348Z",
+    "symbol": "PENDLEUSDT",
+    "amount": 368.1207436039021,
+    "entryPrice": 5.433
+  },
+  {
+    "timestamp": "2025-08-18T15:38:40.677Z",
+    "symbol": "EPICUSDT",
+    "amount": 67.15916722632639,
+    "entryPrice": 2.978
+  },
+  {
+    "timestamp": "2025-08-18T15:38:40.989Z",
+    "symbol": "SHIBUSDT",
+    "amount": 15847860.53882726,
+    "entryPrice": 0.00001262
+  },
+  {
+    "timestamp": "2025-08-18T15:38:41.394Z",
+    "symbol": "FILUSDT",
+    "amount": 202.75750202757501,
+    "entryPrice": 2.466
+  },
+  {
+    "timestamp": "2025-08-18T15:38:41.770Z",
+    "symbol": "MEMEUSDT",
+    "amount": 482625.4826254826,
+    "entryPrice": 0.002072
+  },
+  {
+    "timestamp": "2025-08-18T15:38:42.082Z",
+    "symbol": "ALGOUSDT",
+    "amount": 590.318772136954,
+    "entryPrice": 0.2541
+  },
+  {
+    "timestamp": "2025-08-18T15:38:42.560Z",
+    "symbol": "EIGENUSDT",
+    "amount": 373.13432835820896,
+    "entryPrice": 1.34
+  },
+  {
+    "timestamp": "2025-08-18T15:38:43.106Z",
+    "symbol": "VETUSDT",
+    "amount": 6318.449873631002,
+    "entryPrice": 0.02374
+  },
+  {
+    "timestamp": "2025-08-18T15:38:43.582Z",
+    "symbol": "JUVUSDT",
+    "amount": 520.8333333333334,
+    "entryPrice": 1.44
+  },
+  {
+    "timestamp": "2025-08-18T15:38:44.001Z",
+    "symbol": "CFXUSDT",
+    "amount": 4370.629370629371,
+    "entryPrice": 0.1716
+  },
+  {
+    "timestamp": "2025-08-18T16:00:19.231Z",
+    "symbol": "WBTCUSDT",
+    "amount": 0.012916613529153787,
+    "entryPrice": 116129.51
+  },
+  {
+    "timestamp": "2025-08-18T16:00:19.934Z",
+    "symbol": "RAYUSDT",
+    "amount": 355.3449807521469,
+    "entryPrice": 3.377
+  },
+  {
+    "timestamp": "2025-08-18T16:00:20.288Z",
+    "symbol": "AEURUSDT",
+    "amount": 890.3133903133903,
+    "entryPrice": 1.1232
+  },
+  {
+    "timestamp": "2025-08-18T16:00:21.033Z",
+    "symbol": "LTCUSDT",
+    "amount": 5.925173522938886,
+    "entryPrice": 118.14
+  },
+  {
+    "timestamp": "2025-08-18T16:00:21.548Z",
+    "symbol": "PENDLEUSDT",
+    "amount": 92.64406151565684,
+    "entryPrice": 5.397
+  },
+  {
+    "timestamp": "2025-08-18T16:00:21.970Z",
+    "symbol": "VETUSDT",
+    "amount": 12594.458438287153,
+    "entryPrice": 0.02382
+  },
+  {
+    "timestamp": "2025-08-18T16:00:22.562Z",
+    "symbol": "POLUSDT",
+    "amount": 773.9938080495356,
+    "entryPrice": 0.2584
+  },
+  {
+    "timestamp": "2025-08-18T16:00:23.101Z",
+    "symbol": "ALPINEUSDT",
+    "amount": 89.8069151324652,
+    "entryPrice": 2.227
+  },
+  {
+    "timestamp": "2025-08-18T16:00:23.887Z",
+    "symbol": "ATOMUSDT",
+    "amount": 44.742729306487696,
+    "entryPrice": 4.47
+  },
+  {
+    "timestamp": "2025-08-18T16:00:24.376Z",
+    "symbol": "EPICUSDT",
+    "amount": 67.63611768684478,
+    "entryPrice": 2.957
+  },
+  {
+    "timestamp": "2025-08-18T17:47:13.414Z",
+    "symbol": "AAVEUSDT",
+    "amount": 6.134551155340468,
+    "entryPrice": 293.42
+  },
+  {
+    "timestamp": "2025-08-18T17:47:14.077Z",
+    "symbol": "TRUMPUSDT",
+    "amount": 164.47368421052633,
+    "entryPrice": 9.12
+  },
+  {
+    "timestamp": "2025-08-18T17:47:15.070Z",
+    "symbol": "RAYUSDT",
+    "amount": 348.6345148169669,
+    "entryPrice": 3.442
+  },
+  {
+    "timestamp": "2025-08-18T17:47:15.526Z",
+    "symbol": "RENDERUSDT",
+    "amount": 316.7062549485352,
+    "entryPrice": 3.789
+  },
+  {
+    "timestamp": "2025-08-18T17:47:16.309Z",
+    "symbol": "ICPUSDT",
+    "amount": 187.6172607879925,
+    "entryPrice": 5.33
+  },
+  {
+    "timestamp": "2025-08-18T17:47:17.431Z",
+    "symbol": "NEARUSDT",
+    "amount": 307.21966205837174,
+    "entryPrice": 2.604
+  },
+  {
+    "timestamp": "2025-08-18T17:47:18.249Z",
+    "symbol": "XLMUSDT",
+    "amount": 1924.9278152069296,
+    "entryPrice": 0.4156
+  },
+  {
+    "timestamp": "2025-08-18T17:47:18.748Z",
+    "symbol": "TAOUSDT",
+    "amount": 2.2383883603805264,
+    "entryPrice": 357.4
+  },
+  {
+    "timestamp": "2025-08-18T17:47:19.325Z",
+    "symbol": "BCHUSDT",
+    "amount": 1.234132581100141,
+    "entryPrice": 567.2
+  },
+  {
+    "timestamp": "2025-08-18T17:47:19.785Z",
+    "symbol": "ETCUSDT",
+    "amount": 32.39241092086997,
+    "entryPrice": 21.61
+  },
+  {
+    "timestamp": "2025-08-18T17:47:20.269Z",
+    "symbol": "VETUSDT",
+    "amount": 25020.850708924103,
+    "entryPrice": 0.02398
+  },
+  {
+    "timestamp": "2025-08-18T17:47:22.196Z",
+    "symbol": "HBARUSDT",
+    "amount": 2028.3975659229209,
+    "entryPrice": 0.2465
+  },
+  {
+    "timestamp": "2025-08-18T17:47:22.573Z",
+    "symbol": "LTCUSDT",
+    "amount": 3.3838084764402336,
+    "entryPrice": 118.21
+  },
+  {
+    "timestamp": "2025-08-18T17:47:22.896Z",
+    "symbol": "PENDLEUSDT",
+    "amount": 73.63770250368188,
+    "entryPrice": 5.432
+  },
+  {
+    "timestamp": "2025-08-18T18:48:54.001Z",
+    "symbol": "BTCUSDT",
+    "amount": 0.1071380320636872,
+    "entryPrice": 116504.38
+  },
+  {
+    "timestamp": "2025-08-18T18:48:54.340Z",
+    "symbol": "WBTCUSDT",
+    "amount": 0.10715791761802347,
+    "entryPrice": 116482.76
+  },
+  {
+    "timestamp": "2025-08-18T18:48:55.087Z",
+    "symbol": "UNIUSDT",
+    "amount": 1179.5549045549044,
+    "entryPrice": 10.582
+  },
+  {
+    "timestamp": "2025-08-19T09:59:06.271Z",
+    "symbol": "LDOUSDT",
+    "amount": 7584.236641221374,
+    "entryPrice": 1.31
+  },
+  {
+    "timestamp": "2025-08-19T09:59:06.883Z",
+    "symbol": "BNBUSDT",
+    "amount": 11.7646327456158,
+    "entryPrice": 844.51
+  },
+  {
+    "timestamp": "2025-08-19T09:59:07.217Z",
+    "symbol": "VIRTUALUSDT",
+    "amount": 8046.772495342999,
+    "entryPrice": 1.2347
+  },
+  {
+    "timestamp": "2025-08-19T09:59:07.863Z",
+    "symbol": "FETUSDT",
+    "amount": 14610.80882352941,
+    "entryPrice": 0.68
+  },
+  {
+    "timestamp": "2025-08-19T09:59:08.652Z",
+    "symbol": "UMAUSDT",
+    "amount": 7326.954277286135,
+    "entryPrice": 1.356
+  },
+  {
+    "timestamp": "2025-08-19T10:26:54.281Z",
+    "symbol": "BTCUSDT",
+    "amount": 0.05366959353506464,
+    "entryPrice": 115521.65
+  },
+  {
+    "timestamp": "2025-08-19T10:26:54.849Z",
+    "symbol": "API3USDT",
+    "amount": 3934.0101522842638,
+    "entryPrice": 1.576
+  },
+  {
+    "timestamp": "2025-08-19T10:26:55.245Z",
+    "symbol": "ETHUSDT",
+    "amount": 1.4435389988358556,
+    "entryPrice": 4295
+  },
+  {
+    "timestamp": "2025-08-19T10:26:55.685Z",
+    "symbol": "BNBUSDT",
+    "amount": 7.337885978720131,
+    "entryPrice": 844.93
+  },
+  {
+    "timestamp": "2025-08-19T10:37:42.188Z",
+    "symbol": "BNBUSDT",
+    "amount": 4.5671339600748295,
+    "entryPrice": 844.58
+  },
+  {
+    "timestamp": "2025-08-19T10:37:42.525Z",
+    "symbol": "API3USDT",
+    "amount": 2496.640776699029,
+    "entryPrice": 1.545
+  },
+  {
+    "timestamp": "2025-08-19T10:37:42.872Z",
+    "symbol": "BTCUSDT",
+    "amount": 0.033411359087722324,
+    "entryPrice": 115449.06
+  },
+  {
+    "timestamp": "2025-08-19T10:37:43.190Z",
+    "symbol": "ETHUSDT",
+    "amount": 0.8989051809317847,
+    "entryPrice": 4291.12
+  },
+  {
+    "timestamp": "2025-08-19T12:58:42.071Z",
+    "symbol": "ETHUSDT",
+    "amount": 0.9063820298836105,
+    "entryPrice": 4305.37
+  },
+  {
+    "timestamp": "2025-08-19T12:58:42.491Z",
+    "symbol": "BTCUSDT",
+    "amount": 0.03377460126719992,
+    "entryPrice": 115539.78
+  },
+  {
+    "timestamp": "2025-08-19T12:58:43.147Z",
+    "symbol": "SOLUSDT",
+    "amount": 21.44244189241167,
+    "entryPrice": 181.99
+  },
+  {
+    "timestamp": "2025-08-19T12:58:43.745Z",
+    "symbol": "LINKUSDT",
+    "amount": 158.75956061838895,
+    "entryPrice": 24.58
+  },
+  {
+    "timestamp": "2025-08-19T12:58:44.485Z",
+    "symbol": "PEPEUSDT",
+    "amount": 363343575.41899437,
+    "entryPrice": 0.00001074
+  },
+  {
+    "timestamp": "2025-08-19T13:29:30.343Z",
+    "symbol": "ETHUSDT",
+    "amount": 0.9618032257216715,
+    "entryPrice": 4313.93
+  },
+  {
+    "timestamp": "2025-08-19T13:29:30.829Z",
+    "symbol": "BTCUSDT",
+    "amount": 0.0358439272167478,
+    "entryPrice": 115756.06
+  },
+  {
+    "timestamp": "2025-08-19T13:29:31.229Z",
+    "symbol": "SOLUSDT",
+    "amount": 22.701492529066535,
+    "entryPrice": 182.77
+  },
+  {
+    "timestamp": "2025-08-19T13:29:32.047Z",
+    "symbol": "LINKUSDT",
+    "amount": 167.2370733388751,
+    "entryPrice": 24.81
+  },
+  {
+    "timestamp": "2025-08-19T13:37:42.413Z",
+    "symbol": "TRXUSDT",
+    "amount": 13651.877133105801,
+    "entryPrice": 0.3516
+  },
+  {
+    "timestamp": "2025-08-19T13:37:42.985Z",
+    "symbol": "ETHUSDT",
+    "amount": 1.1146201003158092,
+    "entryPrice": 4306.4
+  },
+  {
+    "timestamp": "2025-08-19T13:37:43.382Z",
+    "symbol": "DOGEUSDT",
+    "amount": 21787.481276383278,
+    "entryPrice": 0.22031
+  },
+  {
+    "timestamp": "2025-08-19T13:37:44.001Z",
+    "symbol": "LINKUSDT",
+    "amount": 194.8051948051948,
+    "entryPrice": 24.64
+  },
+  {
+    "timestamp": "2025-08-19T14:06:53.743Z",
+    "symbol": "UMAUSDT",
+    "amount": 4831.077586206897,
+    "entryPrice": 1.392
+  },
+  {
+    "timestamp": "2025-08-19T14:06:54.124Z",
+    "symbol": "SOLUSDT",
+    "amount": 36.82231834857362,
+    "entryPrice": 182.63
+  },
+  {
+    "timestamp": "2025-08-19T14:06:54.475Z",
+    "symbol": "TONUSDT",
+    "amount": 2060.3125,
+    "entryPrice": 3.264
+  },
+  {
+    "timestamp": "2025-08-19T14:06:54.835Z",
+    "symbol": "TAOUSDT",
+    "amount": 18.97533860045147,
+    "entryPrice": 354.4
+  },
+  {
+    "timestamp": "2025-08-19T14:06:55.202Z",
+    "symbol": "LINKUSDT",
+    "amount": 273.5907241659886,
+    "entryPrice": 24.58
+  }
+]

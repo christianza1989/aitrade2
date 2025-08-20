@@ -1,0 +1,133 @@
+[
+  {
+    "symbol": "OGUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 2.4342517219787094,
+    "currentPrice": 13.087,
+    "newTakeProfitPercent": null,
+    "justification": "The position has generated a 2.43% profit, significantly exceeding the initial 0.5% take-profit target. While the broader macro environment indicates a 'Risk-On' sentiment, the critical technical indicators for OGUSDT are undefined. This absence of asset-specific technical data (RSI, MACD) prevents a proper assessment of the asset's current momentum, strength, or potential for exhaustion. As a disciplined trader focused on intelligently protecting profits, securing a substantial gain that is almost five times the original target is the most prudent action. Relying solely on the general macro outlook without specific asset health confirmation would be speculative. It is better to lock in guaranteed profits and re-evaluate the asset later if clear technical strength emerges.",
+    "timestamp": "2025-08-19T19:31:57.794Z"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 1.3858497447118823,
+    "currentPrice": 1.39,
+    "justification": "The position has not only met but exceeded its predefined take-profit target of 1.2% (current P/L is 1.39%). While the overarching macro environment is 'Risk-On' and generally supportive for altcoins, the crucial technical indicators (RSI, MACD) for UMAUSDT are undefined. This lack of specific asset-level momentum data prevents an intelligent assessment of whether the trend has further strength or is showing signs of exhaustion. Furthermore, the current P/L (1.39%) is slightly below the highest P/L achieved (1.896%), indicating a minor pullback from the peak. As a disciplined trader focused on protecting capital and maximizing gains intelligently, securing the current profits is the most prudent action when key information about the asset's internal health is missing, even in a favorable macro backdrop. We avoid gambling on further appreciation without confirming technical strength.",
+    "timestamp": "2025-08-19T19:31:56.991Z"
+  },
+  {
+    "symbol": "IOUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 2.096774193548389,
+    "currentPrice": 0.633,
+    "justification": "The position has significantly exceeded its initial take-profit target of 1.2%, currently standing at a 2.10% P/L, with a high of 2.258%. While the macro environment is 'Risk-On' and generally bullish, the market sentiment is 'Neutral', and crucially, the asset's specific technical indicators are undefined. This lack of technical confirmation prevents a reliable assessment of continued momentum. Furthermore, relying on the specified trailing stop (-2.5% from highest price) risks turning a profitable trade into a loss, as the derived trailing stop price (approx. 0.618) is below the entry price (0.62). As a disciplined trader focused on capital protection and profit maximization, locking in guaranteed profits when the target has been comfortably surpassed and immediate continuation signals are absent or unclear is the most prudent course of action. The slight pullback from the highest P/L also suggests taking action rather than waiting for a potential deeper retracement.",
+    "timestamp": "2025-08-19T19:31:50.477Z"
+  },
+  {
+    "symbol": "ALPINEUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 0.6238003838771545,
+    "currentPrice": 2.097,
+    "newTakeProfitPercent": 1.5,
+    "justification": "The position has met its initial take-profit target of 0.5%, but the broader macro environment and market sentiment are strongly 'Risk-On' and 'Bullish' respectively. Key indicators, including new product launches, institutional accumulation, and positive on-chain data, suggest significant potential for continued upside in the crypto market. While asset-specific technical indicators are undefined, the fact that the current price is the highest reached since entry (as indicated by 'Highest Price Reached: N/A' and `highPnlPercent` matching `Current P/L %`) implies the asset is currently demonstrating positive momentum within this bullish environment. A 0.5% profit is very conservative in such conditions. Therefore, to maximize gains responsibly, the decision is to let profits run by increasing the take-profit target to a more realistic 1.5%, while relying on proper stop-loss management (including the trailing stop) to protect capital if conditions change.",
+    "timestamp": "2025-08-19T19:30:10.765Z"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 1.8234865061998475,
+    "currentPrice": 1.396,
+    "newTakeProfitPercent": 1.2,
+    "justification": "The initial thesis of a bullish market remains largely valid.  The macro environment is still 'Risk-On' with strong institutional interest and liquidity despite some regulatory headwinds.  While the market sentiment is neutral, the positive macro factors outweigh the negative.  Lacking technical indicators, I'm cautiously optimistic.  The current profit is only 1.82%, significantly below the high of 1.89%, suggesting room for further upside. Raising the take-profit target to 1.2% allows for further profit potential while still maintaining a risk-averse approach.  This increases profit potential while remaining disciplined and minimizing risk given the overall favorable market conditions.",
+    "timestamp": "2025-08-19T19:30:05.178Z"
+  },
+  {
+    "symbol": "IOUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 1.7741935483870985,
+    "currentPrice": 0.631,
+    "newTakeProfitPercent": 1.2,
+    "justification": "The current market environment remains strongly bullish ('Risk-On' regime with a high score of 8.5), supported by robust on-chain data and significant institutional interest.  While the initial take-profit target of 0.5% has been met, the overall market trend suggests further upside potential.  The current P/L of 1.77% is below the high P/L of 1.93%, suggesting a minor retracement within a larger bullish trend.  Lacking technical indicators, I'm proceeding cautiously by raising the take-profit target to 1.2%, allowing for further gains while still maintaining a risk-averse approach. This increase represents a significant but manageable expansion of the profit target, balancing profit maximization with risk mitigation.",
+    "timestamp": "2025-08-19T19:29:59.924Z"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 3.466591484107586,
+    "currentPrice": 1.384,
+    "justification": "The position has significantly exceeded its initial take-profit target of 2%, currently at 3.47% P/L. While the macro environment remains 'Risk-On' with bullish on-chain signals, the P/L has pulled back from its high of 4.139%. Crucially, the absence of asset-specific technical indicators (RSI, MACD) prevents an informed assessment of current momentum or potential trend exhaustion. To maximize gains while intelligently protecting profits, it is prudent to secure a substantial profit, avoiding speculative holding without clear technical validation for further upside.",
+    "timestamp": "2025-08-19T18:15:52.503Z"
+  },
+  {
+    "symbol": "OGUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 2.40834062661886,
+    "currentPrice": 12.654,
+    "justification": "The position is currently showing a 2.41% profit, which is more than double the initial take-profit target of 1.2%. While the macro environment is 'Risk-On' and cautiously optimistic, indicating potential for further upside, the asset's profit has already retreated slightly from its peak of 2.68%. Crucially, the technical indicators for the asset are undefined, leaving a critical blind spot in assessing its immediate momentum and potential for exhaustion. Given that the original profit target has been significantly exceeded and there's a lack of specific technical confirmation for continued strength, locking in these substantial gains is the most prudent and disciplined action to protect capital and maximize realized profit, rather than risking a larger retracement without clear directional signals.",
+    "timestamp": "2025-08-19T18:15:51.489Z"
+  },
+  {
+    "symbol": "OGUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 2.4892702462068295,
+    "currentPrice": 12.664,
+    "newTakeProfitPercent": 1.2,
+    "justification": "The current P/L is 2.49%, exceeding the initial take-profit target of 0.8%.  While the take-profit target has been surpassed, the macro environment is 'Risk-On' with a relatively high regime score (6.5), suggesting continued upward momentum is possible.  The market sentiment is neutral, which doesn't contradict the risk-on macro environment.  Lack of technical indicators prevents a precise assessment of momentum exhaustion.  Given the positive macro environment and exceeding the original take-profit target, increasing it to 1.2% presents a reasonable risk-reward profile. This allows for further profit potential while still maintaining a degree of risk mitigation.",
+    "timestamp": "2025-08-19T18:12:03.473Z"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 1.821891330458492,
+    "currentPrice": 1.362,
+    "newTakeProfitPercent": 2,
+    "justification": "The current P/L of 1.82% is approaching the initial take-profit target of 1.5%, but the macro environment remains moderately bullish ('Risk-On' regime with a score of 6.5).  While the Bitcoin 4-hour candle shows a minor correction,  the overall macro sentiment and the absence of negative news suggests the correction may be temporary.  Lack of technical indicators prevents a precise technical assessment; however, the position is still within a reasonable risk-reward profile. Increasing the take-profit target to 2.0% allows for further profit potential while maintaining a cautious approach.  This decision acknowledges the minor correction in Bitcoin but maintains faith in the underlying bullish sentiment, capitalizing on potential further upside while still protecting against significant losses.",
+    "timestamp": "2025-08-19T18:01:03.686Z"
+  },
+  {
+    "symbol": "OGUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 0.33925793308275914,
+    "currentPrice": 12.393,
+    "newTakeProfitPercent": 0.8,
+    "justification": "While the take-profit target of 0.3% has been reached, the macro environment remains cautiously optimistic (Risk-On regime, positive on-chain data outweighing negative news).  The current P/L is only slightly above the initial target, and there's potential for further upside given the generally bullish sentiment despite some market uncertainty.  Lack of technical indicators prevents a precise technical analysis, but the overall market context suggests a small increase in the take-profit target is justified.  A new target of 0.8% offers a reasonable balance between securing profits and allowing for further potential gains.  This decision also acknowledges the risk inherent in holding; the stop-loss remains in place to mitigate potential losses.",
+    "timestamp": "2025-08-19T17:26:53.021Z"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 2.065761217700433,
+    "currentPrice": 1.356,
+    "newTakeProfitPercent": 1.5,
+    "justification": "The initial thesis was based on a cautiously optimistic outlook, and the current macro environment ('Risk-On' with a score of 6.5) and positive market developments (growth in tokenized assets, positive signals from the mining sector) still support a bullish stance.  While the market sentiment is neutral, the overall macro environment outweighs this.  Lacking technical indicators, I cannot definitively assess the asset's momentum; however, the current 2.07% profit surpasses the initial 1% target significantly. Given the positive macro outlook and the fact that we've already exceeded the initial target, taking a measured approach with a modest increase in the take-profit target to 1.5% seems prudent. This balances profit maximization with risk management.",
+    "timestamp": "2025-08-19T17:26:47.366Z"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 0.7861757157086041,
+    "currentPrice": 1.339,
+    "newTakeProfitPercent": 1,
+    "justification": "While the initial take-profit target of 0.3% has been reached, the macro environment remains cautiously optimistic ('Risk-On' regime with a score of 6.5), and the current P/L is only 0.79%.  The lack of technical indicators prevents a precise assessment of momentum. However, given the positive on-chain data and the overall market sentiment being neutral rather than bearish, there's potential for further upside. Increasing the take-profit target to 1.0% allows for further profit while maintaining a reasonable risk tolerance.  This decision is based on a calculated risk assessment, leveraging the slightly bullish market context and the current position's relatively small profit. A stop-loss remains crucial to protect against unforeseen reversals.",
+    "timestamp": "2025-08-19T17:17:55.470Z"
+  },
+  {
+    "symbol": "RADUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 1.0230179028133002,
+    "currentPrice": 0.79,
+    "newTakeProfitPercent": 1.5,
+    "justification": "While the initial take-profit target of 1% has been reached, the macro environment remains cautiously optimistic ('Risk-On' regime with a score of 6.5), outweighing the neutral market sentiment.  The lack of technical indicators prevents a definitive assessment of momentum exhaustion. Given the positive institutional activity and on-chain data suggesting bullishness, a modest increase in the take-profit target to 1.5% allows for further profit potential while maintaining a degree of risk management. This increase is modest to avoid excessive greed and maintain a disciplined approach.  The small increase aligns with the overall moderate bullish outlook and leaves room for potential downside before hitting the stop-loss.",
+    "timestamp": "2025-08-19T16:46:41.561Z"
+  },
+  {
+    "symbol": "RADUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 0.5115089514066501,
+    "currentPrice": 0.786,
+    "newTakeProfitPercent": 1,
+    "justification": "While the initial take-profit target of 0.3% has been met, the macro environment remains cautiously optimistic (Risk-On regime with a score of 6.5).  The market sentiment is neutral, but the positive news around institutional investment and potential short squeezes suggests further upside potential.  Lacking technical indicators, I'm making a calculated risk to let the profit run, aiming for a more substantial gain (1% increase from current price).  This represents a measured approach, balancing profit maximization with risk management. The increased take-profit target allows for a larger profit, but still maintains a protective buffer.",
+    "timestamp": "2025-08-19T16:45:43.716Z"
+  }
+]

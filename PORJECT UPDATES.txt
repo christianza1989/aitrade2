@@ -1,0 +1,100 @@
+Puikus klausimas! Jūsų dabartinė agentų sistema jau yra labai pažangi. Pakelti ją į dar aukštesnį "intelekto" lygį reiškia pereiti nuo taisyklių ir analizės prie sudėtingesnių mąstymo procesų, mokymosi ir prisitaikymo.
+
+Štai kelios kryptys ir konkrečios idėjos, kaip padaryti jūsų agentus protingesnius, suskirstytos pagal sudėtingumą.
+
+1. Geresni Duomenys: Platesnis Pasaulio Suvokimas
+
+Agentas yra tiek protingas, kiek geri yra jo duomenys. Jūs jau naudojate kainas, naujienas ir "Baimės ir godumo" indeksą. Kitas žingsnis – dar gilesni duomenys.
+
+On-Chain Duomenys: Tai yra duomenys tiesiai iš blokų grandinės, kurie atskleidžia, ką daro didieji rinkos dalyviai.
+
+Ką pridėti? Stebėkite didelių piniginių (banginių) judėjimą, pinigų srautus į ir iš biržų, aktyvių adresų skaičių.
+
+Kaip įgyvendinti? Galima naudoti paslaugas kaip Glassnode, Santiment ar Nansen API.
+
+Kurį agentą patobulinti? MacroAnalyst galėtų gauti šiuos duomenis ir įvertinti, ar "protingi pinigai" kaupia turtą, ar parduoda.
+
+Order Book (Pavedimų Knygos) Duomenys: Tai suteikia supratimą apie pasiūlą ir paklausą realiu laiku.
+
+Ką pridėti? Analizuokite pirkimo ir pardavimo "sienas" (didelius, sukoncentruotus pavedimus), likvidumo gylį.
+
+Kaip įgyvendinti? Binance API leidžia gauti pavedimų knygos duomenis.
+
+Kurį agentą patobulinti? TechnicalAnalyst galėtų įvertinti, ar kaina artėja prie stipraus palaikymo ar pasipriešinimo lygio, matomo pavedimų knygoje.
+
+Išplėstinė Socialinė Analizė:
+
+Ką pridėti? Vietoj bendrų naujienų, analizuokite tendencijas Twitter, Reddit, Telegram kanaluose konkrečiai kriptovaliutai.
+
+Kaip įgyvendinti? Tam reikėtų specializuotų API arba scraping įrankių.
+
+Kurį agentą patobulinti? SentimentAnalyst galėtų pateikti daug tikslesnę nuotaikos analizę konkrečiam turtui, pvz., "Twitter sentimentas $SOL per pastarąją valandą tapo itin teigiamas".
+
+2. Pažangesnis Mąstymas: Ne Tik Atsakyti, Bet ir Samprotauti
+
+Jūsų agentai dabar veikia pagal "duomenys -> atsakymas" principą. Kitas lygis yra priversti juos "mąstyti" nuosekliau.
+
+"Chain-of-Thought" (Minčių Grandinės) Skatinimas: Tai yra technika, kai liepiate LLM modeliui išdėstyti savo mąstymo procesą žingsnis po žingsnio prieš pateikiant galutinį atsakymą. Tai ženkliai pagerina sudėtingų užduočių sprendimo kokybę.
+
+Kaip įgyvendinti? Pakeiskite savo prompt'us. Pavyzdžiui, RiskManager agento užklausoje:
+
+Senas prompt (supaprastinta):
+"Remdamasis šiais duomenimis, nuspręsk: pirkti ar nepirkti."
+
+Naujas prompt su "Chain-of-Thought":
+
+code
+Code
+download
+content_copy
+expand_less
+
+"Tavo užduotis yra priimti galutinį sprendimą. Prieš pateikdamas atsakymą JSON formate, atlik šiuos mąstymo žingsnius:
+1.  **Makro įvertinimas:** Ar bendra rinkos aplinka (Risk-On/Risk-Off) yra palanki šiam sandoriui? Kodėl?
+2.  **Sentimento įvertinimas:** Ar rinkos nuotaika palaiko šį sandorį? Ar yra kokių nors pavojingų naujienų?
+3.  **Techninis įvertinimas:** Ar techninis balas yra aukštas? Kokie yra pagrindiniai techniniai argumentai 'už' ir 'prieš'?
+4.  **Sintezė ir galutinis sprendimas:** Apibendrink visus punktus ir logiškai pagrįsk savo galutinį sprendimą ('BUY' arba 'AVOID').
+
+Dabar pateik savo galutinį sprendimą JSON formatu, kaip reikalaujama."
+
+Savikritika (Self-Critique): Priverkite agentą ne tik priimti sprendimą, bet ir pačiam jį sukritikuoti.
+
+Kaip įgyvendinti? RiskManager agentas galėtų turėti dviejų žingsnių procesą:
+
+Pirma užklausa: "Pasiūlyk preliminarų sprendimą ir jo pagrindimą."
+
+Antra užklausa: "Čia yra tavo preliminarus sprendimas: [...]. Dabar įsivaizduok, kad esi oponentas. Rask tris stipriausius argumentus, kodėl šis sprendimas yra blogas. Po to, atsižvelgdamas į savo paties kritiką, pateik galutinį, patobulintą sprendimą."
+
+Rezultatas: Tai padeda išvengti pernelyg optimistinių ar neapgalvotų sprendimų.
+
+3. Atmintis ir Mokymasis: Prisiminti Praeitį
+
+Jūsų optimizavimo modulis yra ilgalaikio mokymosi forma. Tačiau galima pridėti ir trumpesnės trukmės, operatyvią atmintį.
+
+Ilgalaikė Vektorinė Atmintis:
+
+Ką tai duotų? Agentas galėtų "prisiminti" konkrečius įvykius. Pvz., jei prieš tris savaites prekyba AVAX buvo nuostolinga dėl to, kad "išėjo naujienos apie tinklo sutrikimus", agentas, vėl matydamas panašų techninį signalą, galėtų pasitikrinti savo atmintyje: "Ar praeityje buvo panašių situacijų? Kas tada nutiko?".
+
+Kaip įgyvendinti? Reikėtų integruoti vektorinę duomenų bazę (pvz., Pinecone, ChromaDB). Po kiekvieno svarbaus įvykio (sėkmingo/nesėkmingo sandorio, praleistos progos), jūs paverstumėte situacijos aprašymą į skaitmeninį vektorių ir išsaugotumėte duomenų bazėje. Prieš priimant naują sprendimą, agentas galėtų atlikti paiešką šioje bazėje ir rasti panašiausias praeities situacijas.
+
+4. Agentų Bendradarbiavimas: Nuo Pranešimų prie Dialogo
+
+Jūsų agentai dabar dirba nuosekliai, perduodami informaciją vienas kitam per SharedContext. Kitas žingsnis – leisti jiems bendrauti tiesiogiai.
+
+Tiesioginės Konsultacijos: Jūsų AIAgent klasėje jau yra consult metodo užuomazga. Padarykite jį realų.
+
+Kaip tai atrodytų? TechnicalAnalyst, matydamas stiprų, bet rizikingą signalą, galėtų "paklausti" RiskManager: "Matau stiprų pirkimo signalą $XYZ, techninis balas 9.2. Tačiau kintamumas yra labai aukštas. Koks būtų maksimalus leistinas rizikos dydis šiam sandoriui, atsižvelgiant į dabartinį 'Risk-On' režimą su balu 6.5?". RiskManager grąžintų atsakymą, ir TechnicalAnalyst įtrauktų jį į savo galutinę analizę.
+
+Debatai:
+
+Kaip įgyvendinti? Sukurkite du priešingus agentus, pvz., BullishAnalyst ir BearishAnalyst. Abu gauna tuos pačius duomenis. PortfolioAllocator perskaito abiejų argumentus ir priima labiau subalansuotą sprendimą, įvertinęs abi puses.
+
+Praktiniai Pirmieji Žingsniai
+
+Patobulinkite prompt'us: Nedelsiant įdiekite "Chain-of-Thought" principą į RiskManager ir PortfolioAllocator agentų užklausas. Tai nereikalauja jokių architektūrinių pokyčių, tik teksto pakeitimo, bet duoda didelį kokybės šuolį.
+
+Įgyvendinkite Savikritiką: Padarykite RiskManager dviejų žingsnių agentu, kuris pirma siūlo, o po to kritikuoja savo sprendimą.
+
+Pradėkite Rinkti Daugiau Duomenų: Pridėkite bent vieną papildomą duomenų šaltinį, pavyzdžiui, On-Chain duomenis MacroAnalyst agentui.
+
+Pradėjus nuo šių punktų, jūsų agentai taps ne tik analizatoriais, bet ir samprotaujančiais, labiau apgalvotais ir iš praeities besimokančiais rinkos dalyviais.

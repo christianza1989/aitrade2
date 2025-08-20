@@ -1,0 +1,193 @@
+[
+  {
+    "symbol": "SOLUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -0.5913595794776236,
+    "currentPrice": 181.55,
+    "justification": "The position has unequivocally hit and breached its pre-defined stop-loss target of -0.5% (currently at -0.59%). Adhering to strict risk management protocols, particularly in a 'Risk-Off' macro environment with 'deepening losses,' is paramount for capital preservation. While the asset's technical indicators are undefined, the combination of a triggered stop-loss and prevailing macroeconomic headwinds necessitates an immediate exit to prevent further downside. The original thesis, if predicated on short-term upward momentum, is clearly invalidated by the price action and the broader market conditions. This is a disciplined profit protection measure, not a discretionary hold.",
+    "timestamp": "2025-08-19T14:17:21.682Z"
+  },
+  {
+    "symbol": "TAOUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -0.7618510158013512,
+    "currentPrice": 351.7,
+    "justification": "The position has significantly breached its predefined stop-loss target of -0.5%, currently showing a -0.76% P/L. Adhering to disciplined risk management and capital preservation principles, the only prudent action is to exit the trade immediately to prevent further losses. The initial thesis, whatever it was, is clearly not playing out for this specific asset at this moment, despite general market sentiment.",
+    "timestamp": "2025-08-19T14:17:02.905Z"
+  },
+  {
+    "symbol": "TONUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -0.42892156862744457,
+    "currentPrice": 3.25,
+    "newTakeProfitPercent": null,
+    "justification": "The position is currently at a loss (-0.43%), not a profit, and is dangerously close to the predefined stop-loss target of -0.5%. The macro environment is decidedly 'Risk-Off' due to significant macroeconomic concerns and immediate selling pressure, suggesting further downside risk. While market sentiment shows a weak 'Bullish' lean, it is contradicted by the strong macro headwinds and acknowledges market struggles. Critically, without any technical indicator data (RSI, MACD) to suggest underlying strength or a potential bounce, holding this position in a 'Risk-Off' environment, already at a loss and nearing the stop-loss, is an unjustified risk. As a disciplined trader focused on capital preservation, cutting losses is paramount when the market context is unfavorable and the position is performing negatively.",
+    "timestamp": "2025-08-19T14:13:39.384Z"
+  },
+  {
+    "symbol": "PEPEUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -0.3724394785847422,
+    "currentPrice": 0.0000107,
+    "justification": "The position has retraced significantly from its high P/L of +0.8379% back into a small loss of -0.37%. It is now critically close to the pre-defined stop-loss target of -0.5%. While the market sentiment is broadly 'Bullish', the 'mixed market conditions' and, more importantly, the lack of specific technical indicators (RSI, MACD) for this asset prevent a confident assessment of a potential rebound. Given the primary goal to protect capital, allowing the position to fall further to hit the stop-loss is less prudent than exiting now. The trade has shown weakness by failing to hold its gains. As a disciplined trader, cutting losses promptly to protect capital for future opportunities is prioritized over gambling on a recovery without clear supportive data. Holding and increasing the take-profit target is not rational when the position is currently at a loss and has demonstrated a failure to sustain upward momentum.",
+    "timestamp": "2025-08-19T14:12:42.307Z"
+  },
+  {
+    "symbol": "LINKUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -0.36615134255492215,
+    "currentPrice": 24.49,
+    "newTakeProfitPercent": null,
+    "justification": "The position is currently at a loss of -0.37%. While the stop-loss of -0.5% has not been hit, the trade previously achieved a peak PnL of 0.366% but failed to reach the initial take-profit and has since retraced below entry. Given the 'Neutral' market sentiment with noted macroeconomic headwinds, and the lack of technical indicators to suggest a rebound, it is prudent to protect capital by cutting losses now rather than risking a further drawdown to the stop-loss or beyond. There are no profits to lock in, and holding/increasing the take-profit on a losing trade without supporting technicals or a clear market catalyst would be a speculative gamble, contrary to disciplined profit-taking and capital protection.",
+    "timestamp": "2025-08-19T14:12:40.762Z"
+  },
+  {
+    "symbol": "UMAUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 0.2873563218390807,
+    "currentPrice": 1.396,
+    "justification": "The position has met and exceeded its initial take-profit target of 0.1%, currently standing at 0.29% P/L. While the macro environment is cautiously 'Risk-On' due to strong underlying factors like rising stablecoin supply and institutional adoption, market sentiment remains 'Neutral'. Critically, there are no technical indicators available (RSI, MACD, etc.) for UMAUSDT, making it impossible to assess the asset's current momentum, strength, or potential for trend exhaustion. Furthermore, the P/L has already retraced from its high of 0.43% to 0.29%, suggesting a potential wane in immediate upward momentum. Given the lack of asset-specific technical confirmation for a continued run and the directive to be a disciplined profit-taker rather than a greedy gambler, locking in the confirmed profit is the most prudent decision to protect capital and secure gains.",
+    "timestamp": "2025-08-19T14:12:31.945Z"
+  },
+  {
+    "symbol": "DOGEUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -0.5129136217148528,
+    "currentPrice": 0.21918,
+    "justification": "The position has hit its predefined stop-loss target of -0.5% (currently at -0.51%). As a disciplined trader, capital protection is paramount. Adhering to the stop-loss rule is critical to prevent further losses in a 'Risk-Off' macro environment with neutral sentiment, especially with technical indicators undefined. This is a non-negotiable risk management action.",
+    "timestamp": "2025-08-19T14:12:28.445Z"
+  },
+  {
+    "symbol": "BTCUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -0.5431547937218196,
+    "currentPrice": 114936.01,
+    "justification": "The current P/L of -0.54% has breached the predefined stop-loss target of -0.5%. Adhering strictly to risk management protocols, the primary goal is capital protection. Despite the nuanced 'Risk-On' macro environment and neutral sentiment, hitting the stop-loss necessitates immediate liquidation to prevent further losses. The original thesis for holding the position, while potentially supported by long-term macro factors, has been invalidated by price action triggering the pre-set risk control. Technical indicators are undefined, but the breach of the stop-loss is the overriding factor.",
+    "timestamp": "2025-08-19T14:11:26.883Z"
+  },
+  {
+    "symbol": "LINKUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": -0.12205044751829774,
+    "currentPrice": 24.55,
+    "newTakeProfitPercent": 0.75,
+    "justification": "The initial thesis for holding a risk asset like LINK remains largely valid due to the prevailing 'Risk-On' macro environment and 'Bullish' market sentiment, driven by strong on-chain data and institutional adoption. While the position has retraced from its high of 0.366% profit to a slight loss of -0.12%, it is still well above the stop-loss target. The macro analysis explicitly states 'underlying market structure remains robust... signaling potential for future upside.' Without specific technical indicators (RSI, MACD) provided, I must heavily weigh the strong fundamental and sentiment backdrop. Rather than locking in a minor loss, it's prudent to give the position room to recover and potentially exceed previous highs, aligning with the positive market outlook. The new take-profit is set to capture more significant upside while remaining realistic given the asset's prior performance in this cycle.",
+    "timestamp": "2025-08-19T14:10:28.986Z"
+  },
+  {
+    "symbol": "LINKUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -0.24183796856105896,
+    "currentPrice": 24.75,
+    "justification": "The position is currently at a loss (-0.24%) and is closely approaching the predefined stop-loss target of -0.5%. While the broader macro environment is identified as 'Risk-On' and generally bullish for crypto, this specific asset (LINK) has shown significant weakness, retracing from a substantial high PnL of 36.27% to now be underwater. Crucially, there are no technical indicators (RSI, MACD, etc.) available for LINK itself, which means we lack any specific data to assess its individual strength, support levels, or potential for a rebound. In the absence of technical evidence to support a recovery, and with the position nearing its stop-loss, the most prudent decision is to prioritize capital preservation by cutting the loss now, rather than risking a deeper drawdown on a speculative hold. This aligns with disciplined risk management over gambling on a rebound.",
+    "timestamp": "2025-08-19T13:31:52.446Z"
+  },
+  {
+    "symbol": "ETHUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 0.5741360265709811,
+    "currentPrice": 4325.42,
+    "newTakeProfitPercent": 1.5,
+    "justification": "The initial take-profit target has been met, but the macro environment is strongly 'Risk-On' (score 7.5) with compelling evidence of institutional interest, accumulation (negative Bitcoin exchange netflow, rising Stablecoin Supply Ratio), and specifically 'substantial inflows' into Ethereum. While technical indicators are undefined, the robust underlying market structure and asset-specific positive signals suggest further upside potential. Raising the take-profit target to 1.5% is a disciplined approach to maximize gains in this favorable environment, rather than exiting prematurely at a relatively small profit when the market appears to have more room to run.",
+    "timestamp": "2025-08-19T13:31:42.812Z"
+  },
+  {
+    "symbol": "SOLUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 0.18031393968574724,
+    "currentPrice": 182.72,
+    "justification": "The position reached 0.4983% PnL, coming within a fraction of the 0.5% Take-Profit target, but has since pulled back to 0.18%. While overall market sentiment is bullish, the asset failed to sustain momentum past the near-target point. Given the lack of specific technical indicators for the asset (RSI, MACD are undefined) to confirm renewed strength or continuation, and the principle of disciplined profit-taking, it is prudent to secure the current unrealized gains rather than risk a further pullback or hitting the stop-loss. Capturing available profit after a near-miss on the target is a key capital preservation strategy.",
+    "timestamp": "2025-08-19T13:31:41.566Z"
+  },
+  {
+    "symbol": "FETUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 0.4411764705882356,
+    "currentPrice": 0.683,
+    "newTakeProfitPercent": null,
+    "justification": "The primary concern is the significant drawdown from the peak P/L of 73.5% to the current meager 0.44%. This indicates a substantial retracement and potential exhaustion of the previous upward momentum. While the overall market environment is 'Risk-On' and 'Bullish', the dominant narrative emphasizes institutional accumulation in Bitcoin and Ethereum, suggesting capital may be flowing towards major assets rather than smaller altcoins like FET. With no specific technical indicators for FET available to suggest a renewed uptrend, and having already missed a substantial profit-taking opportunity, it is prudent to lock in the current minimal profit to protect capital, rather than risk a further decline or potential move below entry. Disciplined profit-taking dictates securing gains, especially when a position has already seen a large reversal from its peak.",
+    "timestamp": "2025-08-19T13:31:38.159Z"
+  },
+  {
+    "symbol": "PEPEUSDT",
+    "decision": "HOLD_AND_INCREASE_TP",
+    "pnlPercent": 0.465549348230908,
+    "currentPrice": 0.00001079,
+    "newTakeProfitPercent": 1.25,
+    "justification": "The initial thesis for a bullish market (implied by the buy) is strongly validated and indeed strengthened by the current macro environment. The market is decisively 'Risk-On' with significant institutional accumulation and robust on-chain metrics pointing to continued upward pressure on major crypto assets. While asset-specific technical indicators are undefined, the overwhelming positive market sentiment provides a strong tailwind. Our current P/L is at the initial target (0.47% vs 0.5% TP), and the position previously achieved a higher PnL (0.558%). Given the strong underlying bullish momentum, it is prudent to allow profits to run further to maximize gains. Increasing the take-profit to 1.25% provides a realistic, yet ambitious, target that aligns with the current market conditions, without being overly greedy.",
+    "timestamp": "2025-08-19T13:29:54.945Z"
+  },
+  {
+    "symbol": "LINKUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -0.5695687550854233,
+    "currentPrice": 24.44,
+    "justification": "The position's Current P/L is -0.57%, which has breached the Stop-Loss Target of -0.5%. As per the trading discipline, capital protection is paramount. Despite the broader 'Risk-On' macro environment and 'Bullish' sentiment, the immediate price action of LINKUSDT has invalidated our initial thesis for this specific trade and triggered the pre-defined stop-loss. Therefore, we must adhere to our risk management strategy and exit the position immediately to prevent further losses. Technical indicators were undefined, but the P/L breach is the primary trigger.",
+    "timestamp": "2025-08-19T13:13:51.490Z"
+  },
+  {
+    "symbol": "VIRTUALUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -1.0123916740908687,
+    "currentPrice": 1.2222,
+    "justification": "The position has breached the predefined stop-loss target of -1% (currently at -1.01%). While the broader market exhibits a cautious 'Risk-On' sentiment supported by bullish institutional interest, disciplined risk management dictates that capital preservation is paramount. The initial thesis for this specific trade, expecting price appreciation from entry, has been technically invalidated by the price action hitting the stop-loss. Adhering strictly to the risk parameters is crucial to prevent further losses and protect capital, irrespective of external market sentiment.",
+    "timestamp": "2025-08-19T13:07:24.050Z"
+  },
+  {
+    "symbol": "API3USDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 0.7766990291262144,
+    "currentPrice": 1.557,
+    "newTakeProfitPercent": null,
+    "justification": "The position has successfully met and exceeded its take-profit target (0.78% vs 0.5%). Crucially, the position has experienced a significant retracement from its high PnL of over 2%, indicating a loss of upward momentum for this specific asset. Despite underlying bullish long-term sentiment, the immediate macro environment is classified as 'Risk-Off' due to current price action and altcoin losses, increasing short-term volatility and risk. As a disciplined profit-taker, it is prudent to lock in available gains rather than risk them evaporating in a 'Risk-Off' environment, especially when the asset has already shown weakness by giving back a substantial portion of its peak profit. Without specific technical indicators showing renewed strength for API3, protecting capital by securing profits is the priority.",
+    "timestamp": "2025-08-19T12:47:32.411Z"
+  },
+  {
+    "symbol": "API3USDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 0.7119741100323703,
+    "currentPrice": 1.556,
+    "justification": "The position has successfully met and exceeded its initial take-profit target (0.71% P/L vs. 0.5% target). While the macro environment is robustly 'Risk-On' and market sentiment is strongly bullish, suggesting overall tailwinds for risk assets, the specific asset (API3USDT) has shown a significant retracement from its high P/L of 2.006%. This indicates that, despite the broader bullish context, the asset itself has experienced profit-taking or a temporary loss of upward momentum. Without technical indicators (RSI, MACD) to assess its current strength, potential for renewed momentum, or bounce off a support level, letting profits run further introduces undue risk. As a disciplined profit-taker focused on protecting capital, it is prudent to lock in the guaranteed 0.71% profit rather than expose it to further retracement, especially given the lack of asset-specific technical confirmation for a continued uptrend.",
+    "timestamp": "2025-08-19T12:46:57.749Z"
+  },
+  {
+    "symbol": "LDOUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": 0.6106870229007638,
+    "currentPrice": 1.318,
+    "justification": "The take-profit target of 0.5% has been achieved. While market sentiment shows underlying bullishness from institutional adoption, the prevailing macro environment is distinctly 'Risk-Off' due to immediate price plunges across Bitcoin and altcoins, with explicit advice to 'maintain a defensive posture.' The position has also pulled back slightly from its high PnL (0.687% to 0.61%), indicating a potential loss of immediate momentum. Without technical indicators to confirm continued strength, extending the target in a highly cautious and volatile 'Risk-Off' market goes against the principle of disciplined profit-taking and prudent capital protection. Locking in gains now minimizes exposure to further market downside.",
+    "timestamp": "2025-08-19T12:43:23.919Z"
+  },
+  {
+    "symbol": "API3USDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -2.220812182741126,
+    "currentPrice": 1.541,
+    "justification": "Automatic Stop Loss Triggered",
+    "timestamp": "2025-08-19T10:35:40.670Z"
+  },
+  {
+    "symbol": "WBTCUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -1.0541817518746877,
+    "currentPrice": 115254.82,
+    "justification": "Automatic Stop Loss Triggered",
+    "timestamp": "2025-08-19T09:51:33.495Z"
+  },
+  {
+    "symbol": "BTCUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -1.0465872613544718,
+    "currentPrice": 115285.06,
+    "justification": "Automatic Stop Loss Triggered",
+    "timestamp": "2025-08-19T09:51:33.091Z"
+  },
+  {
+    "symbol": "UNIUSDT",
+    "decision": "SELL_NOW",
+    "pnlPercent": -1.3324513324513325,
+    "currentPrice": 10.441,
+    "justification": "The position's current P/L of -1.33% has exceeded the predefined stop-loss target of -1%. As a disciplined trader, adhering to pre-set risk management rules is paramount to protect capital from further losses, irrespective of broader market sentiment or initial thesis. The sell-off is triggered by the breach of the stop-loss.",
+    "timestamp": "2025-08-19T09:40:50.959Z"
+  }
+]

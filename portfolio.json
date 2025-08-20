@@ -1,0 +1,55 @@
+{
+  "balance": 7120.94237016997,
+  "positions": [
+    {
+      "symbol": "RESOLVUSDT",
+      "amount": 40462.42774566474,
+      "entryPrice": 0.173
+    },
+    {
+      "symbol": "BNBUSDT",
+      "amount": 7.171114749787854,
+      "entryPrice": 836.69
+    },
+    {
+      "symbol": "OGUSDT",
+      "amount": 355.49235691432636,
+      "entryPrice": 14.065
+    },
+    {
+      "symbol": "ETHUSDT",
+      "amount": 1.1635998054461125,
+      "entryPrice": 4297.01
+    },
+    {
+      "symbol": "BTCUSDT",
+      "amount": 0.04343500338315241,
+      "entryPrice": 115114.53
+    },
+    {
+      "symbol": "BIOUSDT",
+      "amount": 22607.385079125845,
+      "entryPrice": 0.1327
+    },
+    {
+      "symbol": "POLUSDT",
+      "amount": 11947.431302270012,
+      "entryPrice": 0.2511
+    },
+    {
+      "symbol": "ALPINEUSDT",
+      "amount": 1323.918799646955,
+      "entryPrice": 2.266
+    },
+    {
+      "symbol": "LINKUSDT",
+      "amount": 111.06703689012296,
+      "entryPrice": 25.21
+    },
+    {
+      "symbol": "PENDLEUSDT",
+      "amount": 519.4805194805195,
+      "entryPrice": 5.39
+    }
+  ]
+}
