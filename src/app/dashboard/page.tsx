@@ -20,6 +20,7 @@ import { AIDecisionFlow } from '@/components/lucid-hive/AIDecisionFlow';
 import { PerformanceAnalytics } from '@/components/lucid-hive/PerformanceAnalytics';
 import { Portfolio3DGlobe } from '@/components/lucid-hive/Portfolio3DGlobe';
 import { FloatingAIControl } from '@/components/lucid-hive/FloatingAIControl';
+import { ParticlesBackground } from '@/components/ui/ParticlesBackground';
 import { motion } from 'framer-motion';
 
 export default function Dashboard() {
@@ -62,18 +63,22 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white relative overflow-hidden">
-            {/* Animated Background Elements */}
-            <div className="fixed inset-0 pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="min-h-screen text-white relative overflow-hidden">
+            {/* Particles Background */}
+            <ParticlesBackground theme="ai" density={60} speed={0.3} className="z-0" />
+            
+            {/* Enhanced Animated Background Elements */}
+            <div className="fixed inset-0 pointer-events-none z-10">
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+                <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-amber-500/5 to-cyan-500/5 rounded-full blur-2xl animate-pulse delay-500" />
             </div>
 
             {/* Mission Control Header */}
             <motion.div
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative z-10 p-8"
+                className="relative z-20 p-8"
             >
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -119,7 +124,7 @@ export default function Dashboard() {
             </motion.div>
 
             {/* Main Content Grid */}
-            <div className="relative z-10 px-8 pb-8 space-y-8">
+            <div className="relative z-20 px-8 pb-8 space-y-8">
                 {/* LIVE HIVE NETWORK - THE CENTERPIECE */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}

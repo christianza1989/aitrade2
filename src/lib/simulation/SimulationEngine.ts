@@ -222,16 +222,18 @@ export class SimulationEngine {
                 // Update market data every 100ms
                 this.updateMarketData();
                 
-                // Generate AI decisions every 1-3 seconds
-                if (Math.random() < 0.3) {
+                // Generate AI decisions based on simulation speed (every 5-15 seconds at x1 speed)
+                const decisionInterval = 5000 / this.speed; // Base 5 second interval
+                if (Math.random() < (1000 / decisionInterval)) {
                     this.generateAIDecision();
                 }
                 
                 // Execute pending decisions
                 this.executePendingDecisions();
                 
-                // Generate market events occasionally
-                if (Math.random() < 0.05) {
+                // Generate market events occasionally (every 30-60 seconds at x1 speed)
+                const eventInterval = 30000 / this.speed; // Base 30 second interval
+                if (Math.random() < (1000 / eventInterval)) {
                     this.generateMarketEvent();
                 }
                 

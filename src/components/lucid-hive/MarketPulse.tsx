@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TrendingUp, TrendingDown, Activity, Zap, DollarSign, BarChart3 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { GlassmorphCard } from '@/components/ui/GlassmorphCard';
 
 interface MarketData {
     symbol: string;
@@ -163,7 +164,7 @@ export const MarketPulse: React.FC = () => {
         .slice(0, 4);
 
     return (
-        <Card className="bg-gradient-to-br from-gray-900/90 via-gray-800/90 to-black/90 border-gray-700/50 backdrop-blur-xl overflow-hidden">
+        <GlassmorphCard variant="luxury" className="overflow-hidden">
             <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-3">
@@ -271,6 +272,6 @@ export const MarketPulse: React.FC = () => {
                     </div>
                 </div>
             </CardContent>
-        </Card>
+        </GlassmorphCard>
     );
 };

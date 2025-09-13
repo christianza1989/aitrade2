@@ -13,8 +13,10 @@ import {
   Activity,
   Cpu,
   Network,
-  Radio
+  Radio,
+  History
 } from 'lucide-react';
+import { AgentHistoryViewer } from '@/components/agents/AgentHistoryViewer';
 
 interface AgentStatus {
   id: string;
@@ -105,6 +107,7 @@ export function LiveHiveNetwork() {
   const [agents, setAgents] = useState<AgentStatus[]>(AGENTS);
   const [dataFlows, setDataFlows] = useState<DataFlow[]>([]);
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
+  const [historyAgent, setHistoryAgent] = useState<{ id: string; name: string } | null>(null);
   const [hiveStatus, setHiveStatus] = useState<'dormant' | 'awakening' | 'active' | 'hyperactive'>('active');
   
   // Simulate real-time agent activity
@@ -403,10 +406,23 @@ export function LiveHiveNetwork() {
                         <span className="text-cyan-400">{agent.lastActivity}</span>
                       </div>
                     )}
-                    <div className="pt-2 border-t border-gray-600">
-                      <span className="text-gray-400 text-xs">
+                    <div className="pt-3 border-t border-gray-600 space-y-2">
+                      <div className="text-gray-400 text-xs">
                         Connected to: {agent.connections.length} agents
-                      </span>
+                      </div>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setHistoryAgent({ id: agent.id, name: agent.name });
+                          setSelectedAgent(null);
+                        }}
+                        className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 hover:from-cyan-500/30 hover:to-purple-500/30 text-cyan-300 py-2 px-3 rounded-lg text-xs font-medium transition-all duration-200 border border-cyan-500/30"
+                      >
+                        <History className="w-3 h-3" />
+                        <span>View History</span>
+                      </motion.button>
                     </div>
                   </div>
                 </div>
@@ -448,6 +464,16 @@ export function LiveHiveNetwork() {
           />
         ))}
       </div>
+      
+      {/* Agent History Viewer */}
+      {historyAgent && (
+        <AgentHistoryViewer
+          agentId={historyAgent.id}
+          agentName={historyAgent.name}
+          isOpen={true}
+          onClose={() => setHistoryAgent(null)}
+        />
+      )}
     </div>
   );
 }

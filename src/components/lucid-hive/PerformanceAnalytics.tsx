@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TrendingUp, TrendingDown, BarChart3, PieChart, Activity, DollarSign, Percent, Target } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { GlassmorphCard } from '@/components/ui/GlassmorphCard';
 
 interface PerformanceMetric {
     label: string;
@@ -225,7 +226,7 @@ export const PerformanceAnalytics: React.FC = () => {
     const timeframes = ['1D', '1W', '1M', '3M', '1Y'] as const;
 
     return (
-        <Card className="bg-gradient-to-br from-gray-900/90 via-gray-800/90 to-black/90 border-gray-700/50 backdrop-blur-xl">
+        <GlassmorphCard variant="luxury">
             <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-3">
@@ -395,6 +396,6 @@ export const PerformanceAnalytics: React.FC = () => {
                     </div>
                 </div>
             </CardContent>
-        </Card>
+        </GlassmorphCard>
     );
 };
