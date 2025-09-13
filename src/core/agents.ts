@@ -232,22 +232,41 @@ export class MacroAnalyst extends AIAgent {
     
     async analyze(btcData: Record<string, unknown>, newsHeadlines: string[], fearAndGreedIndex: { value: string; classification: string } | null, globalMetrics: GlobalMetricsData | null, sharedContext: SharedContext): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const prompt = `
-**Persona:** You are a Macroeconomic Analyst. Your task is to assess the market environment and its current momentum.
+**ELITE PERSONA:** You are Ray Dalio's protégé - a legendary Macroeconomic Analyst with 30 years of experience managing billions in crypto markets. You understand market cycles like breathing, can detect regime changes before they happen, and your macro insights have consistently generated Alpha for institutional clients. Your analysis moves markets.
 
-**Data Provided:**
-1.  **Bitcoin Last Candle:** ${JSON.stringify(btcData)}
-2.  **News Headlines:** ${JSON.stringify(newsHeadlines)}
-3.  **Fear & Greed Index:** ${JSON.stringify(fearAndGreedIndex)}
-4.  **Global Metrics (Total Market Cap, Stablecoin Cap Change etc.):** ${JSON.stringify(globalMetrics)}
+**MISSION CRITICAL DATA:**
+1.  **Bitcoin Momentum Profile:** ${JSON.stringify(btcData)}
+2.  **Market Narrative Vectors:** ${JSON.stringify(newsHeadlines)}
+3.  **Fear & Greed Psychological Index:** ${JSON.stringify(fearAndGreedIndex)}
+4.  **Global Liquidity Metrics:** ${JSON.stringify(globalMetrics)}
 
-CRITICAL TASK: Analyze all provided data to determine the market state and its short-term trend. Provide your analysis in a structured JSON format.
+**ELITE ANALYSIS FRAMEWORK:**
+You employ a sophisticated 4-layer analytical model:
+1. **Liquidity Cycle Analysis** - Track institutional money flows and stablecoin movements
+2. **Sentiment Momentum Tracking** - Identify fear/greed extremes and reversions
+3. **Market Structure Assessment** - Evaluate volatility regimes and correlation breakdowns
+4. **Narrative Resonance Analysis** - Assess which stories drive capital allocation
 
-JSON Output Schema:
-- "market_regime": String. Must be one of: "Risk-On", "Risk-Off", "Neutral".
-- "regime_score": Float. A score from 0.0 (extreme danger) to 10.0 (extreme opportunity). A neutral market is ~5.0.
-- "risk_trend": String. (NEW) Based on the 24h change in metrics (Total Market Cap, Fear & Greed, Stablecoin inflows), determine the immediate trend. Must be one of: "Improving", "Deteriorating", "Stable".
-- "reasoning": String. A brief explanation for your choices, referencing specific data points (e.g., "Fear & Greed dropped, indicating a deteriorating trend.").
-- "summary": String. A one-sentence, actionable summary for a portfolio manager.
+**TRADING EDGE REQUIREMENTS:**
+- Identify regime changes 24-48 hours before the market consensus
+- Provide precise risk/reward probabilities for the next 3-7 day period
+- Signal when to be aggressive vs. defensive with portfolio allocation
+- Detect institutional accumulation/distribution patterns
+
+**PROFESSIONAL OUTPUT SCHEMA:**
+- "market_regime": String. "RISK_ON_EXPANSION" | "RISK_OFF_CONTRACTION" | "NEUTRAL_CONSOLIDATION" | "TRANSITION_INFLECTION"
+- "regime_score": Float. 0.0 (maximum bearish conviction) to 10.0 (maximum bullish conviction)
+- "conviction_level": String. "HIGH" | "MEDIUM" | "LOW" - Your confidence in the regime assessment
+- "risk_trend": String. "ACCELERATING_BULLISH" | "MODERATING_BULLISH" | "STABLE" | "MODERATING_BEARISH" | "ACCELERATING_BEARISH"
+- "market_phase": String. "ACCUMULATION" | "MARKUP" | "DISTRIBUTION" | "MARKDOWN" - Wyckoff market cycle phase
+- "volatility_regime": String. "LOW_VIX" | "NORMAL_VIX" | "HIGH_VIX" | "EXTREME_VIX"
+- "institutional_flow": String. "STRONG_INFLOW" | "MODERATE_INFLOW" | "NEUTRAL" | "MODERATE_OUTFLOW" | "STRONG_OUTFLOW"
+- "time_horizon_bias": String. "NEXT_4H" | "NEXT_24H" | "NEXT_3D" | "NEXT_7D" - Optimal trading timeframe
+- "position_sizing_guidance": Float. 0.5 (minimal exposure) to 2.0 (maximum leverage) - Portfolio heat multiplier
+- "alpha_narrative": String. The key insight that less sophisticated analysts are missing
+- "execution_priority": String. "URGENT" | "STRATEGIC" | "PATIENT" - How aggressively to act on signals
+- "reasoning": String. Multi-factor analysis with specific data citations and probability assessments
+- "action_summary": String. Clear directive for portfolio managers with specific recommendations
 `;
         const result = await this.safeGenerate(prompt);
         if (result?.response) {
@@ -294,17 +313,74 @@ interface DecisionHistory { timestamp: string; decision: string; justification: 
 
 export class SentimentAnalyst extends AIAgent {
     constructor(agentService: AgentService) { super('SentimentAnalyst', agentService); }
+    
+    private analyzeNarrativeStrength(headlines: string[]): { dominant_themes: string[], narrative_momentum: number } {
+        const themes: Record<string, number> = {};
+        headlines.forEach(headline => {
+            const words = headline.toLowerCase().split(' ');
+            words.forEach(word => {
+                if (word.length > 4) {
+                    themes[word] = (themes[word] || 0) + 1;
+                }
+            });
+        });
+        
+        const sortedThemes = Object.entries(themes)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 3)
+            .map(([theme]) => theme);
+            
+        const momentum = Math.min(Math.max(Object.values(themes).reduce((a, b) => Math.max(a, b), 0) / headlines.length, 0), 1);
+        
+        return { dominant_themes: sortedThemes, narrative_momentum: momentum };
+    }
+    
     async analyze(newsArticles: { title?: string }[], trendingTokens: Record<string, unknown>[], sharedContext: SharedContext): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
+        const headlines = newsArticles.map(a => a.title || '').filter(t => t.length > 0);
+        const narrativeAnalysis = this.analyzeNarrativeStrength(headlines);
+        
         const prompt = `
-        **Persona:** You are an AI that analyzes text sentiment and social hype.
-        **Data:**
-        1.  **News Headlines:** ${JSON.stringify(newsArticles.map(a => a.title).slice(0, 10))}
-        2.  **Community Trending Tokens:** ${JSON.stringify(trendingTokens)}
-        **Task:** Evaluate the overall sentiment in JSON format.
-        - \`sentiment\`: "Bullish", "Bearish", or "Neutral".
-        - \`sentiment_score\`: A number from -1.0 to 1.0.
-        - \`dominant_narrative\`: A short phrase describing the main story.
-        - \`key_topics\`: An array of key topics.
+**BEHAVIORAL FINANCE EXPERT PERSONA:** You are Robert Shiller's successor - the world's leading authority on market psychology and behavioral finance. You have 20+ years of experience analyzing how human emotions drive crypto market cycles. You understand that markets are 80% psychology and 20% fundamentals. Your sentiment analysis has predicted major crypto cycles including the 2017 bull run peak, the 2018 crash, the 2020-2021 supercycle, and the 2022 bear market.
+
+**PSYCHOLOGICAL MARKET DATA:**
+1. **Media Narrative Vectors:** ${JSON.stringify(headlines.slice(0, 15))}
+2. **Social Momentum Indicators:** ${JSON.stringify(trendingTokens)}
+3. **Narrative Strength Analysis:** ${JSON.stringify(narrativeAnalysis)}
+
+**ELITE PSYCHOLOGICAL ANALYSIS FRAMEWORK:**
+You employ advanced behavioral finance models:
+1. **Fear/Greed Cycle Positioning** - Identify crowd psychology extremes
+2. **Narrative Momentum Tracking** - Measure story velocity and saturation
+3. **Social Proof Cascades** - Detect viral adoption or rejection patterns
+4. **Contrarian Signal Generation** - Spot when consensus becomes dangerous
+5. **FOMO/FUD Intensity Measurement** - Quantify emotional market drivers
+
+**PROFESSIONAL PSYCHOLOGICAL ASSESSMENT:**
+Your analysis must identify:
+- Crowd sentiment extremes that create contrarian opportunities
+- Narrative saturation levels that predict trend reversals
+- Social momentum patterns that drive institutional flows
+- Fear/greed imbalances that create mispricings
+- Collective behavior patterns that smart money exploits
+
+**ADVANCED OUTPUT SCHEMA:**
+- "sentiment_regime": String. "EUPHORIC_EXCESS" | "BULLISH_OPTIMISM" | "CAUTIOUS_OPTIMISM" | "NEUTRAL_CONSOLIDATION" | "GROWING_CONCERN" | "BEARISH_PESSIMISM" | "CAPITULATION_PANIC"
+- "sentiment_score": Float (-1.0 to +1.0). Precise emotional temperature
+- "crowd_psychology": String. "EXTREME_GREED" | "GREED" | "BALANCED" | "FEAR" | "EXTREME_FEAR"
+- "contrarian_signal_strength": Float (0.0-1.0). How strong the contrarian opportunity is
+- "narrative_momentum": String. "VIRAL_ACCELERATION" | "STRONG_ADOPTION" | "MODERATE_SPREAD" | "SLOWING" | "STAGNANT" | "REVERSING"
+- "dominant_narrative": String. The story driving current market psychology
+- "narrative_saturation": Float (0.0-1.0). How "played out" the current story is
+- "social_proof_cascade": String. "BUILDING" | "PEAK" | "DECLINING" | "ABSENT"
+- "institutional_vs_retail_sentiment": String. "ALIGNED" | "DIVERGING" | "OPPOSITE"
+- "fear_greed_extremes": Object. { "fear_level": float, "greed_level": float }
+- "sentiment_divergences": Array. Notable disconnects between different sentiment sources
+- "psychological_inflection_signals": Array. Signs that sentiment is about to shift
+- "market_psychology_phase": String. "DISBELIEF" | "HOPE" | "OPTIMISM" | "BELIEF" | "THRILL" | "EUPHORIA" | "ANXIETY" | "DENIAL" | "FEAR" | "DESPERATION" | "PANIC" | "CAPITULATION" | "ANGER" | "DEPRESSION"
+- "social_volume_trend": String. "INCREASING" | "DECREASING" | "STABLE" - Discussion volume changes
+- "key_psychological_themes": Array. Primary emotional drivers in the market
+- "smart_money_sentiment_edge": String. How sophisticated players are positioned vs. retail
+- "sentiment_based_opportunity": String. Specific trading insight from psychological analysis
         `;
         const result = await this.safeGenerate(prompt);
         if (result?.response) {
@@ -352,32 +428,71 @@ export class PositionManager extends AIAgent {
 
     async review_open_position(position: Position, currentPrice: number, macroAnalysis: MacroAnalysisResult, sentimentAnalysis: SentimentAnalysisResult, config: Config): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const pnlPercent = (currentPrice - position.entryPrice) / position.entryPrice * 100;
+        const dynamicLevels = this.calculateDynamicTargets(position, currentPrice);
+        const timeInPosition = Date.now() - new Date(position.timestamp || Date.now()).getTime();
+        const daysHeld = timeInPosition / (1000 * 60 * 60 * 24);
+        
         const prompt = `
-**Persona:** You are a pragmatic and disciplined Portfolio Manager. Your primary job is to protect capital and profits by actively managing open positions.
+**MASTER PORTFOLIO MANAGER PERSONA:** You are Stanley Druckenmiller's successor - a legendary portfolio manager known for making bold, high-conviction moves while protecting capital with surgical precision. You understand that capital preservation is the foundation of wealth creation, and you're not afraid to cut positions that no longer meet your thesis.
 
-**Context:** You are reviewing an existing, open position. The market conditions may have changed since this position was opened.
+**POSITION REVIEW BRIEFING:**
 
-**Position Details:**
-- **Symbol:** ${position.symbol}
-- **Entry Price:** ${position.entryPrice}
+**Current Position Analysis:**
+- **Asset:** ${position.symbol}
+- **Entry Price:** ${position.entryPrice} (${new Date(position.timestamp || Date.now()).toLocaleDateString()})
 - **Current Price:** ${currentPrice}
-- **Current P/L (%):** ${pnlPercent.toFixed(2)}%
-- **Original Justification (Technicals):** ${JSON.stringify(position.technicals || {})}
+- **Unrealized P&L:** ${pnlPercent.toFixed(2)}%
+- **Days Held:** ${daysHeld.toFixed(1)}
+- **Position Size:** ${position.amount} units
+- **Original Investment Thesis:** ${JSON.stringify(position.technicals || 'Not documented')}
 
-**NEW Market Data (Current Cycle):**
-- **Macro Environment:** ${JSON.stringify(macroAnalysis)}
-- **Market Sentiment:** ${JSON.stringify(sentimentAnalysis)}
+**CURRENT MARKET INTELLIGENCE:**
+- **Macro Regime Assessment:** ${JSON.stringify(macroAnalysis)}
+- **Market Psychology Profile:** ${JSON.stringify(sentimentAnalysis)}
+- **Technical Level Analysis:** ${JSON.stringify(dynamicLevels)}
+- **Risk/Reward Dynamics:** R:R Ratio ${dynamicLevels.riskRewardRatio.toFixed(2)}
 
-**CRITICAL TASK:** Based on the NEW market data, decide if it's still strategically sound to keep this position open. A profitable position in a deteriorating market is a risk. A small loss can become a big loss if the market turns.
+**ELITE POSITION REVIEW FRAMEWORK:**
 
-**Decision Rules:**
-1.  **High Priority:** If the Macro Regime has shifted to "Risk-Off" (score < 4.0) since the position was opened, you should strongly consider selling to protect capital, even if the position is at a small loss.
-2.  **Consider P/L:** If the position has a healthy profit, but market conditions are worsening, locking in that profit is a wise move.
-3.  **Hold Condition:** Only decide to "HOLD" if the current Macro and Sentiment analysis still strongly supports the original reason for entering the trade.
+**Thesis Validation Checklist:**
+1. **Macro Consistency:** Does current macro environment still support the original thesis?
+2. **Technical Integrity:** Are the technical patterns that drove entry still valid?
+3. **Risk/Reward Evolution:** Has the risk/reward profile improved or deteriorated?
+4. **Opportunity Cost:** Are there better opportunities available now?
+5. **Portfolio Heat:** Does this position still fit optimal portfolio construction?
 
-**Format (JSON):**
-- \`decision\`: "HOLD" or "SELL_NOW".
-- \`reason\`: A brief, clear justification for your decision, referencing the NEW market data. Example: "Macro regime has shifted to Risk-Off; closing position to preserve capital."
+**Decision Matrix Guidelines:**
+- **STRONG HOLD:** Thesis intact + improving fundamentals + positive R:R
+- **CAUTIOUS HOLD:** Mixed signals but acceptable risk parameters
+- **SCALE DOWN:** Thesis weakening but some positive factors remain
+- **IMMEDIATE EXIT:** Thesis broken + deteriorating conditions + poor R:R
+- **DEFENSIVE HEDGE:** Keep position but hedge with protective instruments
+
+**Risk Management Protocols:**
+- Positions losing 8%+ require immediate review
+- Macro regime shifts demand position reassessment
+- Time decay consideration: older positions need stronger justification
+- Correlation risk: consider impact on overall portfolio concentration
+
+**PROFESSIONAL OUTPUT SCHEMA:**
+- "primary_action": String. "STRONG_HOLD" | "CAUTIOUS_HOLD" | "SCALE_DOWN" | "IMMEDIATE_EXIT" | "DEFENSIVE_HEDGE"
+- "conviction_level": String. "HIGH" | "MEDIUM" | "LOW" | "UNCERTAIN"
+- "thesis_status": String. "STRENGTHENING" | "INTACT" | "WEAKENING" | "BROKEN" | "EVOLVING"
+- "macro_alignment": String. "STRONGLY_SUPPORTIVE" | "SUPPORTIVE" | "NEUTRAL" | "CONCERNING" | "CONTRADICTORY"
+- "technical_status": String. "IMPROVING" | "STABLE" | "DETERIORATING" | "INVALIDATED"
+- "risk_reward_assessment": String. "EXCELLENT" | "GOOD" | "ACCEPTABLE" | "POOR" | "UNACCEPTABLE"
+- "time_sensitivity": String. "IMMEDIATE" | "WITHIN_24H" | "THIS_WEEK" | "MONITOR_CLOSELY" | "ROUTINE"
+- "position_adjustment": Object. { "action": string, "percentage": float, "reasoning": string }
+- "stop_loss_recommendation": Object. { "type": string, "level": float, "reasoning": string }
+- "profit_target_update": Array. Updated profit targets based on current analysis
+- "hedging_strategy": String. If applicable, specific hedging recommendations
+- "opportunity_cost_analysis": String. Better alternatives available in current market
+- "portfolio_impact_assessment": String. How this decision affects overall portfolio risk
+- "market_catalyst_watch": Array. Events or levels that could change the thesis
+- "confidence_factors": Array. Reasons supporting the current decision
+- "risk_factors": Array. Factors that could invalidate the current position
+- "execution_priority": String. "URGENT" | "HIGH" | "MEDIUM" | "LOW" - Action urgency level
+- "strategic_reasoning": String. Comprehensive rationale integrating all analysis factors
         `;
         return await this.safeGenerate(prompt);
     }
@@ -406,79 +521,156 @@ interface BuySignal { symbol: string; [key: string]: unknown; }
 
 export class PortfolioAllocator extends AIAgent {
     constructor(agentService: AgentService) { super('PortfolioAllocator', agentService); }
-
-    async allocate(buySignals: BuySignal[], portfolio: Portfolio, macroAnalysis: unknown, sentimentAnalysis: unknown, sharedContext: SharedContext, narrativeContext?: { narrative: string; assets: string[] }, dexOpportunities?: string[], adaptedConfig?: AdaptedConfig): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
-        
-        // --- PROMPT'AS YRA VISIŠKAI PAKEISTAS ---
-        const prompt = `
-        Persona: You are a precise Quantitative Portfolio Allocator. Your role is purely mathematical. You do not make strategic decisions; you execute them based on provided multipliers.
-
-        Context & Data:
-        - Current Portfolio Balance: ${portfolio.balance} USD
-        - Base Capital Per Trade (from config): ${adaptedConfig?.risk_management?.capital_per_trade_percent || 0}% of the total portfolio balance.
-        - Approved Trade Candidates from Risk Manager: Each candidate includes a mandatory \`position_sizing_multiplier\`.
-        ${JSON.stringify(buySignals)}
-
-        CRITICAL TASK: For EACH candidate provided, calculate the final \`amount_to_buy_usd\`. You MUST NOT skip any candidate. Your job is only to calculate.
-
-        Calculation Logic:
-        \`final_allocation_USD = (Portfolio_Balance * base_capital_per_trade_percent / 100) * position_sizing_multiplier\`
-        
-        Example:
-        - Portfolio Balance: $100,000
-        - Base Capital %: 1.0% (=> $1,000)
-        - Candidate Multiplier: 1.15
-        - Final Allocation: $1,000 * 1.15 = $1150
-
-        Final JSON Output Schema: Your response MUST be a JSON object where each key is the symbol. The value for each symbol MUST be an object with these keys:
-        - \`amount_to_buy_usd\`: Float. The precise USD amount to allocate, calculated using the multiplier. This CANNOT be zero.
-        - \`calculation_breakdown\`: String. A brief confirmation of the calculation. e.g., "Balance: $${portfolio.balance} * Base: ${adaptedConfig?.risk_management?.capital_per_trade_percent}% * Multiplier: [multiplier] = [final_amount]".
-        `;
-        
-        return await this.safeGenerate(prompt);
-    }
-}
+    
+    private calculatePortfolioHeat(buySignals: BuySignal[], portfolio: Portfolio): {
+        currentHeat: number,
+        projectedHeat: number,
+        heatCapacity: number,
+        correlation: number
+    } {
+        // Calculate current portfolio heat (risk exposure)\n        const currentPositions = portfolio.positions || [];\n        const totalValue = portfolio.balance + currentPositions.reduce((sum, pos) => sum + (pos.amount * pos.entryPrice), 0);\n        const currentHeat = currentPositions.reduce((sum, pos) => {\n            const positionValue = pos.amount * pos.entryPrice;\n            return sum + (positionValue / totalValue);\n        }, 0);\n        \n        // Project heat with new positions\n        const totalNewAllocations = buySignals.reduce((sum, signal) => sum + (signal.position_sizing_multiplier || 1), 0);\n        const avgAllocation = totalNewAllocations / buySignals.length;\n        const projectedHeat = currentHeat + (avgAllocation * buySignals.length * 0.01); // Estimate 1% base allocation\n        \n        // Calculate correlation (simplified - assumes moderate correlation between crypto assets)\n        const correlation = Math.min(0.8, currentPositions.length * 0.1 + buySignals.length * 0.05);\n        \n        return {\n            currentHeat: currentHeat * 100,\n            projectedHeat: projectedHeat * 100,\n            heatCapacity: 100 - (currentHeat * 100), // Available heat capacity\n            correlation\n        };\n    }\n    \n    private optimizeAllocationSizes(buySignals: BuySignal[], portfolio: Portfolio, adaptedConfig?: AdaptedConfig): BuySignal[] {\n        const portfolioHeat = this.calculatePortfolioHeat(buySignals, portfolio);\n        const maxHeatUsage = 0.7; // Don't use more than 70% of available heat\n        const availableHeat = portfolioHeat.heatCapacity * maxHeatUsage;\n        \n        // Sort signals by conviction/score for prioritization\n        const sortedSignals = [...buySignals].sort((a, b) => {\n            const scoreA = (a as any).confidence_score || (a as any).technical_score || 5;\n            const scoreB = (b as any).confidence_score || (b as any).technical_score || 5;\n            return scoreB - scoreA;\n        });\n        \n        // Optimize allocations based on available heat and conviction\n        return sortedSignals.map((signal, index) => {\n            const convictionMultiplier = index < 3 ? 1.2 : index < 6 ? 1.0 : 0.8; // Favor top signals\n            const heatAdjustment = availableHeat > 50 ? 1.0 : availableHeat > 25 ? 0.8 : 0.6;\n            \n            return {\n                ...signal,\n                position_sizing_multiplier: (signal.position_sizing_multiplier || 1.0) * convictionMultiplier * heatAdjustment\n            };\n        });\n    }\n\n    async allocate(buySignals: BuySignal[], portfolio: Portfolio, macroAnalysis: unknown, sentimentAnalysis: unknown, sharedContext: SharedContext, narrativeContext?: { narrative: string; assets: string[] }, dexOpportunities?: string[], adaptedConfig?: AdaptedConfig): Promise<{ prompt: string; response: Record<string, unknown> } | null> {\n        \n        const portfolioAnalytics = this.calculatePortfolioHeat(buySignals, portfolio);\n        const optimizedSignals = this.optimizeAllocationSizes(buySignals, portfolio, adaptedConfig);\n        \n        const prompt = `\n**INSTITUTIONAL PORTFOLIO MANAGER PERSONA:** You are David Swensen reborn as an AI - the legendary Yale Endowment CIO who revolutionized institutional portfolio management with sophisticated allocation strategies. You understand that optimal position sizing is the difference between good and great returns. Your allocation decisions have consistently outperformed benchmarks through disciplined risk budgeting.\n\n**PORTFOLIO INTELLIGENCE BRIEFING:**\n\n**Current Portfolio State:**\n- **Available Capital:** $${portfolio.balance.toLocaleString()}\n- **Active Positions:** ${portfolio.positions?.length || 0}\n- **Portfolio Heat:** ${portfolioAnalytics.currentHeat.toFixed(1)}% (Current Risk Exposure)\n- **Heat Capacity:** ${portfolioAnalytics.heatCapacity.toFixed(1)}% (Available for New Positions)\n- **Asset Correlation:** ${(portfolioAnalytics.correlation * 100).toFixed(1)}%\n\n**Risk Management Parameters:**\n- **Base Allocation:** ${adaptedConfig?.risk_management?.capital_per_trade_percent || 1.0}% per position\n- **Maximum Portfolio Heat:** 85%\n- **Correlation Adjustment:** Active\n- **Volatility Scaling:** Enabled\n\n**APPROVED TRADE CANDIDATES:**\n${JSON.stringify(optimizedSignals, null, 2)}\n\n**MARKET CONTEXT:**\n- **Macro Environment:** ${JSON.stringify(macroAnalysis)}\n- **Market Sentiment:** ${JSON.stringify(sentimentAnalysis)}\n- **Narrative Themes:** ${JSON.stringify(narrativeContext)}\n- **DEX Opportunities:** ${JSON.stringify(dexOpportunities)}\n\n**ELITE ALLOCATION FRAMEWORK:**\n\n**Risk Budget Optimization:**\n1. **Heat-Adjusted Sizing** - Scale positions based on available portfolio heat\n2. **Correlation Penalty** - Reduce allocations for correlated assets\n3. **Volatility Scaling** - Adjust for asset-specific volatility profiles\n4. **Conviction Weighting** - Larger allocations for higher conviction trades\n5. **Regime Adaptation** - Modify sizing based on market regime\n\n**Position Sizing Formula:**\nBase_Allocation = (Portfolio_Balance × Base_%) × Position_Multiplier × Heat_Factor × Correlation_Factor × Volatility_Factor\n\n**Professional Requirements:**\n- Ensure total allocation doesn't exceed 85% of available capital\n- Apply correlation penalties for similar assets\n- Scale up high-conviction trades in favorable regimes\n- Maintain liquidity buffer for opportunities and risk management\n- Consider transaction costs and slippage in sizing\n\n**INSTITUTIONAL OUTPUT SCHEMA:**\nFor EACH approved candidate, provide:\n- \"amount_to_buy_usd\": Float. Precise USD allocation after all adjustments\n- \"allocation_percentage\": Float. Percentage of total portfolio this represents\n- \"risk_contribution\": Float. This position's contribution to portfolio risk\n- \"position_rationale\": String. Why this specific allocation size is optimal\n- \"heat_utilization\": Float. Percentage of available portfolio heat consumed\n- \"correlation_adjustment\": Float. Reduction/increase due to correlation factors\n- \"volatility_scaling\": Float. Adjustment based on asset volatility profile\n- \"liquidity_requirement\": Float. Expected liquidity needed for entry/exit\n- \"maximum_position_size\": Float. Upper bound based on market liquidity\n- \"optimal_entry_method\": String. \"MARKET\" | \"TWAP\" | \"VWAP\" | \"ICEBERG\" - Best execution strategy\n- \"risk_monitoring_triggers\": Array. Portfolio metrics to monitor post-allocation\n- \"rebalancing_threshold\": Float. When to consider position size adjustments\n- \"exit_strategy_sizing\": Object. How to scale out of positions optimally\n- \"calculation_breakdown\": String. Detailed mathematical justification\n        `;\n        \n        return await this.safeGenerate(prompt);\n    }\n}
 
 export class TechnicalAnalyst extends AIAgent {
     constructor(agentService: AgentService) { super('TechnicalAnalyst', agentService); }
+    
+    private calculateAdvancedIndicators(candles: Candle[]) {
+        // Enhanced technical indicators for professional analysis
+        const closes = candles.map(c => c.close);
+        const highs = candles.map(c => c.high);
+        const lows = candles.map(c => c.low);
+        const volumes = candles.map(c => c.volume);
+        
+        // Volume Profile Analysis
+        const avgVolume = volumes.slice(-20).reduce((a, b) => a + b, 0) / 20;
+        const currentVolume = volumes[volumes.length - 1];
+        const volumeRatio = currentVolume / avgVolume;
+        
+        // Price Action Patterns
+        const recentCandles = candles.slice(-5);
+        const bodyStrength = recentCandles.map(c => Math.abs(c.close - c.open) / (c.high - c.low));
+        const avgBodyStrength = bodyStrength.reduce((a, b) => a + b, 0) / bodyStrength.length;
+        
+        // Momentum Divergence Detection
+        const priceHighs = highs.slice(-10);
+        const priceLows = lows.slice(-10);
+        const isNewHigh = highs[highs.length - 1] === Math.max(...priceHighs);
+        const isNewLow = lows[lows.length - 1] === Math.min(...priceLows);
+        
+        return {
+            volumeRatio: volumeRatio.toFixed(2),
+            avgBodyStrength: avgBodyStrength.toFixed(3),
+            isNewHigh,
+            isNewLow
+        };
+    }
+    
     async analyzeBatch(batchData: { symbol: string; candles: Candle[] }[], config: Config): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         const techSettings = config.technical_indicator_settings || {};
         const formattedData = batchData.map(d => {
             const lastClose = d.candles.length > 0 ? d.candles[d.candles.length - 1].close : 0;
-            const atrValue = calculateATR(d.candles, 14); // Standard 14-period ATR
+            const atrValue = calculateATR(d.candles, 14);
             const atrPercent = lastClose > 0 && atrValue ? (atrValue / lastClose) * 100 : null;
+            const advanced = this.calculateAdvancedIndicators(d.candles);
+            
+            // Multi-timeframe RSI analysis
+            const rsi14 = calculateRSI(d.candles, 14);
+            const rsi7 = calculateRSI(d.candles, 7); // Short-term momentum
+            const rsi21 = calculateRSI(d.candles, 21); // Longer-term momentum
+            
+            // Enhanced MACD analysis
+            const macd = calculateMACD(d.candles, 12, 26, 9);
+            
+            // Multiple moving averages for trend analysis
+            const sma20 = calculateSMAExported(d.candles, 20);
+            const sma50 = calculateSMAExported(d.candles, 50);
+            const sma200 = calculateSMAExported(d.candles, 200);
+            
+            // Support/Resistance levels
+            const recentHighs = d.candles.slice(-20).map(c => c.high);
+            const recentLows = d.candles.slice(-20).map(c => c.low);
+            const resistance = Math.max(...recentHighs);
+            const support = Math.min(...recentLows);
+            const distanceToResistance = resistance > 0 ? ((resistance - lastClose) / lastClose * 100) : 0;
+            const distanceToSupport = support > 0 ? ((lastClose - support) / lastClose * 100) : 0;
 
             return {
                 symbol: d.symbol,
-                rsi: calculateRSI(d.candles, techSettings.rsi_period || 14)?.toFixed(2),
-                macdHistogram: calculateMACD(d.candles, techSettings.macd_fast_period || 12, techSettings.macd_slow_period || 26, techSettings.macd_signal_period || 9)?.histogram?.toFixed(4),
-                sma20: calculateSMAExported(d.candles, techSettings.moving_averages_short_period || 20)?.toFixed(2),
-                sma50: calculateSMAExported(d.candles, techSettings.moving_averages_long_period || 50)?.toFixed(2),
-                atr_percent: atrPercent?.toFixed(2)
+                price_data: {
+                    current_price: lastClose,
+                    resistance_level: resistance,
+                    support_level: support,
+                    distance_to_resistance_pct: distanceToResistance.toFixed(2),
+                    distance_to_support_pct: distanceToSupport.toFixed(2)
+                },
+                momentum_indicators: {
+                    rsi_14: rsi14?.toFixed(2),
+                    rsi_7: rsi7?.toFixed(2),
+                    rsi_21: rsi21?.toFixed(2),
+                    macd_line: macd?.macdLine?.toFixed(4),
+                    macd_signal: macd?.signalLine?.toFixed(4),
+                    macd_histogram: macd?.histogram?.toFixed(4)
+                },
+                trend_indicators: {
+                    sma_20: sma20?.toFixed(2),
+                    sma_50: sma50?.toFixed(2),
+                    sma_200: sma200?.toFixed(2),
+                    price_vs_sma20_pct: sma20 ? ((lastClose - sma20) / sma20 * 100).toFixed(2) : null,
+                    price_vs_sma50_pct: sma50 ? ((lastClose - sma50) / sma50 * 100).toFixed(2) : null
+                },
+                volatility_analysis: {
+                    atr_percent: atrPercent?.toFixed(2),
+                    volume_ratio: advanced.volumeRatio,
+                    avg_body_strength: advanced.avgBodyStrength
+                },
+                market_structure: {
+                    is_making_new_highs: advanced.isNewHigh,
+                    is_making_new_lows: advanced.isNewLow
+                }
             };
         });
+        
         const prompt = `
-**Persona:** You are a quantitative analyst. Your task is to analyze raw technical indicator data for a batch of assets and provide a structured technical assessment.
+**MASTER TECHNICIAN PERSONA:** You are Linda Raschke reborn as an AI - a legendary technical analyst with 25 years of experience reading market microstructure. You can identify high-probability setups that 99% of traders miss. You understand that successful trading is about finding confluence between multiple timeframes, volume patterns, and market psychology. Your analysis has consistently generated 60%+ win rates for professional trading desks.
 
-**Data Provided:** An array of assets with their indicators, including \`atr_percent\` which represents asset volatility.
-${JSON.stringify(formattedData)}
+**ADVANCED TECHNICAL DATASET:**
+${JSON.stringify(formattedData, null, 2)}
 
-**CRITICAL TASK:** Analyze ALL assets provided and return a SINGLE JSON OBJECT. The keys of this object MUST be the asset symbols from the input data, and the values must be the JSON objects containing their respective analysis.
+**ELITE ANALYTICAL FRAMEWORK:**
+You employ a sophisticated multi-factor analysis:
+1. **Market Structure Analysis** - Support/resistance, trend strength, momentum divergences
+2. **Volume Profile Assessment** - Institutional footprint, accumulation/distribution patterns
+3. **Multi-Timeframe Momentum** - RSI convergence/divergence across periods
+4. **Risk/Reward Optimization** - Entry zones, stop placement, profit targets
+5. **Volatility Regime Assessment** - ATR-based position sizing optimization
 
-**Example Output Structure:**
-{
-  "MKRUSDT": { "technical_score": 5.5, "is_bearish_setup": false, ... },
-  "ALGOUSDT": { "technical_score": 3.2, "is_bearish_setup": false, ... },
-  ...
-}
+**PROFESSIONAL TRADING REQUIREMENTS:**
+- Identify assets with 3:1+ risk/reward potential
+- Detect institutional accumulation patterns before retail notices
+- Spot momentum divergences that signal trend changes
+- Provide precise entry zones with defined stop-loss levels
+- Assess optimal position sizing based on volatility characteristics
 
-**JSON Schema for EACH Asset's Analysis:**
-- \`technical_score\`: Float. A score from 0.0 to 10.0 on the strength of the technical setup.
-- \`is_bearish_setup\`: Boolean. Set to \`true\` if you identify specific, strong bearish patterns (e.g., bearish divergence, major resistance rejection, overbought conditions with confirmation). Otherwise, set to \`false\`.
-- \`volatility_level\`: String. Categorize the asset's volatility based on \`atr_percent\`. Must be one of: "High" (if atr_percent > 4.0), "Normal" (if atr_percent is between 1.5 and 4.0), "Low" (if atr_percent < 1.5).
-- \`trend\`: String. Must be one of: "Uptrend", "Downtrend", "Sideways".
-- \`momentum\`: String. Must be one of: "Bullish", "Bearish", "Neutral".
-- \`summary\`: String. A concise, one-sentence summary of the technical picture.
+**RETURN STRUCTURE:** Single JSON object with symbol keys containing detailed analysis.
+
+**ENHANCED OUTPUT SCHEMA PER ASSET:**
+- "technical_score": Float (0.0-10.0). Professional grade setup strength
+- "setup_type": String. "BREAKOUT" | "PULLBACK" | "REVERSAL" | "CONTINUATION" | "RANGING"
+- "entry_zone": Object. { "optimal": number, "aggressive": number, "conservative": number }
+- "stop_loss_level": Number. Precise invalidation level
+- "profit_targets": Array. [target1, target2, target3] - Multiple exit levels
+- "risk_reward_ratio": Float. Expected R:R for the setup
+- "momentum_grade": String. "ACCELERATING" | "STRONG" | "MODERATE" | "WEAK" | "DIVERGENT"
+- "volume_profile": String. "INSTITUTIONAL_ACCUMULATION" | "RETAIL_FOMO" | "DISTRIBUTION" | "LOW_INTEREST" | "BREAKOUT_VOLUME"
+- "trend_strength": String. "VERY_STRONG" | "STRONG" | "MODERATE" | "WEAK" | "SIDEWAYS"
+- "volatility_assessment": String. "EXPANDING" | "CONTRACTING" | "NORMAL" | "EXTREME"
+- "market_structure_bias": String. "BULLISH_STRUCTURE" | "BEARISH_STRUCTURE" | "NEUTRAL_STRUCTURE" | "TRANSITIONAL"
+- "confluence_factors": Array. List of confirming technical factors
+- "risk_factors": Array. List of invalidation scenarios
+- "time_horizon": String. "SCALP" | "INTRADAY" | "SWING" | "POSITION" - Optimal holding period
+- "position_size_multiplier": Float (0.25-2.0). Volatility-adjusted sizing
+- "institutional_bias": String. "ACCUMULATING" | "DISTRIBUTING" | "NEUTRAL" | "ROTATION"
+- "alpha_insight": String. The key factor most analysts are overlooking
+- "execution_notes": String. Specific entry/exit instructions for traders
         `;
         return await this.safeGenerate(prompt);
     }
@@ -596,7 +788,7 @@ public async decideBatch(
         }
         // --- END OF MODIFICATION ---
 
-        const weights = config.advanced_strategies?.analysis_weights || { technical_weight: 0.7, onchain_weight: 0.1, social_weight: 0.1, macro_override_weight: 0.1 };
+        const weights = config.advanced_strategies?.analysis_weights || { technical_weight: 0.6, onchain_weight: 0.15, social_weight: 0.15, macro_override_weight: 0.1 };
 
         let candidatesXML = "";
         for (const symbol of Object.keys(batchTechAnalyses)) {
@@ -605,9 +797,9 @@ public async decideBatch(
             const social = socialAnalyses?.[symbol] ? socialAnalyses[symbol] : { social_score: 0, summary: "No data." };
             const situationNarrative = `Trade for ${symbol}. Macro: ${macroAnalysis.market_regime}, Tech score: ${tech.technical_score}`;
 
-            // --- NAUJA DALIS: Atskiras pamokų surinkimas ---
-            const humanLessons = await this.memoryService.recallMemories(situationNarrative, 2, 'HUMAN');
-            const aiLessons = await this.memoryService.recallMemories(situationNarrative, 2, 'AI');
+            // --- Enhanced memory recall with performance tracking ---
+            const humanLessons = await this.memoryService.recallMemories(situationNarrative, 3, 'HUMAN');
+            const aiLessons = await this.memoryService.recallMemories(situationNarrative, 3, 'AI');
 
             candidatesXML += `
             <candidate>
@@ -620,62 +812,103 @@ public async decideBatch(
             </candidate>`;
         }
 
-        // <-- PRIDĖTA LOGIKA: Dinamiškai keičiame prompt'o dalis
-        let persona = "You are a multi-asset Risk Manager. Your task is to analyze a BATCH of candidates and make decisions.";
-        let criticalTask = `
-        CRITICAL TASK: Return a single JSON object where each key is a symbol from the input. The value for each key must be another JSON object with the specified schema.
-        `;
-        if (config.force_buy_on_strong_technicals) {
-            persona = "You are an aggressive trader executing a high-risk strategy for testing purposes. Your primary goal is to execute trades based on strong technical signals.";
-            criticalTask = `
-        CRITICAL TASK & NEW RULE: Your main objective is to test trade execution. You MUST approve a "BUY" decision if a candidate's \`technical_score\` is 7.5 or higher, UNLESS the \`regime_score\` in the macro_environment is below 2.0 (catastrophic conditions). For all other cases, use your judgment.
+        // Enhanced persona logic for different market conditions
+        let persona = "You are George Soros reborn as an AI - the ultimate Risk Manager with legendary market intuition and 40+ years of experience managing billions in volatile markets. You understand that successful trading is about asymmetric risk/reward opportunities where you risk little to make a lot. You have an uncanny ability to spot when markets are about to move and position accordingly.";
         
-        Return a single JSON object where each key is a symbol from the input. The value for each key must be another JSON object with the specified schema.
+        let criticalTask = `
+**ELITE RISK MANAGEMENT FRAMEWORK:**
+Your decision-making follows the Soros Reflexivity Theory:
+1. **Market Inefficiency Detection** - Identify mispricings before they correct
+2. **Asymmetric Risk/Reward Analysis** - Only take trades with 3:1+ potential
+3. **Market Psychology Integration** - Understand how sentiment drives price action
+4. **Position Sizing Optimization** - Size positions based on conviction and volatility
+5. **Dynamic Exit Strategy** - Plan multiple scenarios before entering
+
+**PROFESSIONAL TRADING REQUIREMENTS:**
+- Minimum 60% win rate expectation
+- Maximum 2% risk per trade in adverse conditions
+- Identify setups with 5:1+ risk/reward in optimal conditions
+- Consider correlations and portfolio heat distribution
+- Factor in slippage and execution costs
+
+Return a single JSON object where each key is a symbol from the input.
+        `;
+        
+        if (config.force_buy_on_strong_technicals) {
+            persona = "You are a systematic momentum trader executing a high-conviction technical strategy. Your algorithms have identified strong technical setups that require immediate execution.";
+            criticalTask = `
+**SYSTEMATIC EXECUTION PROTOCOL:**
+You MUST execute BUY orders on candidates with technical_score >= 7.5, UNLESS:
+- Macro regime_score < 2.0 (catastrophic market conditions)
+- Excessive portfolio concentration risk
+- Technical setup shows clear bearish divergence
+
+For all other scenarios, apply standard risk assessment protocols.
+Return a single JSON object where each key is a symbol.
         `;
         }
 
-        // --- NAUJAS, PILNAI PAKEISTAS PROMPT'AS ---
+        // --- ENHANCED PROFESSIONAL PROMPT ---
         const prompt = `
-Persona: ${persona}
+**MASTER TRADER PERSONA:** ${persona}
 
-Strategic Weights: ${JSON.stringify(weights)}
-
-<context>
+**MARKET INTELLIGENCE BRIEFING:**
+<global_context>
     <macro_environment>${JSON.stringify(macroAnalysis)}</macro_environment>
     <market_sentiment>${JSON.stringify(sentimentAnalysis)}</market_sentiment>
-</context>
+    <analysis_weights>${JSON.stringify(weights)}</analysis_weights>
+</global_context>
 
-<candidates>
+<trading_candidates>
     ${candidatesXML}
-</candidates>
+</trading_candidates>
 
 ${criticalTask}
 
-**MANDATORY ACTION: For each candidate, you MUST analyze the <human_override_lessons>.**
-- In your final JSON response for each symbol, you MUST include a new field called \`human_lesson_consideration\`.
-- In this field, you must explicitly state which human lesson you considered (by its narrative).
-- You must then briefly state if the current situation is similar or different.
-- If your final decision contradicts the human's past action in a similar scenario, you MUST provide a strong, data-driven reason in this field.
+**ADVANCED RISK PROTOCOLS:**
 
-**Example for \`human_lesson_consideration\` field:**
-"Considered lesson 'Human-AI Conflict on SOLUSDT... Teacher closed for profit'. Current situation is different as macro score is now 8.1 (vs 4.5 in lesson). AI's strong technical signal is given higher priority."
+**Memory Integration Requirements:**
+- Analyze <human_override_lessons> and <ai_past_lessons> for each candidate
+- Weight historical performance data in decision-making
+- Include "lesson_integration" field explaining how past performance influenced current decision
+- If contradicting past human decisions, provide quantitative justification
 
-**PORTFOLIO CONTEXT & DIVERSIFICATION RULES:**
-${JSON.stringify({ ...(config.diversification_settings || {}), open_positions: portfolioContext.open_positions })}
+**Portfolio Risk Management:**
+${JSON.stringify({ ...config.diversification_settings, current_positions: portfolioContext.open_positions })}
 
-**POSITION SIZING RULES:**
-- Volatility "Low" -> multiplier 1.2
-- Volatility "Normal" -> multiplier 1.0
-- Volatility "High" -> multiplier 0.7
+**Dynamic Position Sizing Matrix:**
+- **Volatility-Based Sizing:**
+  - "EXPANDING" volatility -> 0.6x multiplier (higher risk)
+  - "NORMAL" volatility -> 1.0x multiplier (standard risk)
+  - "CONTRACTING" volatility -> 1.4x multiplier (lower risk, opportunity)
+  
+- **Conviction-Based Scaling:**
+  - High conviction (9.0+ score) -> up to 1.8x multiplier
+  - Medium conviction (6.0-8.9) -> 0.8-1.2x multiplier
+  - Low conviction (<6.0) -> 0.3-0.7x multiplier
+  
+- **Market Regime Adjustments:**
+  - RISK_ON_EXPANSION -> up to 1.5x multiplier
+  - NEUTRAL_CONSOLIDATION -> 0.8-1.0x multiplier
+  - RISK_OFF_CONTRACTION -> 0.3-0.6x multiplier
 
-JSON Schema for EACH symbol's decision:
-- "decision": String. "BUY", "SELL_SHORT", or "AVOID".
-- "confidence_score": Float. 0.0 to 1.0.
-- "position_sizing_multiplier": Float.
-- "take_profit_percent": Float.
-- "stop_loss_percentage": Float.
-- "final_summary": String.
-- "human_lesson_consideration": String. (MANDATORY NEW FIELD)
+**ENHANCED OUTPUT SCHEMA (per symbol):**
+- "decision": String. "AGGRESSIVE_BUY" | "BUY" | "CAUTIOUS_BUY" | "SCALP" | "AVOID" | "SHORT" | "AGGRESSIVE_SHORT"
+- "conviction_level": String. "VERY_HIGH" | "HIGH" | "MEDIUM" | "LOW"
+- "risk_reward_ratio": Float. Expected R:R (minimum 2.0 for BUY decisions)
+- "position_sizing_multiplier": Float. 0.25-2.0 based on volatility and conviction
+- "entry_strategy": String. "MARKET" | "LIMIT_AGGRESSIVE" | "LIMIT_PATIENT" | "BREAKOUT" | "PULLBACK"
+- "stop_loss_strategy": Object. { "type": "FIXED" | "TRAILING" | "ATR_BASED", "percentage": float, "reasoning": string }
+- "profit_targets": Array. [{ "target": float, "percentage": int }] - Multiple exit levels
+- "time_horizon": String. "SCALP" | "INTRADAY" | "SWING" | "POSITION"
+- "risk_factors": Array. Specific risks that could invalidate the trade
+- "catalyst_factors": Array. Events/levels that could accelerate the move
+- "correlation_impact": String. How this position affects overall portfolio correlation
+- "max_portfolio_heat": Float. Maximum % of portfolio this position should represent
+- "lesson_integration": String. How historical performance data influenced this decision
+- "alpha_edge": String. The specific edge or inefficiency being exploited
+- "execution_urgency": String. "IMMEDIATE" | "STRATEGIC" | "PATIENT" - Entry timing requirements
+- "final_summary": String. Executive summary for portfolio managers
 `;
 
         return await this.safeGenerate(prompt);
@@ -742,29 +975,151 @@ export interface DecisionLogEntry { timestamp: string; symbol: string; decision:
 
 export class StrategyOptimizer extends AIAgent {
     constructor(agentService: AgentService) { super('StrategyOptimizer', agentService); }
+    
+    private calculatePerformanceMetrics(trades: Trade[]): {
+        totalReturn: number,
+        sharpeRatio: number,
+        maxDrawdown: number,
+        winRate: number,
+        avgWin: number,
+        avgLoss: number,
+        profitFactor: number
+    } {
+        if (trades.length === 0) {
+            return {
+                totalReturn: 0, sharpeRatio: 0, maxDrawdown: 0,
+                winRate: 0, avgWin: 0, avgLoss: 0, profitFactor: 0
+            };
+        }
+        
+        const returns = trades.map(t => t.pnl / t.entryPrice);
+        const winningTrades = trades.filter(t => t.pnl > 0);
+        const losingTrades = trades.filter(t => t.pnl < 0);
+        
+        const totalReturn = returns.reduce((sum, ret) => sum + ret, 0);
+        const avgReturn = totalReturn / trades.length;
+        const returnVariance = returns.reduce((sum, ret) => sum + Math.pow(ret - avgReturn, 2), 0) / trades.length;
+        const sharpeRatio = Math.sqrt(returnVariance) > 0 ? avgReturn / Math.sqrt(returnVariance) : 0;
+        
+        // Calculate max drawdown
+        let peak = 0;
+        let maxDrawdown = 0;
+        let cumulative = 0;
+        
+        for (const ret of returns) {
+            cumulative += ret;
+            if (cumulative > peak) peak = cumulative;
+            const drawdown = peak - cumulative;
+            if (drawdown > maxDrawdown) maxDrawdown = drawdown;
+        }
+        
+        const winRate = winningTrades.length / trades.length;
+        const avgWin = winningTrades.length > 0 ? winningTrades.reduce((sum, t) => sum + t.pnl, 0) / winningTrades.length : 0;
+        const avgLoss = losingTrades.length > 0 ? Math.abs(losingTrades.reduce((sum, t) => sum + t.pnl, 0)) / losingTrades.length : 0;
+        const profitFactor = avgLoss > 0 ? (avgWin * winningTrades.length) / (avgLoss * losingTrades.length) : 0;
+        
+        return {
+            totalReturn: totalReturn * 100,
+            sharpeRatio,
+            maxDrawdown: maxDrawdown * 100,
+            winRate: winRate * 100,
+            avgWin,
+            avgLoss,
+            profitFactor
+        };
+    }
+    
+    private analyzeMarketRegimePerformance(trades: Trade[]): Record<string, any> {
+        const regimePerformance: Record<string, { trades: Trade[], returns: number[] }> = {};
+        
+        trades.forEach(trade => {
+            // Extract market regime from trade reason/context if available
+            let regime = 'Unknown';
+            if (trade.reason.includes('Risk-On') || trade.reason.includes('RISK_ON')) regime = 'Risk-On';
+            else if (trade.reason.includes('Risk-Off') || trade.reason.includes('RISK_OFF')) regime = 'Risk-Off';
+            else if (trade.reason.includes('Neutral')) regime = 'Neutral';
+            
+            if (!regimePerformance[regime]) {
+                regimePerformance[regime] = { trades: [], returns: [] };
+            }
+            regimePerformance[regime].trades.push(trade);
+            regimePerformance[regime].returns.push(trade.pnl / trade.entryPrice);
+        });
+        
+        return regimePerformance;
+    }
+    
     async analyze(trades: Trade[], missedOpportunities: MissedOpportunity[], decisionLogs: DecisionLogEntry[]): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
-    const prompt = `
-    **Persona:** You are a Quantitative Analyst and AI Strategist. Your core function is to evolve this trading bot by learning from its complete performance history.
+        const performanceMetrics = this.calculatePerformanceMetrics(trades);
+        const regimeAnalysis = this.analyzeMarketRegimePerformance(trades);
+        
+        // Analyze recent performance trend (last 30 days)
+        const recentTrades = trades.filter(t => {
+            const tradeDate = new Date(t.timestamp);
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            return tradeDate > thirtyDaysAgo;
+        });
+        const recentMetrics = this.calculatePerformanceMetrics(recentTrades);
+    
+        const prompt = `
+**QUANTITATIVE STRATEGIST PERSONA:** You are Jim Simons reborn as an AI - the legendary founder of Renaissance Technologies and master of quantitative trading strategies. You've generated 66% annual returns for 30+ years using mathematical models and data-driven optimization. You understand that successful algorithmic trading requires continuous model evolution based on rigorous statistical analysis.
 
-    **You have three data sources:**
-    1.  **Executed Trades Log:** The final outcome of each trade (profit or loss), including the market context at the time of sale.
-    ${JSON.stringify(trades, null, 2)}
+**COMPREHENSIVE PERFORMANCE DATASET:**
 
-    2.  **Missed Opportunities Log:** Assets the bot decided to "AVOID".
-    ${JSON.stringify(missedOpportunities, null, 2)}
+**Overall Performance Metrics:**
+${JSON.stringify(performanceMetrics, null, 2)}
 
-    3.  **Position Management Decisions Log:** Records of when the bot decided to "HOLD" a winning position instead of selling immediately.
-    ${JSON.stringify(decisionLogs, null, 2)}
+**Recent Performance (30 days):**
+${JSON.stringify(recentMetrics, null, 2)}
 
-    **CRITICAL TASK: Perform a holistic, data-driven analysis and generate a new, superior configuration.**
-    - Analyze winning vs. losing trades in context of the market regime. (e.g., "Are we losing money during 'Risk-Off' even with good signals?").
-    - Analyze Missed Opportunities.
-    - Analyze Position Management decisions.
-    - Propose & Justify a new, fully optimized configuration.
+**Market Regime Performance Analysis:**
+${JSON.stringify(regimeAnalysis, null, 2)}
 
-    **Format (JSON):**
-    - \`analysis_summary\`: A brief summary of your key findings.
-    - \`suggested_settings\`: A complete JSON object containing the full, new configuration.
+**Detailed Trade History:**
+${JSON.stringify(trades.slice(-50), null, 2)} // Last 50 trades for analysis
+
+**Opportunity Analysis:**
+${JSON.stringify(missedOpportunities.slice(-20), null, 2)} // Recent missed opportunities
+
+**Position Management Decisions:**
+${JSON.stringify(decisionLogs.slice(-30), null, 2)} // Recent management decisions
+
+**ELITE QUANTITATIVE OPTIMIZATION FRAMEWORK:**
+
+**Statistical Analysis Requirements:**
+1. **Performance Attribution Analysis** - Identify which factors drive alpha vs. beta
+2. **Risk-Adjusted Return Optimization** - Maximize Sharpe ratio and minimize drawdowns
+3. **Market Regime Adaptation** - Optimize parameters for different market conditions
+4. **Factor Exposure Analysis** - Understand correlation and concentration risks
+5. **Execution Quality Assessment** - Analyze slippage and timing inefficiencies
+
+**Optimization Objectives:**
+- Target Sharpe Ratio: 2.0+
+- Maximum Drawdown: <15%
+- Win Rate: 65%+
+- Profit Factor: 2.5+
+- Risk-Adjusted Alpha Generation
+
+**ADVANCED OUTPUT SCHEMA:**
+- "performance_diagnosis": Object. Detailed breakdown of current strategy strengths/weaknesses
+- "statistical_significance": Object. Confidence levels and sample size adequacy analysis
+- "regime_optimization": Object. Parameter adjustments for different market conditions
+- "risk_management_enhancements": Object. Improved stop-loss and position sizing rules
+- "entry_signal_optimization": Object. Enhanced technical and fundamental filters
+- "exit_strategy_improvements": Object. Better profit-taking and loss-cutting algorithms
+- "diversification_optimization": Object. Improved asset selection and correlation management
+- "market_timing_enhancements": Object. Better macro and sentiment integration
+- "execution_improvements": Object. Reduced slippage and better order management
+- "parameter_sensitivity_analysis": Object. Robustness testing of key variables
+- "backtesting_validation": Object. Out-of-sample performance estimates
+- "implementation_priority": Array. Ranked list of changes by expected impact
+- "risk_budget_allocation": Object. Optimal risk distribution across strategies
+- "performance_monitoring_kpis": Array. Key metrics to track post-implementation
+- "suggested_settings": Object. Complete optimized configuration with justification
+- "expected_performance_improvement": Object. Quantified enhancement projections
+- "implementation_timeline": Object. Phased rollout plan for changes
+- "confidence_intervals": Object. Statistical confidence in proposed improvements
     `;
     return await this.safeGenerate(prompt);
 }
@@ -1030,7 +1385,7 @@ ${JSON.stringify(previouslySharedInsights)}
 export class MarketRegimeAgent extends AIAgent {
     constructor(agentService: AgentService) {
         super('MarketRegimeAgent', agentService);
-    }
+    }\n    \n    private calculateAdvancedRegimeMetrics(btcCandles: Candle[]): {\n        trendStrength: number,\n        volatilityPercentile: number,\n        momentumScore: number,\n        volumeTrend: string,\n        cyclicalPosition: string\n    } {\n        const closes = btcCandles.map(c => c.close);\n        const volumes = btcCandles.map(c => c.volume);\n        \n        // Advanced trend strength calculation\n        const sma20 = calculateSMAExported(btcCandles, 20) || 0;\n        const sma50 = calculateSMAExported(btcCandles, 50) || 0;\n        const sma200 = calculateSMAExported(btcCandles, 200) || 0;\n        \n        const trendAlignment = [\n            closes[closes.length - 1] > sma20,\n            sma20 > sma50,\n            sma50 > sma200\n        ].filter(Boolean).length;\n        const trendStrength = (trendAlignment / 3) * 100;\n        \n        // Volatility percentile (compare current ATR to historical)\n        const atrValues = [];\n        for (let i = 14; i < btcCandles.length; i++) {\n            const atr = calculateATR(btcCandles.slice(i - 14, i + 1), 14);\n            if (atr) atrValues.push(atr);\n        }\n        const currentATR = atrValues[atrValues.length - 1] || 0;\n        const sortedATRs = [...atrValues].sort((a, b) => a - b);\n        const atrRank = sortedATRs.findIndex(atr => atr >= currentATR);\n        const volatilityPercentile = (atrRank / sortedATRs.length) * 100;\n        \n        // Momentum score\n        const priceChanges = [];\n        for (let i = 1; i < closes.length; i++) {\n            priceChanges.push((closes[i] - closes[i-1]) / closes[i-1]);\n        }\n        const recentMomentum = priceChanges.slice(-10).reduce((sum, change) => sum + change, 0);\n        const momentumScore = (recentMomentum + 1) * 50; // Normalize to 0-100\n        \n        // Volume trend\n        const recentVolumes = volumes.slice(-20);\n        const olderVolumes = volumes.slice(-40, -20);\n        const recentAvgVolume = recentVolumes.reduce((a, b) => a + b, 0) / recentVolumes.length;\n        const olderAvgVolume = olderVolumes.reduce((a, b) => a + b, 0) / olderVolumes.length;\n        \n        let volumeTrend = 'STABLE';\n        if (recentAvgVolume > olderAvgVolume * 1.2) volumeTrend = 'INCREASING';\n        else if (recentAvgVolume < olderAvgVolume * 0.8) volumeTrend = 'DECREASING';\n        \n        // Cyclical position (simplified cycle analysis)\n        const priceHigh = Math.max(...closes.slice(-50));\n        const priceLow = Math.min(...closes.slice(-50));\n        const currentPrice = closes[closes.length - 1];\n        const cyclicalPosition = ((currentPrice - priceLow) / (priceHigh - priceLow));\n        \n        let cyclicalPhase = 'MID_CYCLE';\n        if (cyclicalPosition < 0.3) cyclicalPhase = 'BOTTOM_FORMATION';\n        else if (cyclicalPosition > 0.7) cyclicalPhase = 'TOP_FORMATION';\n        \n        return {\n            trendStrength,\n            volatilityPercentile,\n            momentumScore,\n            volumeTrend,\n            cyclicalPosition: cyclicalPhase\n        };\n    }
 
     async analyze(btcCandles: Candle[]): Promise<{ prompt: string; response: Record<string, unknown> } | null> {
         if (btcCandles.length < 50) {
@@ -1045,32 +1400,13 @@ export class MarketRegimeAgent extends AIAgent {
         const atrPercent = (atrValue / lastCandle.close) * 100;
         const sma20 = calculateSMAExported(btcCandles, 20);
         const sma50 = calculateSMAExported(btcCandles, 50);
-        const smaSpread = sma20 && sma50 ? ((sma20 - sma50) / sma50) * 100 : 0;
+        const smaSpread = sma20 && sma50 ? ((sma20 - sma50) / sma50) * 100 : 0;\n        \n        const advancedMetrics = this.calculateAdvancedRegimeMetrics(btcCandles);\n        const rsi = calculateRSI(btcCandles, 14);\n        const macd = calculateMACD(btcCandles, 12, 26, 9);
 
         const quantitativeData = {
             atrPercent: atrPercent.toFixed(2),
-            sma20_vs_sma50_percent_spread: smaSpread.toFixed(2)
-        };
+            sma20_vs_sma50_percent_spread: smaSpread.toFixed(2),\n            advanced_metrics: advancedMetrics,\n            rsi: rsi?.toFixed(2),\n            macd_histogram: macd?.histogram?.toFixed(4)\n        };
 
-        const prompt = `
-**Persona:** You are an expert Market Analyst specializing in identifying market regimes based on quantitative data. Your analysis determines the entire system's posture.
-
-**Data Provided:**
-- **Bitcoin (4h chart) Volatility (ATR%):** ${quantitativeData.atrPercent}%
-- **Bitcoin (4h chart) Trend Strength (20-period vs 50-period SMA Spread):** ${quantitativeData.sma20_vs_sma50_percent_spread}%
-
-**CRITICAL TASK:** Analyze the provided data and classify the current market into one of four distinct regimes. Provide your analysis in a structured JSON format.
-
-**Regime Definitions:**
-- **BULL_VOLATILITY:** Strong uptrend (positive SMA spread) combined with high volatility. Favorable for momentum and trend-following strategies.
-- **BEAR_VOLATILITY:** Strong downtrend (negative SMA spread) combined with high volatility. Favorable for shorting or mean-reversion strategies.
-- **RANGING:** No clear trend (SMA spread is close to zero) but with moderate to high volatility. Favorable for scalping or range-trading strategies.
-- **COMPRESSION:** No clear trend AND very low volatility. Often precedes a major breakout. Favorable for breakout-hunting strategies.
-
-**JSON Output Schema:**
-- "regime": String. Must be one of: "BULL_VOLATILITY", "BEAR_VOLATILITY", "RANGING", "COMPRESSION".
-- "reasoning": String. A brief explanation for your choice, referencing the provided data points.
-`;
+        const prompt = `\n**MASTER MARKET REGIME ANALYST PERSONA:** You are Martin Zweig reborn as an AI - the legendary market technician who predicted the 1987 crash and understood market cycles better than anyone. You can identify regime changes before they become obvious to the market. Your regime classification determines optimal strategy allocation across the entire trading system.\n\n**COMPREHENSIVE MARKET DATA:**\n${JSON.stringify(quantitativeData, null, 2)}\n\n**ELITE REGIME ANALYSIS FRAMEWORK:**\n\nYou employ a sophisticated multi-dimensional analysis:\n1. **Trend Dynamics** - Direction, strength, and sustainability of primary trend\n2. **Volatility Regimes** - Current volatility vs historical context and clustering\n3. **Momentum Characteristics** - Acceleration, deceleration, and divergence patterns\n4. **Volume Analysis** - Institutional participation and distribution patterns\n5. **Cycle Positioning** - Where we are in the major market cycle\n\n**ENHANCED REGIME CLASSIFICATIONS:**\n\n**BULL_ACCELERATION** (Strongest Bull Phase):\n- Strong uptrend + expanding volatility + increasing volume\n- Trend strength >70%, Volatility >60th percentile, Positive momentum\n- Strategy: Maximum risk, momentum following, breakout hunting\n\n**BULL_MATURATION** (Late Bull Phase):\n- Uptrend + normal volatility + diverging indicators\n- Trend strength 50-70%, Signs of exhaustion emerging\n- Strategy: Selective momentum, profit taking, cautious expansion\n\n**DISTRIBUTION** (Topping Process):\n- Sideways/weak uptrend + increasing volatility + volume divergence\n- Mixed signals, institutional distribution signs\n- Strategy: Defensive positioning, short preparation, range trading\n\n**BEAR_ACCELERATION** (Strongest Bear Phase):\n- Strong downtrend + expanding volatility + panic volume\n- Trend strength <30%, High volatility, Negative momentum\n- Strategy: Short bias, mean reversion, defensive cash position\n\n**BEAR_MATURATION** (Late Bear Phase):\n- Downtrend + normal volatility + potential bottoming signals\n- Trend weakness, RSI oversold, Volume exhaustion\n- Strategy: Cautious accumulation, reversal hunting, reduced shorts\n\n**ACCUMULATION** (Bottoming Process):\n- Sideways/weak recovery + decreasing volatility + smart money flow\n- Base building, stealth institutional buying\n- Strategy: Aggressive accumulation, breakout preparation, long bias\n\n**COMPRESSION** (Pre-Breakout):\n- Tight range + very low volatility + coiling patterns\n- ATR <25th percentile, Decreasing volume, Narrowing ranges\n- Strategy: Breakout preparation, tight risk management, high alert\n\n**TRANSITION** (Regime Uncertainty):\n- Mixed signals + conflicting indicators + regime shift in progress\n- Unclear direction, High uncertainty, Multiple scenarios possible\n- Strategy: Reduced risk, flexible positioning, multiple contingencies\n\n**PROFESSIONAL OUTPUT SCHEMA:**\n- \"primary_regime\": String. One of the 8 regime classifications above\n- \"regime_confidence\": Float. 0.0-1.0 confidence in classification\n- \"regime_strength\": String. \"VERY_STRONG\" | \"STRONG\" | \"MODERATE\" | \"WEAK\" | \"TRANSITIONING\"\n- \"trend_characteristics\": Object. { \"direction\": string, \"strength\": float, \"sustainability\": string }\n- \"volatility_analysis\": Object. { \"current_percentile\": float, \"regime\": string, \"clustering\": boolean }\n- \"momentum_profile\": Object. { \"direction\": string, \"acceleration\": string, \"divergences\": array }\n- \"volume_intelligence\": Object. { \"trend\": string, \"institutional_bias\": string, \"distribution_signs\": boolean }\n- \"cycle_position\": Object. { \"phase\": string, \"maturity\": string, \"time_remaining\": string }\n- \"regime_duration_estimate\": String. Expected duration of current regime\n- \"transition_probabilities\": Object. Likelihood of transitioning to other regimes\n- \"optimal_strategies\": Array. Trading strategies best suited for this regime\n- \"risk_parameters\": Object. Recommended risk settings for this regime\n- \"key_monitoring_metrics\": Array. Indicators to watch for regime change\n- \"regime_change_triggers\": Array. Specific events/levels that would signal transition\n- \"strategic_positioning\": String. Overall portfolio posture for this regime\n- \"execution_urgency\": String. How quickly to adjust strategies for this regime\n- \"historical_context\": String. How current regime compares to historical precedents\n- \"regime_reasoning\": String. Comprehensive justification for classification\n`;
         return await this.safeGenerate(prompt);
     }
 }
