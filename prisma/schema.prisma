@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 // --- User and Portfolio Models ---
@@ -32,7 +32,7 @@ model User {
 }
 
 model UserConfiguration {
-  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String   @id @default(uuid())
   userId         String   @unique
   user           User     @relation(fields: [userId], references: [username])
   strategyConfig Json
@@ -41,7 +41,7 @@ model UserConfiguration {
 }
 
 model Portfolio {
-  id        String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String        @id @default(uuid()) 
   userId    String
   user      User          @relation(fields: [userId], references: [username])
   balance   Float         @default(100000)
@@ -57,8 +57,8 @@ enum PortfolioType {
 }
 
 model Position {
-  id                      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  portfolioId             String    @db.Uuid
+  id                      String    @id @default(uuid()) 
+  portfolioId             String    
   portfolio               Portfolio @relation(fields: [portfolioId], references: [id])
   symbol                  String
   amount                  Float
@@ -75,7 +75,7 @@ model Position {
 // --- Logging and Memory Models ---
 
 model TradeLog {
-  id                      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                      String    @id @default(uuid()) 
   userId                  String
   user                    User      @relation(fields: [userId], references: [username])
   symbol                  String
@@ -91,7 +91,7 @@ model TradeLog {
 }
 
 model DecisionLog {
-  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                    String    @id @default(uuid()) 
   userId                String
   user                  User      @relation(fields: [userId], references: [username])
   timestamp             DateTime  @default(now())
@@ -105,7 +105,7 @@ model DecisionLog {
 }
 
 model MissedOpportunity {
-  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                  String    @id @default(uuid()) 
   userId              String
   user                User      @relation(fields: [userId], references: [username])
   timestamp           DateTime  @default(now())
@@ -122,7 +122,7 @@ enum Source {
 }
 
 model TradeMemory {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id          String   @id @default(uuid()) 
   timestamp   DateTime @default(now())
   symbol      String
   outcome     String
@@ -174,7 +174,7 @@ model ApiKey {
 }
 
 model Notification {
-  id        String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String               @id @default(uuid()) 
   userId    String
   user      User                 @relation(fields: [userId], references: [username])
   message   String
@@ -194,10 +194,10 @@ enum NotificationPriority {
 }
 
 model AgentActivityLog {
-  id        String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String               @id @default(uuid()) 
   userId    String
   user      User                 @relation(fields: [userId], references: [username])
-  cycleId   String               @db.Uuid
+  cycleId   String               
   timestamp DateTime
   agentName String
   status    AgentActivityStatus
