@@ -170,7 +170,6 @@ export default function Home() {
                     Start Simulation
                   </motion.button>
 
-                  {/* Popular badge */}
                   <div className="mt-4 text-center">
                     <motion.span
                       animate={{ opacity: [0.7, 1, 0.7] }}
@@ -185,7 +184,6 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* Footer Info */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -195,7 +193,7 @@ export default function Home() {
             <p className="text-gray-500 text-sm">
               Powered by advanced machine learning algorithms • Built with TypeScript & React
             </p>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </div>
