@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Type for a single candle
 export type Candle = {
-    time: number;
+    timestamp: number;
     open: number;
     high: number;
     low: number;
@@ -54,7 +54,7 @@ export class BinanceService {
         try {
             const data = await this.fetchApi('klines', { symbol, interval, limit: String(limit) });
             return data.map((d: BinanceCandle) => ({
-                time: d[0] / 1000,
+                timestamp: d[0], // Binance returns timestamp in milliseconds
                 open: parseFloat(d[1]),
                 high: parseFloat(d[2]),
                 low: parseFloat(d[3]),
@@ -88,6 +88,44 @@ export class BinanceService {
                 !t.symbol.match(/^\d/) // Exclude symbols that start with a number
             );
             const sorted = usdtPairs.sort((a, b) => parseFloat(b.quoteVolume) - parseFloat(a.quoteVolume));
+            return sorted.slice(0, limit);
+        } catch {
+            return [];
+        }
+    }
+
+    async getTopLosers(limit = 50): Promise<Ticker[]> {
+        try {
+            const data: Ticker[] = await this.fetchApi('ticker/24hr');
+            // Filter for USDT pairs and exclude leveraged/special assets
+            const usdtPairs = data.filter(t => 
+                t.symbol.endsWith('USDT') && 
+                !t.symbol.includes('UP') && 
+                !t.symbol.includes('DOWN') &&
+                !t.symbol.includes('BULL') &&
+                !t.symbol.includes('BEAR')
+            );
+            // Sort by the lowest (most negative) price change percent
+            const sorted = usdtPairs.sort((a, b) => parseFloat(a.priceChangePercent) - parseFloat(b.priceChangePercent));
+            return sorted.slice(0, limit);
+        } catch {
+            return [];
+        }
+    }
+
+    async getTopGainers(limit = 50): Promise<Ticker[]> {
+        try {
+            const data: Ticker[] = await this.fetchApi('ticker/24hr');
+            // Filter for USDT pairs and exclude leveraged/special assets
+            const usdtPairs = data.filter(t => 
+                t.symbol.endsWith('USDT') && 
+                !t.symbol.includes('UP') && 
+                !t.symbol.includes('DOWN') &&
+                !t.symbol.includes('BULL') &&
+                !t.symbol.includes('BEAR')
+            );
+            // Sort by the highest positive price change percent
+            const sorted = usdtPairs.sort((a, b) => parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent));
             return sorted.slice(0, limit);
         } catch {
             return [];

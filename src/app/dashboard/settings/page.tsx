@@ -1,157 +1,567 @@
 // src/app/dashboard/settings/page.tsx
-
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, Save, RotateCcw, Trash2, PlusCircle, Bot, Activity, BrainCircuit, LoaderCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { get, set, cloneDeep } from 'lodash';
+import { cn } from '@/lib/utils';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { FormField } from '@/components/ui/FormField';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { ContextualHelp } from '@/components/ContextualHelp';
 
-// Define an interface for the settings object
-interface Settings {
-    [key: string]: string | number | boolean;
-}
+// Tipai (supaprastinti, bet pakankami UI)
+type Strategy = Record<string, any>;
+type Config = {
+  strategy_mapping: Record<string, string>;
+  strategies: Record<string, Strategy>;
+  [key: string]: any;
+};
+type LiveStatus = {
+    marketRegime: string;
+    activeStrategyName: string;
+};
 
-// Helper component for section titles
-const SectionTitle = ({ title, description }: { title: string, description: string }) => (
-    <div className="col-span-1 md:col-span-2 lg:col-span-3 mt-6 mb-2 border-b border-gray-700 pb-2">
-        <h2 className="text-xl font-semibold">{title}</h2>
-        <p className="text-sm text-gray-400">{description}</p>
-    </div>
-);
-
-// Helper component for individual settings
-const SettingInput = ({ name, label, tooltip, type = 'number', value, onChange, options, step }: any) => (
-    <div>
-        <label className="block text-sm font-medium text-gray-300 mb-1 flex items-center">
-            {label}
-            <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <HelpCircle size={14} className="ml-2 text-gray-500 cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p className="max-w-xs">{tooltip}</p>
-                    </TooltipContent>
-                </Tooltip>
-            </TooltipProvider>
-        </label>
-        {type === 'select' && (
-            <select name={name} value={value} onChange={onChange} className="bg-gray-700 rounded p-2 w-full">
-                {options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
-            </select>
-        )}
-        {type === 'number' && (
-            <input type="number" name={name} value={value} onChange={onChange} className="bg-gray-700 rounded p-2 w-full" step={step || '1'} />
-        )}
-        {type === 'checkbox' && (
-            <label className="flex items-center space-x-2 cursor-pointer mt-2">
-                <input type="checkbox" name={name} checked={!!value} onChange={onChange} className="bg-gray-700 rounded h-5 w-5 text-blue-500 focus:ring-blue-500 border-gray-600" />
-                <span className="text-gray-300">{!!value ? 'Enabled' : 'Disabled'}</span>
-            </label>
-        )}
-    </div>
-);
-
+const REGIME_DESCRIPTIONS: Record<string, string> = {
+    BULL_VOLATILITY: "Strong uptrend with high volatility. Good for momentum strategies.",
+    BEAR_VOLATILITY: "Strong downtrend with high volatility. Good for shorting strategies.",
+    RANGING: "No clear trend, but price moves in a channel. Good for scalping.",
+    COMPRESSION: "Low volatility and tight price range. Often precedes a major breakout.",
+    default: "A fallback strategy used if no specific regime is matched."
+};
 
 export default function SettingsPage() {
-    const [settings, setSettings] = useState<Settings>({});
+    const [config, setConfig] = useState<Config | null>(null);
+    const [liveStatus, setLiveStatus] = useState<LiveStatus | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isDirty, setIsDirty] = useState(false);
+    const [newStrategyName, setNewStrategyName] = useState("");
+    const [cloneSource, setCloneSource] = useState("");
+    const [isGenerating, setIsGenerating] = useState(false);
+    const [proposedStrategy, setProposedStrategy] = useState<any | null>(null);
+    const [tradeCount, setTradeCount] = useState(0);
 
-    // Mock fetch, in real life this would be a fetch call
+    // --- DUOMENŲ GAVIMAS ---
     useEffect(() => {
-        setIsLoading(true);
-        // Mock data that includes the new settings
-        const mockSettings = {
-            takeProfitPercent: 7.5,
-            stopLossPercent: -3.0,
-            riskAmountPercent: 2.0,
-            symbolsToAnalyze: 50,
-            batchSize: 10,
-            macroScoreThreshold: 4.5,
-            cycleIntervalMinutes: 15,
-            // New Narrative Trading Settings
-            enableNarrativeTrading: true,
-            narrativeAllocationBoost: 25,
-            // New DEX Hunting Settings
-            enableDexHunting: false,
-            dexMaxAllocationPercent: 5,
-            // New Autonomous Improvement Settings
-            enableAutoImprovement: false,
+        const fetchConfig = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch('/api/settings');
+                if (!response.ok) throw new Error("Failed to load settings.");
+                setConfig(await response.json());
+            } catch (error) {
+                toast.error((error as Error).message);
+            } finally {
+                setIsLoading(false);
+            }
         };
-        setSettings(mockSettings);
-        setIsLoading(false);
+        fetchConfig();
     }, []);
 
+    useEffect(() => {
+        const fetchLiveStatus = async () => {
+            try {
+                const response = await fetch('/api/system-status/live');
+                if (response.ok) setLiveStatus(await response.json());
+            } catch (error) {
+                console.error("Could not fetch live system status:", error);
+            }
+        };
+        fetchLiveStatus();
+        const interval = setInterval(fetchLiveStatus, 15000); // Atnaujinti kas 15 sekundžių
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        const fetchTradeCount = async () => {
+            try {
+                const response = await fetch('/api/history');
+                if (response.ok) {
+                    const trades = await response.json();
+                    setTradeCount(trades.length);
+                }
+            } catch (e) {
+                console.error("Could not fetch trade count for settings page", e);
+            }
+        };
+        fetchTradeCount();
+    }, []);
+
+    // --- BŪSENOS VALDYMO FUNKCIJOS ---
+    const handleConfigChange = (path: string, value: any) => {
+        const newConfig = cloneDeep(config);
+        set(newConfig!, path, value);
+        setConfig(newConfig);
+        setIsDirty(true);
+    };
+
     const handleSave = async () => {
-        // ... existing save logic ...
-        toast.success('Settings saved!');
-    };
-    
-    const handleReset = async () => {
-        // ... existing reset logic ...
-        toast.success('All logs and portfolio have been reset!');
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value, type } = e.target;
-        let finalValue;
-        if (type === 'checkbox') {
-            finalValue = (e.target as HTMLInputElement).checked;
-        } else if (type === 'number') {
-            finalValue = parseFloat(value);
-        } else {
-            finalValue = value;
+        const toastId = toast.loading('Saving settings...');
+        try {
+            const response = await fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(config),
+            });
+            if (!response.ok) throw new Error("Failed to save settings.");
+            toast.success('Settings saved successfully!', { id: toastId });
+            setIsDirty(false);
+        } catch (error) {
+            toast.error((error as Error).message, { id: toastId });
         }
-        setSettings(prev => ({ ...prev, [name]: finalValue }));
     };
 
-    if (isLoading) {
-        return <div className="text-white p-6">Loading settings...</div>;
-    }
+    const handleAddNewStrategy = () => {
+        if (!newStrategyName || !cloneSource || !config) return;
+        if (config.strategies[newStrategyName]) {
+            toast.error("A strategy with this name already exists.");
+            return;
+        }
+
+        const newConfig = cloneDeep(config);
+        newConfig.strategies[newStrategyName] = cloneDeep(config.strategies[cloneSource]);
+        setConfig(newConfig);
+        setIsDirty(true);
+        toast.success(`Strategy '${newStrategyName}' created.`);
+        setNewStrategyName("");
+        setCloneSource("");
+        // Uždaryti dialogą
+    };
+
+    const handleDeleteStrategy = (strategyName: string) => {
+        if (!config) return;
+        const newConfig = cloneDeep(config);
+        delete newConfig.strategies[strategyName];
+
+        // Atnaujinti mapping, jei ištrinta strategija buvo naudojama
+        Object.keys(newConfig.strategy_mapping).forEach(key => {
+            if (newConfig.strategy_mapping[key] === strategyName) {
+                newConfig.strategy_mapping[key] = 'default';
+            }
+        });
+
+        setConfig(newConfig);
+        setIsDirty(true);
+        toast.success(`Strategy '${strategyName}' deleted.`);
+    };
+
+    const isStrategyInUse = useMemo(() => {
+        if (!config) return () => false;
+        const usedStrategies = new Set(Object.values(config.strategy_mapping));
+        return (strategyName: string) => usedStrategies.has(strategyName);
+    }, [config]);
+
+    const handleGenerateStrategy = async () => {
+        setIsGenerating(true);
+        const toastId = toast.loading("AI is analyzing your performance... This may take a moment.");
+
+        try {
+            const response = await fetch('/api/strategies/generate', { method: 'POST' });
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Failed to generate strategy.");
+            }
+
+            setProposedStrategy(data);
+            toast.success("AI has generated a new strategy proposal!", { id: toastId });
+
+        } catch (error) {
+            toast.error((error as Error).message, { id: toastId });
+        } finally {
+            setIsGenerating(false);
+        }
+    };
+
+    const handleAcceptProposal = () => {
+        if (!proposedStrategy || !config) return;
+
+        const { newStrategyName, newStrategy } = proposedStrategy;
+
+        const newConfig = cloneDeep(config);
+        newConfig.strategies[newStrategyName] = newStrategy;
+
+        setConfig(newConfig);
+        setIsDirty(true);
+        toast.success(`Strategy '${newStrategyName}' added to your library. Don't forget to save changes!`);
+
+        setProposedStrategy(null); // Uždaro dialogo langą
+    };
+
+
+    if (isLoading) return <div className="text-white p-6">Loading settings...</div>;
+    if (!config) return <div className="text-white p-6">Could not load configuration.</div>;
+
+    const strategyNames = Object.keys(config.strategies);
 
     return (
-        <div className="text-white p-6">
-            <h1 className="text-3xl font-bold mb-6">Bot Settings</h1>
-            <div className="bg-gray-800 p-6 rounded-lg">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                    <SectionTitle title="Trade Execution" description="Core parameters for buying and selling assets."/>
-                    <SettingInput name="takeProfitPercent" label="Take Profit (%)" tooltip="The percentage of profit at which to consider selling." value={settings.takeProfitPercent} onChange={handleChange} step="0.1" />
-                    <SettingInput name="stopLossPercent" label="Stop Loss (%)" tooltip="The percentage of loss at which to automatically sell an asset. Should be negative." value={settings.stopLossPercent} onChange={handleChange} step="0.1" />
-                    <SettingInput name="riskAmountPercent" label="Risk per Trade (%)" tooltip="The percentage of your total balance to risk on a single trade." value={settings.riskAmountPercent} onChange={handleChange} step="0.1" />
-
-                    <SectionTitle title="Market Analysis" description="How the bot scans the market and decides which assets to analyze."/>
-                    <SettingInput name="symbolsToAnalyze" label="Symbols to Analyze" tooltip="The number of top symbols by volume to analyze in each cycle." value={settings.symbolsToAnalyze} onChange={handleChange} />
-                    <SettingInput name="batchSize" label="Analysis Batch Size" tooltip="The number of symbols to analyze in a single AI request to avoid rate limits." value={settings.batchSize} onChange={handleChange} />
-                    <SettingInput name="macroScoreThreshold" label="Macro Score Threshold" tooltip="The minimum macroeconomic score (0-10) required to consider entering new trades." value={settings.macroScoreThreshold} onChange={handleChange} step="0.1" />
-                    <SettingInput name="cycleIntervalMinutes" label="Cycle Interval (Minutes)" tooltip="The time in minutes between each trading cycle." value={settings.cycleIntervalMinutes} onChange={handleChange} />
-                    
-                    <SectionTitle title="Advanced Strategies" description="Enable and configure higher-level strategic modules."/>
-                    <div className="p-4 bg-gray-900 rounded-lg col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <SettingInput name="enableNarrativeTrading" label="Narrative Trading" tooltip="If enabled, the bot will prioritize assets from the currently dominant market narrative (e.g., AI, GameFi)." type="checkbox" value={settings.enableNarrativeTrading} onChange={handleChange} />
-                        <SettingInput name="narrativeAllocationBoost" label="Narrative Allocation Boost (%)" tooltip="Increase the allocated capital for assets within the dominant narrative by this percentage." value={settings.narrativeAllocationBoost} onChange={handleChange} />
-                    </div>
-                    
-                     <SectionTitle title="Future Features (High Risk)" description="Experimental features for advanced users."/>
-                     <div className="p-4 bg-gray-900 rounded-lg col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <SettingInput name="enableDexHunting" label="DEX Hunting" tooltip="Enable the DEX Scout agent to find new, high-risk opportunities on decentralized exchanges." type="checkbox" value={settings.enableDexHunting} onChange={handleChange} />
-                        <SettingInput name="dexMaxAllocationPercent" label="DEX Max Allocation (%)" tooltip="The maximum percentage of the portfolio to allocate to high-risk DEX opportunities." value={settings.dexMaxAllocationPercent} onChange={handleChange} />
-                    </div>
-                     <div className="p-4 bg-gray-900 rounded-lg col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <SettingInput name="enableAutoImprovement" label="Autonomous Improvement" tooltip="Allow the MasterAgent to automatically apply new settings after a successful 'Shadow Mode' test." type="checkbox" value={settings.enableAutoImprovement} onChange={handleChange} />
-                    </div>
-                </div>
-
-                <div className="mt-8 border-t border-gray-700 pt-6">
-                    <button onClick={handleSave} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-md transition-colors">
-                        Save Settings
-                    </button>
-                    <button onClick={handleReset} className="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-md transition-colors ml-4">
-                        Reset All Logs & Portfolio
-                    </button>
+        <div className="text-white p-6 space-y-6">
+            <div className="flex justify-between items-center">
+                <h1 className="text-3xl font-bold">Adaptive Intelligence Settings</h1>
+                <div className="flex gap-4">
+                    <Button variant="outline" onClick={() => { /* TODO: Reset to defaults */ }}>
+                        <RotateCcw className="mr-2 h-4 w-4" /> Reset to Defaults
+                    </Button>
+                    <Button onClick={handleSave} disabled={!isDirty}>
+                        <Save className="mr-2 h-4 w-4" /> Save Changes
+                        {isDirty && <span className="ml-2 w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>}
+                    </Button>
                 </div>
             </div>
+
+            {/* "The Pulse" - Live Status Indicator */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Live System Status</CardTitle>
+                    <CardDescription>What the system is seeing and doing right now.</CardDescription>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="flex items-center gap-4">
+                        <Activity className="h-10 w-10 text-blue-400" />
+                        <div>
+                            <Label>Current Market Regime</Label>
+                            <Badge className="text-lg mt-1">{liveStatus?.marketRegime || 'Loading...'}</Badge>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <Bot className="h-10 w-10 text-purple-400" />
+                        <div>
+                            <Label>Active Strategy</Label>
+                            <Badge variant="secondary" className="text-lg mt-1">{liveStatus?.activeStrategyName || 'Loading...'}</Badge>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* "The Control Map" - Strategy Mapping */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Strategy Mapping</CardTitle>
+                    <CardDescription>Assign your custom strategies to different market regimes.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {Object.keys(config.strategy_mapping).map(regime => (
+                        <div key={regime} className="flex items-center justify-between">
+                            <Label className="flex items-center gap-2">
+                                {regime}
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger><HelpCircle className="h-4 w-4 text-muted-foreground" /></TooltipTrigger>
+                                        <TooltipContent><p>{REGIME_DESCRIPTIONS[regime]}</p></TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </Label>
+                            <Select
+                                value={config.strategy_mapping[regime]}
+                                onValueChange={(value) => handleConfigChange(`strategy_mapping.${regime}`, value)}
+                            >
+                                <SelectTrigger className="w-[250px]">
+                                    <SelectValue placeholder="Select strategy" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {strategyNames.map(name => (
+                                        <SelectItem key={name} value={name}>{name}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    ))}
+                </CardContent>
+            </Card>
+
+            {/* "The Arsenal" - Strategy Library */}
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                        <CardTitle>Strategy Library</CardTitle>
+                        <CardDescription>Create, edit, and manage your arsenal of trading strategies.</CardDescription>
+                    </div>
+                    {/* --- PRIDĖTI ŠĮ MYGTUKĄ --- */}
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                {/* Papildoma div pakuotė reikalinga, kad Tooltip veiktų su neaktyviu mygtuku */}
+                                <div>
+                                    <Button onClick={handleGenerateStrategy} disabled={isGenerating || tradeCount < 10}>
+                                        {isGenerating ? (
+                                            <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                        ) : (
+                                            <BrainCircuit className="mr-2 h-4 w-4" />
+                                        )}
+                                        Generate with AI
+                                    </Button>
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                {tradeCount < 10
+                                    ? <p>Requires at least 10 trades in history to provide a meaningful analysis.</p>
+                                    : <p>Ask the AI to analyze your entire trade history and propose a new, optimized strategy.</p>
+                                }
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                    {/* --- MYGTUKO PABAIGA --- */}
+                </CardHeader>
+                <CardContent>
+                    <Tabs defaultValue={strategyNames[0]} className="w-full">
+                        <div className="flex items-center border-b">
+                            <TabsList className="flex-grow justify-start">
+                                {strategyNames.map(name => (
+                                    <TabsTrigger key={name} value={name}>{name}</TabsTrigger>
+                                ))}
+                            </TabsList>
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button variant="ghost" size="sm" className="ml-4">
+                                        <PlusCircle className="mr-2 h-4 w-4" /> Add Strategy
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader><DialogTitle>Create New Strategy</DialogTitle></DialogHeader>
+                                    <div className="space-y-4 py-4">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="new-strategy-name">New Strategy Name (ID)</Label>
+                                            <Input id="new-strategy-name" value={newStrategyName} onChange={(e) => setNewStrategyName(e.target.value)} placeholder="e.g., aggressive_v2" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Clone from Existing Strategy</Label>
+                                            <Select onValueChange={setCloneSource}>
+                                                <SelectTrigger><SelectValue placeholder="Select a template..." /></SelectTrigger>
+                                                <SelectContent>
+                                                    {strategyNames.map(name => <SelectItem key={name} value={name}>{name}</SelectItem>)}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    </div>
+                                    <DialogFooter>
+                                        <Button onClick={handleAddNewStrategy} disabled={!newStrategyName || !cloneSource}>Create Strategy</Button>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
+                        </div>
+                        {strategyNames.map(name => (
+                            <TabsContent key={name} value={name} className="mt-4">
+                                <Accordion type="single" collapsible defaultValue="item-1">
+                                    <AccordionItem value="item-1">
+                                        <AccordionTrigger>Risk Management</AccordionTrigger>
+                                        <AccordionContent className="space-y-4 p-2">
+                                            <FormField
+                                                label="Capital Per Trade (%)"
+                                                helpText="Recommended: 1-5% of portfolio"
+                                                required
+                                            >
+                                                <Input
+                                                    type="number"
+                                                    placeholder="1.0"
+                                                    step="0.1"
+                                                    value={get(config, `strategies.${name}.risk_management.capital_per_trade_percent`, '')}
+                                                    onChange={(e) => handleConfigChange(`strategies.${name}.risk_management.capital_per_trade_percent`, parseFloat(e.target.value))}
+                                                />
+                                            </FormField>
+                                            <FormField
+                                                label="Stop Loss Percentage"
+                                                helpText="Recommended: 2-10% based on risk tolerance"
+                                                required
+                                            >
+                                                <Input
+                                                    type="number"
+                                                    placeholder="5"
+                                                    value={config.strategies[name]?.stopLossPercentage || ''}
+                                                    onChange={(e) => handleConfigChange(`strategies.${name}.stopLossPercentage`, parseFloat(e.target.value))}
+                                                />
+                                            </FormField>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="take-profit" className="flex items-center">
+                                                    Take Profit Percentage
+                                                    <ContextualHelp topicId="take-profit-percentage" />
+                                                </Label>
+                                                <Input
+                                                    id="take-profit"
+                                                    type="number"
+                                                    placeholder="10"
+                                                    value={config.strategies[name]?.takeProfitPercentage || ''}
+                                                    onChange={(e) => handleConfigChange(`strategies.${name}.takeProfitPercentage`, parseFloat(e.target.value))}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="max-position-size" className="flex items-center">
+                                                    Max Position Size (% of portfolio)
+                                                    <ContextualHelp topicId="max-position-size" />
+                                                </Label>
+                                                <Input
+                                                    id="max-position-size"
+                                                    type="number"
+                                                    placeholder="20"
+                                                    value={config.strategies[name]?.maxPositionSize || ''}
+                                                    onChange={(e) => handleConfigChange(`strategies.${name}.maxPositionSize`, parseFloat(e.target.value))}
+                                                />
+                                            </div>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                    <AccordionItem value="item-2">
+                                        <AccordionTrigger>Market Scanning</AccordionTrigger>
+                                        <AccordionContent className="space-y-4 p-2">
+                                            <FormField
+                                                label="Minimum Macro Score for Entry"
+                                                helpText="Higher values = more selective entries (0-10 scale)"
+                                                required
+                                            >
+                                                <Input
+                                                    type="number"
+                                                    step="0.1"
+                                                    placeholder="4.0"
+                                                    value={get(config, `strategies.${name}.entry_criteria.min_macro_sentiment_score`, '')}
+                                                    onChange={(e) => handleConfigChange(`strategies.${name}.entry_criteria.min_macro_sentiment_score`, parseFloat(e.target.value))}
+                                                />
+                                            </FormField>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="min-volume" className="flex items-center">
+                                                    Minimum Volume Threshold
+                                                    <ContextualHelp topicId="min-volume-threshold" />
+                                                </Label>
+                                                <Input
+                                                    id="min-volume"
+                                                    type="number"
+                                                    placeholder="1000000"
+                                                    value={config.strategies[name]?.minVolume || ''}
+                                                    onChange={(e) => handleConfigChange(`strategies.${name}.minVolume`, parseFloat(e.target.value))}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="volatility-threshold" className="flex items-center">
+                                                    Volatility Threshold
+                                                    <ContextualHelp topicId="volatility-threshold" />
+                                                </Label>
+                                                <Input
+                                                    id="volatility-threshold"
+                                                    type="number"
+                                                    step="0.01"
+                                                    placeholder="0.05"
+                                                    value={config.strategies[name]?.volatilityThreshold || ''}
+                                                    onChange={(e) => handleConfigChange(`strategies.${name}.volatilityThreshold`, parseFloat(e.target.value))}
+                                                />
+                                            </div>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                </Accordion>
+
+                                <div className="mt-6 border-t pt-4">
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button variant="destructive" disabled={isStrategyInUse(name) || name === 'default' || strategyNames.length <= 1}>
+                                                <Trash2 className="mr-2 h-4 w-4" /> Delete Strategy
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This action cannot be undone. This will permanently delete the '{name}' strategy.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => handleDeleteStrategy(name)}>Continue</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                    {(isStrategyInUse(name) || name === 'default' || strategyNames.length <= 1) &&
+                                        <p className="text-xs text-muted-foreground mt-2">Cannot delete a strategy that is currently in use, is the default, or is the last one remaining.</p>
+                                    }
+                                </div>
+                            </TabsContent>
+                        ))}
+                    </Tabs>
+                </CardContent>
+            </Card>
+
+            {/* Trading Mode Toggle */}
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-red-500">🔴 Live Trading Zone</CardTitle>
+                    <CardDescription>
+                        Use these settings with extreme caution. Enabling live mode will execute trades with real funds.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex items-center justify-between p-4 bg-gray-900 rounded-md">
+                        <div className="space-y-1">
+                            <Label htmlFor="trading-mode" className="text-base font-semibold">
+                                Trading Mode
+                            </Label>
+                            <p className="text-xs text-muted-foreground">
+                                Select the operational mode for the bot. Use Testnet before going live.
+                            </p>
+                        </div>
+                        <Select
+                            value={config?.global_settings?.trading_mode || 'paper'}
+                            onValueChange={(value) => handleConfigChange('global_settings.trading_mode', value)}
+                        >
+                            <SelectTrigger className="w-[240px]">
+                                <SelectValue placeholder="Select mode" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="paper">
+                                    <span className="font-semibold">📜 Paper Trading (Simulation)</span>
+                                </SelectItem>
+                                <SelectItem value="testnet">
+                                    <span className="font-semibold text-yellow-500">🔬 Binance Testnet (Realistic)</span>
+                                </SelectItem>
+                                <SelectItem value="live">
+                                    <span className="font-semibold text-red-500">🔴 Live Trading (Real Funds)</span>
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Pridėti šį kodą pačioje `SettingsPage` komponento JSX pabaigoje, prieš uždarantį </div> */}
+            <Dialog open={!!proposedStrategy} onOpenChange={() => setProposedStrategy(null)}>
+                <DialogContent className="sm:max-w-[600px]">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <BrainCircuit className="text-purple-400" />
+                            AI Strategy Proposal
+                        </DialogTitle>
+                        <CardDescription>
+                            Based on your personal trading history, the AI suggests the following new strategy.
+                        </CardDescription>
+                    </DialogHeader>
+                    <div className="py-4 space-y-4">
+                        <Card className="bg-background/50">
+                            <CardHeader><CardTitle className="text-base">AI Analysis Summary</CardTitle></CardHeader>
+                            <CardContent>
+                                <p className="text-sm text-muted-foreground italic">"{proposedStrategy?.analysisSummary}"</p>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-base">New Strategy: {proposedStrategy?.newStrategyName}</CardTitle>
+                                <CardDescription>{proposedStrategy?.newStrategy?.description}</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm">This new strategy has been generated and can be added to your library. You can review and edit its parameters before assigning it to a market regime.</p>
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setProposedStrategy(null)}>Discard</Button>
+                        <Button onClick={handleAcceptProposal}>Add to Library</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

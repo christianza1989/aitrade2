@@ -1,23 +1,700 @@
 {
-  "sellStrategy": "trailingStop",
-  "takeProfitPercent": 0.5,
-  "stopLossPercent": -5,
-  "trailingStopPercent": -2.5,
-  "trailingProfitPercent": -2.5,
-  "riskAmountPercent": 1,
-  "rsiPeriod": 14,
-  "symbolsToAnalyze": 100,
-  "batchSize": 20,
-  "macroScoreThreshold": 6.5,
-  "minimumBalance": 2000,
-  "cycleIntervalMinutes": 15,
-  "smaShortPeriod": 20,
-  "smaLongPeriod": 50,
-  "macdShortPeriod": 12,
-  "macdLongPeriod": 26,
-  "macdSignalPeriod": 9,
-  "enablePartialProfitTaking": true,
-  "partialProfitPercent": 50,
-  "fastMoverTimeMinutes": 5,
-  "fastMoverPriceChangePercent": 2
+  "version": "2.1",
+  "enabled": true,
+  "strategy_name": "QuantScalper_Optimized_v3",
+  "description": "An optimal configuration for the main AI strategy, balancing risk management with opportunity seeking. It trades only when market conditions are favorable.",
+  "general": {
+    "trading_mode": "scalping",
+    "base_currency": "USDT",
+    "max_concurrent_trades": 3,
+    "cooldown_period_minutes_after_loss": 30
+  },
+  "risk_management": {
+    "max_risk_per_trade_usd": 30,
+    "max_drawdown_percentage_overall": 5,
+    "consecutive_loss_threshold": 3,
+    "consecutive_loss_cooldown_minutes": 30,
+    "liquidation_protection_buffer_percentage": 0.2
+  },
+  "market_scanning": {
+    "symbolsToAnalyze": 150,
+    "batchSize": 25,
+    "min_24h_volume_usd": 20000000,
+    "min_market_cap_usd": 500000000,
+    "max_bid_ask_spread_percentage": 0.1,
+    "volatility_filter_enabled": true,
+    "volatility_tolerance_annualized": 80
+  },
+  "fast_mover_detection": {
+    "fastMoverTimeMinutes": 5,
+    "fastMoverPriceChangePercent": 3
+  },
+  "entry_criteria": {
+    "min_volume_threshold_usd": 1000000,
+    "volatility_filter_enabled": true,
+    "volatility_max_atr_multiplier": 1.5,
+    "price_action_confirmation_strength": "medium",
+    "momentum_confirmation_required": true
+  },
+  "exit_criteria": {
+    "hard_stop_loss_percent": 2,
+    "initial_take_profit_percent": 1.5,
+    "trailing_stop_percent": 0.8,
+    "pnl_pullback_tolerance_percent": 0.5,
+    "max_hold_duration_hours": 48,
+    "dynamic_take_profit": {
+      "enabled": true,
+      "baseIncreaseFactor": 0.5,
+      "maxTakeProfitPercent": 5,
+      "technicalIndicatorConfirmationRequired": true,
+      "macroSentimentThresholdForIncrease": 7,
+      "rsiOverboughtThresholdForTPIncrease": 70,
+      "macdStrengthConfirmation": true
+    },
+    "risk_off_exit_rules": {
+      "enabled": true,
+      "profit_taking_threshold_percent": 0.8,
+      "hard_exit_sentiment_trigger": "STRONG_RISK_OFF",
+      "action": "CLOSE_ALL_POSITIONS_AT_MARKET"
+    }
+  },
+  "advanced_strategies": {
+    "require_fundamental_analysis": false,
+    "enable_narrative_trading": true,
+    "narrative_allocation_boost_percent": 20,
+    "enable_dex_hunting": false,
+    "dex_max_allocation_percent": 5,
+    "enable_auto_improvement": true
+  },
+  "technical_indicator_settings": {
+    "rsi_period": 14,
+    "rsi_overbought": 70,
+    "rsi_oversold": 30,
+    "macd_fast_period": 12,
+    "macd_slow_period": 26,
+    "macd_signal_period": 9,
+    "moving_averages_type": "EMA",
+    "moving_averages_short_period": 20,
+    "moving_averages_long_period": 50,
+    "volume_analysis_min_multiplier": 1.5,
+    "volume_analysis_lookback_hours": 6
+  },
+  "error_handling": {
+    "alertOnAIAgentError": true,
+    "retryFailedAnalysis": true,
+    "maxRetries": 3,
+    "escalateAfterMaxRetries": true,
+    "pauseTradingOnErrorThreshold": 3
+  },
+  "scalper_mode": {
+    "enabled": true,
+    "active_profile": "standard",
+    "total_capital_allocation_percent": 25,
+    "exit_strategy": "AI_ASSISTED",
+    "profiles": {
+      "sniper": {
+        "label": "Snaiperis",
+        "take_profit_percent": 1.8,
+        "stop_loss_percent": 1,
+        "candidates_to_scan": 50,
+        "max_concurrent_positions": 3
+      },
+      "standard": {
+        "label": "Momentum Rider",
+        "take_profit_percent": 1.2,
+        "stop_loss_percent": 1.5,
+        "candidates_to_scan": 50,
+        "max_concurrent_positions": 30
+      },
+      "degen": {
+        "label": "DeGen",
+        "take_profit_percent": 0.8,
+        "stop_loss_percent": 2,
+        "candidates_to_scan": 75,
+        "max_concurrent_positions": 10
+      }
+    }
+  },
+  "system_status": {
+    "active": true,
+    "mode": "live_trading"
+  },
+  "global_risk_management": {
+    "portfolio_exposure_limit_percentage": 100,
+    "max_daily_drawdown_percentage": 7.5,
+    "max_single_trade_risk_percentage_of_equity": 1,
+    "overall_leverage_multiplier": 1,
+    "slippage_tolerance_bps": 5,
+    "min_position_size_usd": 10
+  },
+  "strategy_allocation_priorities": {
+    "PositionManager": {
+      "priority_level": "High",
+      "capital_allocation_percentage": 50
+    },
+    "Scalper": {
+      "priority_level": "Medium",
+      "capital_allocation_percentage": 30
+    },
+    "MacroAwareProfitTaker": {
+      "priority_level": "High",
+      "capital_allocation_percentage": 20
+    },
+    "ManualIntervention": {
+      "priority_level": "Low",
+      "capital_allocation_percentage": 0
+    }
+  },
+  "trade_execution_parameters": {
+    "default_take_profit_percentage": 0.8,
+    "default_stop_loss_percentage": 1.5,
+    "trailing_stop_loss_enabled": true,
+    "trailing_stop_activation_percentage": 0.5,
+    "trailing_stop_percentage": 0.25,
+    "candlestick_interval_for_analysis": "1h"
+  },
+  "position_manager_strategy": {
+    "enabled": true,
+    "entry_signals_confirmation_count": 2,
+    "target_profit_range_percent": [
+      0.5,
+      3
+    ],
+    "max_holding_period_hours": 48,
+    "dynamic_tp_adjustment_factors": {
+      "risk_off_multiplier": 0.7,
+      "high_volatility_multiplier": 1.2
+    },
+    "stop_loss_placement": {
+      "type": "ATR",
+      "multiplier": 2.5
+    }
+  },
+  "scalper_strategy": {
+    "enabled": true,
+    "symbols_whitelist": [
+      "API3USDT",
+      "BNBUSDT",
+      "SUSDT",
+      "ETHUSDT",
+      "UNIUSDT",
+      "AAVEUSDT",
+      "LINKUSDT",
+      "CFXUSDT",
+      "MEMEUSDT"
+    ],
+    "symbols_blacklist": [
+      "BIOUSDT",
+      "OGNUSDT",
+      "ARBUSDT"
+    ],
+    "take_profit_percentage": 1.5,
+    "stop_loss_percentage": 0.8,
+    "trailing_stop_enabled": true,
+    "trailing_stop_offset_percentage": 0.25,
+    "min_price_movement_for_entry_percentage": 0.1,
+    "timeframe": "1m",
+    "entry_indicators": {
+      "RSI_period": 14,
+      "RSI_buy_threshold": 30,
+      "BollingerBands_period": 20,
+      "BollingerBands_buy_stdDev": 2
+    },
+    "exit_indicators": {
+      "RSI_period": 14,
+      "RSI_sell_threshold": 70,
+      "BollingerBands_sell_stdDev": 2
+    }
+  },
+  "automatic_stop_loss_system": {
+    "adaptive_stop_loss_enabled": true,
+    "atr_multiplier_for_stop": 3,
+    "time_based_exit_for_losing_trades_enabled": true,
+    "max_holding_period_for_losing_trade_hours": 12,
+    "volatility_smoothing_period": 14
+  },
+  "manual_trade_guidelines": {
+    "xusdt_trade_audit_required": true,
+    "xusdt_max_daily_loss_limit_usd": 5,
+    "require_confirmation_for_negative_pnl_manual_exits": true,
+    "disallow_manual_entry_if_drawdown_exceeds_pct": 2
+  },
+  "macro_environment_adaptation": {
+    "risk_off_mode_thresholds": {
+      "market_cap_contraction_pct_24h": -3,
+      "liquidation_volume_usd_24h_min": 500000000,
+      "fear_greed_index_max": 25
+    },
+    "risk_off_action_priority": "Prioritize Capital Preservation",
+    "risk_off_profit_take_tightening_factor": 0.7,
+    "risk_off_position_size_reduction_factor": 0.5,
+    "risk_off_entry_suspension_enabled": true
+  },
+  "logging_and_alerts": {
+    "enable_detailed_trade_reasons": true,
+    "alert_on_consecutive_losses": 3
+  },
+  "general_parameters": {
+    "capital_allocation_percentage_per_trade": 0.03,
+    "max_open_positions": 4,
+    "time_zone": "UTC"
+  },
+  "strategy_settings": {
+    "scalper_strategy": {
+      "enabled": true,
+      "entry_logic_params": {
+        "volume_threshold_usd": 1000000,
+        "volatility_threshold_percent": 0.5
+      },
+      "take_profit_percentage": 1.5,
+      "stop_loss_percentage": 1.2,
+      "trailing_stop_loss_enabled": true,
+      "min_pnl_to_enable_trailing_stop_percentage": 0.5,
+      "trailing_stop_loss_percentage": 0.3,
+      "max_trade_duration_minutes": 180,
+      "allowed_symbols": [
+        "MEMEUSDT",
+        "DOGEUSDT",
+        "API3USDT",
+        "BNBUSDT",
+        "SUSDT",
+        "ETHUSDT",
+        "ARBUSDT",
+        "UNIUSDT",
+        "AAVEUSDT",
+        "LINKUSDT",
+        "CFXUSDT"
+      ]
+    },
+    "manual_trading_settings": {
+      "enabled": true
+    }
+  },
+  "asset_management": {
+    "max_capital_allocation_per_symbol_percentage": 20,
+    "dynamic_allocation_enabled": true,
+    "performance_based_allocation": {
+      "evaluation_period_hours": 24,
+      "max_underperforming_loss_percentage": 7,
+      "reduce_allocation_by_percentage": 10
+    },
+    "symbol_blacklist_threshold_loss_count": 5
+  },
+  "manual_intervention_policy": {
+    "manual_sell_allowed": true,
+    "manual_sell_override_automatic_stops": false,
+    "manual_sell_review_threshold_percentage": -0.01
+  },
+  "strategy_parameters": {
+    "base_strategy": "Scalper",
+    "take_profit_percentage": 0.015,
+    "stop_loss_percentage": 0.0075,
+    "trailing_stop_enabled": true,
+    "trailing_stop_offset_percentage": 0.005,
+    "max_holding_time_minutes": 30
+  },
+  "trade_execution": {
+    "order_type": "MARKET",
+    "time_in_force": "GTC"
+  },
+  "symbol_selection": {
+    "allowed_symbols": [
+      "AAVEUSDT",
+      "LINKUSDT",
+      "OGNUSDT",
+      "BIOUSDT",
+      "ARBUSDT",
+      "UNIUSDT",
+      "CFXUSDT",
+      "MEMEUSDT"
+    ],
+    "min_liquidity_usd": 1000000,
+    "max_spread_percent": 0.05
+  },
+  "logging_level": "detailed",
+  "mode": "live",
+  "general_settings": {
+    "capital_allocation_per_trade_usd": 1000,
+    "max_open_positions": 4,
+    "cooldown_period_minutes": 10,
+    "max_daily_loss_usd": 150,
+    "max_daily_profit_usd": 100,
+    "debug_mode": false,
+    "logging_level": "INFO"
+  },
+  "manual_trading_support": {
+    "alerts_enabled": true,
+    "auto_close_on_manual_override": true
+  },
+  "strategyType": "Scalper",
+  "takeProfitRatio": 0.02,
+  "stopLossRatio": 0.013,
+  "leverage": 3,
+  "maxOpenTrades": 5,
+  "maxTradeValueUSD": 750,
+  "minTradeValueUSD": 50,
+  "trailingStopLossEnabled": true,
+  "trailingStopLossTrigger": 0.005,
+  "coolDownPeriodSeconds": 90,
+  "symbols": [
+    "MEMEUSDT",
+    "DOGEUSDT",
+    "API3USDT",
+    "BIOUSDT",
+    "OGNUSDT",
+    "BNBUSDT",
+    "SUSDT",
+    "ETHUSDT",
+    "ARBUSDT",
+    "UNIUSDT",
+    "AAVEUSDT",
+    "LINKUSDT",
+    "CFXUSDT"
+  ],
+  "manualInterventionAllowed": true,
+  "strategy_type": "Scalping",
+  "trade_sizing": {
+    "amount_type": "percentage_of_capital",
+    "percentage_of_capital_per_trade": 5,
+    "min_trade_size_usd": 10,
+    "max_trade_size_usd": 2500
+  },
+  "scalper_parameters": {
+    "entry_criteria": {
+      "price_action_confirmation": true,
+      "volume_confirmation": true,
+      "indicator_signal": "RSI_OVERSOLD_BOUNCE_OR_EMA_CROSSOVER"
+    },
+    "exit_criteria": {},
+    "take_profit_percentage": 1.5,
+    "stop_loss_percentage": 0.8,
+    "trailing_stop_loss_enabled": true,
+    "trailing_stop_loss_activation_percentage": 0.5,
+    "trailing_stop_loss_offset_percentage": 0.1
+  },
+  "asset_selection": {
+    "min_daily_volume_usd": 10000000,
+    "max_spread_percentage": 0.05,
+    "avoid_volatile_assets_last_hour_threshold": 3,
+    "watchlist_assets": [],
+    "exclude_assets": [
+      "LINKUSDT",
+      "CFXUSDT",
+      "BIOUSDT",
+      "DOGEUSDT"
+    ]
+  },
+  "monitoring_alerts": {
+    "consecutive_losses_threshold": 2,
+    "hourly_pnl_alert_threshold": -50
+  },
+  "logging_settings": {
+    "level": "INFO",
+    "output_to_file": true
+  },
+  "market_selection": {
+    "volatility_filter_enabled": true,
+    "min_daily_volume_usd": 100000000,
+    "max_daily_volatility_percentage": 8,
+    "exclude_symbols_with_persistent_outlier_losses": [
+      "LINKUSDT"
+    ]
+  },
+  "execution_parameters": {
+    "slippage_tolerance_percentage": 0.001,
+    "order_type": "MARKET"
+  },
+  "base_trade_value_usd": 2500,
+  "use_atr_for_sl_tp": true,
+  "atr_period": 14,
+  "atr_sl_multiplier": 1.7,
+  "atr_tp_multiplier": 2.5,
+  "fixed_take_profit_percentage": 0.015,
+  "fixed_stop_loss_percentage": 0.01,
+  "trailing_stop_loss_enabled": true,
+  "trailing_stop_loss_offset_percentage": 0.005,
+  "trailing_stop_loss_activation_percentage": 0.008,
+  "max_open_trades": 5,
+  "re_entry_delay_minutes_after_sl": 90,
+  "volume_filter_usd_24h": 75000000,
+  "price_change_filter_percentage_1h": 0.015,
+  "rsi_entry_lower": 35,
+  "rsi_entry_upper": 65,
+  "macd_cross_signal_enabled": true,
+  "macd_fast_period": 12,
+  "macd_slow_period": 26,
+  "macd_signal_period": 9,
+  "trade_blacklist_symbols": [],
+  "cool_down_minutes_after_tp": 15,
+  "profit_taking": {
+    "take_profit_percentage": 1.8,
+    "dynamic_take_profit_enabled": true,
+    "dynamic_take_profit_momentum_decay_factor": 0.6,
+    "dynamic_take_profit_volume_divergence_threshold": 0.4
+  },
+  "trade_selection_filters": {
+    "min_daily_average_volume_usd": 15000000,
+    "max_allowed_spread_percent": 0.08,
+    "min_average_true_range_percent": 0.5,
+    "avoid_overly_volatile_assets": true
+  },
+  "entry_logic_refinement": {
+    "confirm_with_higher_timeframe_trend": true,
+    "avoid_entering_into_major_resistance_support": true,
+    "require_strong_initial_momentum_confirmation": true,
+    "optimal_entry_zone_confirmation": true
+  },
+  "backtest_lookback_period_days": 30,
+  "optimization_frequency_days": 7,
+  "general_risk_management": {
+    "risk_per_trade_percentage": 0.5,
+    "max_daily_loss_percentage": 5,
+    "max_consecutive_losses_before_pause": 5
+  },
+  "exit_strategy": {
+    "type": "AdaptiveScalperExits",
+    "parameters": {
+      "initial_take_profit_percentage": 1.2,
+      "initial_stop_loss_percentage": 0.7,
+      "dynamic_ai_profit_capture_enabled": true,
+      "ai_profit_capture_conditions": {
+        "volume_deceleration_threshold": 0.4,
+        "price_action_reversal_pattern_strength": "medium",
+        "momentum_decay_candles": 2
+      },
+      "trailing_stop_loss": {
+        "enabled": true,
+        "activation_profit_percentage": 0.4,
+        "trailing_delta_percentage": 0.2
+      },
+      "time_based_exit_minutes": 20,
+      "max_drawdown_before_manual_alert_percentage": 3
+    }
+  },
+  "technical_indicators": {
+    "atr": {
+      "period": 14
+    },
+    "rsi": {
+      "period": 14,
+      "overbought": 70,
+      "oversold": 30
+    },
+    "macd": {
+      "fast_period": 12,
+      "slow_period": 26,
+      "signal_period": 9
+    },
+    "volume_oscillator_period": 20
+  },
+  "entry_strategy": {
+    "confirmation_filters": {
+      "min_volume_acceleration_factor": 2,
+      "momentum_strength_threshold": "very_strong",
+      "price_action_confirmation_pattern": [
+        "bullish_engulfing",
+        "strong_breakout_candle"
+      ],
+      "max_initial_drawdown_tolerance_percentage": 0.002
+    },
+    "timeframe": "1m",
+    "re-entry_cooldown_minutes": 5
+  },
+  "symbol_management": {
+    "dynamic_symbol_evaluation_enabled": true,
+    "performance_lookback_days": 14,
+    "pnl_threshold_for_exclusion": -0.03,
+    "excluded_symbols": [
+      "BIOUSDT",
+      "LINKUSDT",
+      "ETHUSDT",
+      "CFXUSDT",
+      "OGNUSDT"
+    ],
+    "allow_manual_override_on_excluded": false
+  },
+  "position_sizing": {
+    "mode": "risk_based_per_trade",
+    "risk_per_trade_capital_percentage": 0.005,
+    "max_capital_allocation_per_trade_percentage": 0.03
+  },
+  "exit_logic": {
+    "scalper_ai_decision_enabled": true,
+    "time_based_exit_minutes": 60,
+    "volume_divergence_exit_enabled": true
+  },
+  "entry_logic": {
+    "volatility_filter_threshold": 0.5,
+    "min_daily_volume_usd": 10000000,
+    "momentum_confirmation_enabled": true
+  },
+  "safety_features": {
+    "circuit_breaker_enabled": true,
+    "max_daily_loss_percentage": 3,
+    "max_weekly_loss_percentage": 7,
+    "auto_pause_on_significant_drawdown": true
+  },
+  "notifications": {
+    "trade_execution_details": true,
+    "pnl_summary_hourly": true,
+    "stop_loss_hit_alert": true,
+    "circuit_breaker_alert": true
+  },
+  "entry_parameters": {
+    "re_entry_cooldown_minutes_symbol": 30,
+    "re_entry_cooldown_minutes_global": 5,
+    "max_slippage_entry_percentage": 0.05
+  },
+  "exit_parameters": {
+    "stop_loss_percentage": 2.2,
+    "take_profit_percentage": 1.8,
+    "trailing_stop_loss_percentage": 0.5,
+    "trailing_stop_loss_activation_percentage": 1,
+    "scalper_ai_exit_enabled": true,
+    "scalper_ai_exit_priority": "high",
+    "max_slippage_exit_percentage": 0.1
+  },
+  "performance_monitoring": {
+    "re_evaluate_threshold_win_rate": 0.45,
+    "re_evaluate_threshold_risk_reward_ratio": 0.9,
+    "daily_pnl_target_usd": 150
+  },
+  "entry_conditions": {
+    "min_momentum_strength_score": 0.75,
+    "volume_confirmation_multiplier": 1.7,
+    "entry_timeframe": "1m",
+    "price_action_confirmation_candles": 3,
+    "max_entry_rejection_wicks": 0.3
+  },
+  "entry_settings": {
+    "min_volume_24h_usdt": 15000000,
+    "min_volatility_percentage_1h": 0.7,
+    "max_spread_percentage": 0.001,
+    "momentum_confirmation_threshold": "high",
+    "volume_confirmation_factor": 1.5
+  },
+  "exit_settings": {
+    "stop_loss_percentage": 0.025,
+    "take_profit_percentage": 0.015,
+    "trailing_stop_loss_enabled": true,
+    "trailing_stop_loss_activation_profit_percentage": 0.012,
+    "trailing_stop_loss_deviation_percentage": 0.006,
+    "ai_exit_strategy_enabled": true,
+    "ai_exit_min_profit_threshold_percentage": 0.007,
+    "max_time_in_trade_minutes": 90,
+    "dynamic_stop_loss_multiplier_volatility_bands": 1.5
+  },
+  "asset_filters": {
+    "min_price": 0.01,
+    "max_price": 10000,
+    "exclude_symbols": []
+  },
+  "strategyName": "QuantScalperAlpha",
+  "entryStrategy": {
+    "type": "AdaptiveMomentumBreakout",
+    "parameters": {
+      "priceChangePercentage": 0.006,
+      "volumeIncreaseFactor": 1.7,
+      "rsiConfirmation": {
+        "period": 14,
+        "minLevel": 55,
+        "maxLevel": 75
+      },
+      "lookbackCandles": 7,
+      "timeframe": "1m"
+    }
+  },
+  "exitStrategy": {
+    "stopLossPercentage": 0.8,
+    "takeProfitPercentage": 1.75,
+    "trailingStopLossActivationPercentage": 0.9,
+    "trailingStopLossCallbackPercentage": 0.45,
+    "aiDecisionLogic": {
+      "enable": true,
+      "minProfitTriggerPercentage": 0.5,
+      "momentumDecelerationThreshold": 0.25,
+      "volumeDivergenceThreshold": 0.35,
+      "lookbackPeriodsForDivergence": 3,
+      "priority": "HIGH"
+    }
+  },
+  "riskManagement": {
+    "maxLeverage": 8,
+    "maxExposurePerSymbolUSD": 4000,
+    "maxOpenPositions": 6,
+    "riskPerTradeFixedUSD": 80
+  },
+  "marketFilters": {
+    "minDailyVolumeUSD": 15000000,
+    "minPriceUSD": 0.05,
+    "maxSpreadPercentage": 0.07,
+    "blacklistSymbols": [
+      "BIOUSDT",
+      "LINKUSDT",
+      "CFXUSDT",
+      "DOGEUSDT",
+      "SUIUSDT",
+      "OGNUSDT",
+      "BNBUSDT",
+      "XRPUSDT"
+    ],
+    "minVolatilityATRMultiplier": 1.2
+  },
+  "timeManagement": {
+    "dailyTradingHoursUTC": {
+      "start": "07:00",
+      "end": "20:00"
+    },
+    "avoidHighImpactNews": true,
+    "avoidWeekendTrading": true
+  },
+  "generalSettings": {
+    "orderType": "MARKET",
+    "slippageTolerancePercentage": 0.15,
+    "reconcileIntervalMinutes": 5
+  },
+  "exit_conditions": {
+    "initial_stop_loss_percentage": 1.2,
+    "take_profit_percentage": 3,
+    "trailing_stop_enabled": true,
+    "trailing_stop_activation_percentage": 1.2,
+    "trailing_stop_offset_percentage": 0.6,
+    "momentum_exhaustion_exit_enabled": true,
+    "momentum_exhaustion_threshold": 0.4,
+    "time_based_exit_minutes": 60
+  },
+  "trade_filtering": {
+    "min_volume_usd_24h": 10000000,
+    "min_price_usd": 0.1,
+    "max_spread_percentage": 0.05,
+    "volatility_threshold_atr_multiplier": 1.5
+  },
+  "cooldown_period_minutes": 10,
+  "max_leverage": 10,
+  "stop_loss": {
+    "type": "percentage_of_entry",
+    "value": 0.007,
+    "dynamic_adjustment_enabled": true,
+    "trailing_stop_activation_profit_percentage": 0.005,
+    "trailing_stop_offset_percentage": 0.003
+  },
+  "take_profit": {
+    "type": "percentage_of_entry",
+    "value": 0.015,
+    "partial_take_profit_enabled": true,
+    "partial_take_profit_levels": [
+      {
+        "profit_target_percentage": 0.008,
+        "percentage_of_position_to_close": 0.5
+      }
+    ],
+    "adaptive_profit_capture": {
+      "enabled": true,
+      "strategy_priority": "high",
+      "momentum_exhaustion_sensitivity": "medium",
+      "volume_divergence_sensitivity": "high",
+      "min_profit_threshold_for_adaptive_exit_percentage": 0.003
+    }
+  },
+  "risk_tolerance_profile": "aggressive_scalper_with_disciplined_risk"
 }

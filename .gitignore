@@ -36,6 +36,20 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Docker development override file
+docker-compose.override.yml
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/generated/prisma
+
+# Trading data files (should not be committed)
+portfolio_admin.json
+trades_log_admin.json
+decision_log_admin.json
+missed_opportunities_admin.json
+config.json
+*_log_*.json
+portfolio_*.json

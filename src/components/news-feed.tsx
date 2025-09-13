@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { Rss } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { ScrollArea } from './ui/scroll-area';
 
 interface Article {
     title: string;
@@ -35,28 +37,34 @@ export function NewsFeed() {
     }
 
     return (
-        <div className="bg-gray-800 p-4 rounded-lg">
-            <h2 className="text-lg font-semibold mb-4 flex items-center">
-                <Rss size={20} className="mr-2" />
-                Latest Crypto News
-            </h2>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-                {articles.map((article, index) => (
-                    <a 
-                        key={index} 
-                        href={article.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="block p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
-                    >
-                        <p className="font-semibold">{article.title}</p>
-                        <div className="flex justify-between items-center mt-2 text-xs text-gray-400">
-                            <span>{article.source.name}</span>
-                            <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
-                        </div>
-                    </a>
-                ))}
-            </div>
-        </div>
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center">
+                    <Rss size={20} className="mr-2" />
+                    Latest Crypto News
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <ScrollArea className="h-96">
+                    <div className="space-y-4">
+                        {articles.map((article, index) => (
+                            <a
+                                key={index}
+                                href={article.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
+                            >
+                                <p className="font-semibold">{article.title}</p>
+                                <div className="flex justify-between items-center mt-2 text-xs text-gray-400">
+                                    <span>{article.source.name}</span>
+                                    <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </ScrollArea>
+            </CardContent>
+        </Card>
     );
 }

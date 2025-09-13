@@ -4,16 +4,17 @@ import { authOptions } from '@/lib/auth';
 import { BinanceService } from '@/core/binance';
 import { NewsService } from '@/core/news'; // Import NewsService
 import { CoinMarketCapService } from '@/core/coinmarketcap'; // Import CoinMarketCapService
+import { AgentService } from '@/core/agent-service';
 import { MacroAnalyst, SentimentAnalyst, TechnicalAnalyst, RiskManager, Analysis, PositionManager } from '@/core/agents'; // Import MacroAnalyst, SentimentAnalyst, PositionManager
 import { SharedContext } from '@/core/context';
 import { globalSharedContext } from '@/core/global-context'; // Import globalSharedContext
 import { OpportunityScanner } from '@/core/opportunity-scanner';
 import { PortfolioService } from '@/core/portfolio'; // Import PortfolioService
+import { PaperExecutionService } from '@/core/services/ExecutionService';
 import { DecisionLogger } from '@/core/decision-logger'; // Import DecisionLogger
-import fs from 'fs/promises';
-import path from 'path';
+import { PrismaClient } from '@prisma/client';
 
-const configFilePath = path.join(process.cwd(), 'config.json');
+const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
@@ -34,19 +35,29 @@ export async function POST(req: Request) {
         const binance = new BinanceService();
         const newsService = new NewsService(); // Initialize NewsService
         const coinMarketCapService = new CoinMarketCapService(); // Initialize CoinMarketCapService
-        const macroAnalyst = new MacroAnalyst(); // Initialize MacroAnalyst
-        const sentimentAnalyst = new SentimentAnalyst(); // Initialize SentimentAnalyst
-        const techAnalyst = new TechnicalAnalyst();
-        const riskManager = new RiskManager();
-        const positionManager = new PositionManager(); // Initialize PositionManager
-        const portfolioService = new PortfolioService(session.user.name); // Initialize PortfolioService
+        const agentService = new AgentService(); // Initialize AgentService
+        const macroAnalyst = new MacroAnalyst(agentService); // Initialize MacroAnalyst
+        const sentimentAnalyst = new SentimentAnalyst(agentService); // Initialize SentimentAnalyst
+        const techAnalyst = new TechnicalAnalyst(agentService);
+        const riskManager = new RiskManager(agentService, session.user.name);
+        const positionManager = new PositionManager(agentService); // Initialize PositionManager
+        const executionService = new PaperExecutionService();
+        const portfolioService = new PortfolioService(session.user.name, 'MAIN', executionService); // Initialize PortfolioService
         const decisionLogger = new DecisionLogger(session.user.name); // Initialize DecisionLogger
         // Use the global shared context
         const sharedContext = globalSharedContext;
 
-        // Load config
-        const configData = await fs.readFile(configFilePath, 'utf-8');
-        const config = JSON.parse(configData);
+        // Load user-specific configuration from database
+        const userConfig = await prisma.userConfiguration.findUnique({
+            where: { userId: session.user.name },
+        });
+
+        if (!userConfig || !userConfig.strategyConfig) {
+            return NextResponse.json({ error: `Configuration not found for user ${session.user.name}.` }, { status: 500 });
+        }
+
+        // Use Record<string, unknown> for flexible config object
+        const config = userConfig.strategyConfig as Record<string, unknown>;
 
         // Fetch necessary data for AI decision
         const candles = await binance.getHistoricalData(symbol, '5m', 100);
@@ -64,15 +75,19 @@ export async function POST(req: Request) {
             btcData[0] || {},
             newsArticles.map(a => a.title),
             fearAndGreedIndex, // Pass directly from shared context
+            null, // globalMetrics should be null if not fetched here
             sharedContext
         );
-        const sentimentAnalysisResult = await sentimentAnalyst.analyze(newsArticles, sharedContext);
+        const sentimentAnalysisResult = await sentimentAnalyst.analyze(newsArticles, [], sharedContext); // Added empty array for trendingTokens
 
         const macroAnalysis = macroAnalysisResult?.response;
         const sentimentAnalysis = sentimentAnalysisResult?.response;
 
         // Get current position details
         const portfolio = await portfolioService.getPortfolio();
+        if (!portfolio) {
+            throw new Error(`Portfolio not found for user.`);
+        }
         const position = portfolio.positions.find(p => p.symbol === symbol);
 
         if (!position) {
@@ -85,27 +100,27 @@ export async function POST(req: Request) {
         }
 
         // Invoke PositionManager for decision
-        const decisionResult = await positionManager.decide(position, currentPrice, macroAnalysis, sentimentAnalysis, config, []);
-        const decisionData = decisionResult?.response as { decision?: string; new_take_profit_percent?: number; justification?: string };
+        const decisionResult = await positionManager.decide(position, currentPrice, macroAnalysis || {}, sentimentAnalysis || {}, config, []);
+        const decisionData = decisionResult?.response as { decision?: string; new_take_profit_percent?: number; reason?: string };
 
         if (decisionData?.decision) {
             await decisionLogger.log({
                 symbol: position.symbol,
-                decision: decisionData.decision as 'SELL_NOW' | 'HOLD_AND_INCREASE_TP',
+                decision: decisionData.decision === 'SELL_NOW' ? 'SELL' : 'HOLD', // Map to correct DecisionLogEntry types
                 pnlPercent: (currentPrice - position.entryPrice) / position.entryPrice * 100,
-                currentPrice,
+                price: currentPrice,
                 newTakeProfitPercent: decisionData.new_take_profit_percent,
-                justification: decisionData.justification || 'N/A',
+                reason: decisionData.reason || 'N/A',
             });
 
             if (decisionData.decision === 'SELL_NOW') {
-                await portfolioService.sell(position.symbol, position.amount, currentPrice, { reason: 'PositionManager decision' });
+                await portfolioService.sell(position.symbol, position.amount, currentPrice, `PositionManager Decision: ${decisionData.reason}`);
                 await opportunityScanner.updateOpportunityStatus(symbol, 'sold'); // Update status if sold
-                return NextResponse.json({ symbol, decision: 'SOLD', reason: decisionData.justification });
+                return NextResponse.json({ symbol, decision: 'SELL', reason: decisionData.reason });
             } else if (decisionData.decision === 'HOLD_AND_INCREASE_TP' && decisionData.new_take_profit_percent) {
                 await portfolioService.updatePosition(position.symbol, { takeProfitPercent: decisionData.new_take_profit_percent });
                 await opportunityScanner.updateOpportunityStatus(symbol, 'held'); // Update status if held
-                return NextResponse.json({ symbol, decision: 'HELD', new_tp: decisionData.new_take_profit_percent, reason: decisionData.justification });
+                return NextResponse.json({ symbol, decision: 'HOLD', new_tp: decisionData.new_take_profit_percent, reason: decisionData.reason });
             }
         }
 

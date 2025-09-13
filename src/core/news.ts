@@ -31,7 +31,7 @@ export class NewsService {
             if (!response.ok) {
                 throw new Error(`Failed to fetch news: ${response.statusText}`);
             }
-            const data = await response.json();
+            const data = await response.json() as { articles?: Article[] };
             return data.articles || [];
         } catch (error) {
             console.error('Error fetching crypto news:', error);

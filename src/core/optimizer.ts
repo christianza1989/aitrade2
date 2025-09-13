@@ -1,8 +1,9 @@
+// src/core/optimizer.ts
 import { AIAgent } from './agents';
 import { DecisionLogEntry } from './decision-logger';
 import { MissedOpportunity } from './opportunity-logger';
 
-// Define the Trade interface
+// Atnaujinta sąsaja
 export interface Trade {
     symbol: string;
     amount: number;
@@ -11,6 +12,17 @@ export interface Trade {
     pnl: number;
     timestamp: string;
     reason: string;
+    marketContext?: {
+        regime: string;
+        regimeScore: number;
+        sentiment: string;
+        sentimentScore: number;
+    };
+    appliedRiskParameters?: {
+        capitalPerTradePercent: number;
+        stopLossPercentage: number;
+        takeProfitPercentage: number;
+    };
 }
 
 export class StrategyOptimizer extends AIAgent {
@@ -19,7 +31,7 @@ export class StrategyOptimizer extends AIAgent {
         **Persona:** You are a Quantitative Analyst and AI Strategist. Your core function is to evolve this trading bot by learning from its complete performance history.
 
         **You have three data sources:**
-        1.  **Executed Trades Log:** The final outcome of each trade (profit or loss).
+        1.  **Executed Trades Log:** The final outcome of each trade (profit or loss), including the market context at the time of sale.
         ${JSON.stringify(trades, null, 2)}
 
         2.  **Missed Opportunities Log:** Assets the bot decided to "AVOID".
@@ -29,17 +41,14 @@ export class StrategyOptimizer extends AIAgent {
         ${JSON.stringify(decisionLogs, null, 2)}
 
         **CRITICAL TASK: Perform a holistic, data-driven analysis and generate a new, superior configuration.**
-
-        1.  **Analyze Executed Trades:** What are the common characteristics of winning trades vs. losing trades? Look for patterns in technical indicators, market regime, etc.
-        2.  **Analyze Missed Opportunities:** Were there any "AVOID" decisions that turned out to be highly profitable? Does this suggest the bot's entry criteria are too strict?
-        3.  **Analyze Position Management (MOST IMPORTANT):** This is key to maximizing profit. For each "HOLD_AND_INCREASE_TP" decision in the log, compare the price at the time of the decision to the final exit price in the "Executed Trades Log".
-            - Was holding the position, on average, more profitable than selling immediately?
-            - Does the data suggest the \`takeProfitPercent\` should be higher or lower? Should it be more dynamic?
-        4.  **Propose & Justify:** Based on your complete analysis, generate a new, fully optimized configuration. Your summary must explain *why* you are making each key change, referencing your findings from all three data logs.
+        - Analyze winning vs. losing trades in context of the market regime. (e.g., "Are we losing money during 'Risk-Off' even with good signals?").
+        - Analyze Missed Opportunities.
+        - Analyze Position Management decisions.
+        - Propose & Justify a new, fully optimized configuration.
 
         **Format (JSON):**
-        - \`analysis_summary\`: A brief summary of your key findings from the trade history.
-        - \`suggested_settings\`: A complete JSON object containing the full, new configuration. This object must include values for all of these keys: "sellStrategy", "takeProfitPercent", "stopLossPercent", "trailingStopPercent", "riskAmountPercent", "rsiPeriod", "symbolsToAnalyze", "batchSize", "macroScoreThreshold", "minimumBalance", "cycleIntervalMinutes", "smaShortPeriod", "smaLongPeriod", "macdShortPeriod", "macdLongPeriod", "macdSignalPeriod".
+        - \`analysis_summary\`: A brief summary of your key findings.
+        - \`suggested_settings\`: A complete JSON object containing the full, new configuration.
         `;
         return await this.safeGenerate(prompt);
     }

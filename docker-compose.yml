@@ -1,0 +1,114 @@
+# ==============================================================================
+# Lucid Hive - Production Docker Compose Configuration
+# ==============================================================================
+# Šis failas apibrėžia, kaip jūsų aplikacijos servisai veiks produkcinėje
+# aplinkoje. Vystymo metu, `docker-compose.override.yml` failas automatiškai
+# prideda pakeitimus (pvz., "hot-reloading").
+# ------------------------------------------------------------------------------
+
+version: '3.8'
+
+services:
+  # --- Duomenų Bazė (PostgreSQL) ---
+  # Atsakinga už visų duomenų saugojimą. Naudoja "named volume" (`postgres-data`),
+  # kad duomenys išliktų net sustabdžius ar perkrovus konteinerį.
+  db:
+    image: postgres:15-alpine
+    container_name: lucidehive_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lucidehive
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d lucidehive"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - lucidehive-net
+
+  # --- Podėlis ir Užduočių Eilė (Redis) ---
+  # Naudojamas BullMQ užduočių eilei ir greitam duomenų kešavimui.
+  redis:
+    image: redis:7-alpine
+    container_name: lucidehive_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - lucidehive-net
+
+  # --- Pagrindinė Aplikacija (Next.js Frontend + API) ---
+  # Vartotojo sąsaja ir API maršrutai. Priklauso nuo DB ir Redis.
+  # Naudoja `npm start` komandą, kuri paleidžia optimizuotą Next.js serverį.
+  app:
+    build:
+      context: .
+      target: app
+    container_name: lucidehive_app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env.docker
+    ports:
+      - "3000:3000"
+    command: npm start
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/auth/session"] # Tikrinamas veikiantis API endpointas
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - lucidehive-net
+
+  # --- Foninis Procesas (AI Worker) ---
+  # Atsakingas už visus ilgai trunkančius AI ciklus ir užduotis.
+  # Naudoja `npm run worker:prod`, kuris paleidžia sukompiliuotą JS failą.
+  worker:
+    build:
+      context: .
+      target: worker
+    container_name: lucidehive_worker
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env.docker
+    command: npm run worker:prod
+    healthcheck:
+      # Patikimesnis healthcheck'as: tikrina, ar `worker.js` procesas vis dar veikia.
+      test: ["CMD-SHELL", "ps | grep -v grep | grep worker.js || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - lucidehive-net
+
+# --- Tinklų ir "Volumes" Apibrėžimas ---
+# Geroji praktika yra aiškiai apibrėžti tinklus ir "volumes".
+networks:
+  lucidehive-net:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local

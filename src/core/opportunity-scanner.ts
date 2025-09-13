@@ -1,22 +1,22 @@
-import fs from 'fs/promises';
-import path from 'path';
+// src/core/opportunity-scanner.ts
 
-const opportunitiesLogPath = path.join(process.cwd(), 'opportunities.json');
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export interface Opportunity {
+    id: string;
     symbol: string;
     priceChangePercent: number;
-    timestamp: string;
+    timestamp: Date;
     status: 'detected' | 'analyzing' | 'bought' | 'ignored' | 'sold' | 'held';
 }
 
 export class OpportunityScanner {
     private static instance: OpportunityScanner;
-    private opportunities: Opportunity[] = [];
 
-    private constructor() {
-        this.loadOpportunities();
-    }
+    // Konstruktorius dabar tuščias
+    private constructor() {}
 
     public static getInstance(): OpportunityScanner {
         if (!OpportunityScanner.instance) {
@@ -25,39 +25,51 @@ export class OpportunityScanner {
         return OpportunityScanner.instance;
     }
 
-    private async loadOpportunities(): Promise<void> {
+    public async addOpportunity(opportunity: Omit<Opportunity, 'id' | 'timestamp' | 'status'>): Promise<void> {
         try {
-            const data = await fs.readFile(opportunitiesLogPath, 'utf-8');
-            this.opportunities = JSON.parse(data);
+            await prisma.opportunity.create({
+                data: {
+                    symbol: opportunity.symbol,
+                    priceChangePercent: opportunity.priceChangePercent,
+                    status: 'detected',
+                },
+            });
         } catch (error) {
-            // File might not exist yet, which is fine.
-            this.opportunities = [];
+            console.error("[OpportunityScanner] Failed to add opportunity to DB:", error);
         }
     }
 
-    private async saveOpportunities(): Promise<void> {
-        await fs.writeFile(opportunitiesLogPath, JSON.stringify(this.opportunities, null, 2));
-    }
-
-    public async addOpportunity(opportunity: Omit<Opportunity, 'timestamp' | 'status'>): Promise<void> {
-        const newOpportunity: Opportunity = {
-            ...opportunity,
-            timestamp: new Date().toISOString(),
-            status: 'detected',
-        };
-        this.opportunities.unshift(newOpportunity); // Add to the beginning of the array
-        await this.saveOpportunities();
-    }
-
-    public getOpportunities(): Opportunity[] {
-        return this.opportunities;
+    public async getOpportunities(): Promise<Opportunity[]> {
+        try {
+            const opportunities = await prisma.opportunity.findMany({
+                orderBy: {
+                    timestamp: 'desc',
+                },
+                take: 20, // Apribojame įrašų skaičių
+            });
+            return opportunities as Opportunity[];
+        } catch (error) {
+            console.error("[OpportunityScanner] Failed to get opportunities from DB:", error);
+            return [];
+        }
     }
 
     public async updateOpportunityStatus(symbol: string, status: Opportunity['status']): Promise<void> {
-        const opportunity = this.opportunities.find(o => o.symbol === symbol);
-        if (opportunity) {
-            opportunity.status = status;
-            await this.saveOpportunities();
+        try {
+            // Atnaujiname naujausią įrašą su šiuo simboliu
+            const latestOpportunity = await prisma.opportunity.findFirst({
+                where: { symbol },
+                orderBy: { timestamp: 'desc' },
+            });
+
+            if (latestOpportunity) {
+                await prisma.opportunity.update({
+                    where: { id: latestOpportunity.id },
+                    data: { status },
+                });
+            }
+        } catch (error) {
+            console.error(`[OpportunityScanner] Failed to update status for ${symbol} in DB:`, error);
         }
     }
 }

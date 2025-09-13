@@ -3,6 +3,7 @@
 export interface ISharedContext {
     marketRegime: 'Risk-On' | 'Risk-Off' | 'Neutral';
     regimeScore: number;
+    riskTrend: 'Improving' | 'Deteriorating' | 'Stable'; // NEW
     sentiment: 'Bullish' | 'Bearish' | 'Neutral';
     sentimentScore: number;
     fearAndGreedIndex: { value: string; classification: string } | null;
@@ -19,6 +20,7 @@ export class SharedContext {
         this.context = {
             marketRegime: 'Neutral',
             regimeScore: 5.0,
+            riskTrend: 'Stable', // Initialize new field
             sentiment: 'Neutral',
             sentimentScore: 0.0,
             fearAndGreedIndex: null,

@@ -1,0 +1,214 @@
+// This is your Prisma schema file,
+// learn more in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- User and Portfolio Models ---
+
+model User {
+  username          String              @id
+  password          String
+  createdAt         DateTime            @default(now())
+  onboardingState   Json?
+  telegramChatId    String?             @unique
+  telegramLinkToken String?             @unique
+  apiKeys           ApiKey[]
+  tradeMemories     TradeMemory[]
+  notifications     Notification[]
+  // --- NAUJI SĄRYŠIAI ---
+  configuration     UserConfiguration?
+  portfolios        Portfolio[]
+  tradeLogs         TradeLog[]
+  decisionLogs      DecisionLog[]
+  missedOpportunities MissedOpportunity[]
+  agentActivityLogs AgentActivityLog[]
+}
+
+model UserConfiguration {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [username])
+  strategyConfig Json
+  shadowConfig   Json?
+  updatedAt      DateTime @updatedAt
+}
+
+model Portfolio {
+  id        String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String
+  user      User          @relation(fields: [userId], references: [username])
+  balance   Float         @default(100000)
+  type      PortfolioType
+  positions Position[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+enum PortfolioType {
+  MAIN
+  SHADOW
+}
+
+model Position {
+  id                      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portfolioId             String    @db.Uuid
+  portfolio               Portfolio @relation(fields: [portfolioId], references: [id])
+  symbol                  String
+  amount                  Float
+  entryPrice              Float
+  type                    String // "long" or "short"
+  status                  String? // "scout" or "confirmed"
+  strategy                String?
+  appliedRiskParameters   Json?
+  initialDecision         Json?
+  decisionContext         Json?
+  createdAt               DateTime  @default(now())
+}
+
+// --- Logging and Memory Models ---
+
+model TradeLog {
+  id                      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                  String
+  user                    User      @relation(fields: [userId], references: [username])
+  symbol                  String
+  amount                  Float
+  entryPrice              Float
+  exitPrice               Float
+  pnl                     Float
+  reason                  String
+  timestamp               DateTime  @default(now())
+  marketContext           Json?
+  appliedRiskParameters   Json?
+  decisionContext         Json?
+}
+
+model DecisionLog {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                String
+  user                  User      @relation(fields: [userId], references: [username])
+  timestamp             DateTime  @default(now())
+  symbol                String
+  decision              String
+  reason                String
+  pnlPercent            Float?
+  price                 Float?
+  newTakeProfitPercent  Float?
+  marketContext         Json?
+}
+
+model MissedOpportunity {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId              String
+  user                User      @relation(fields: [userId], references: [username])
+  timestamp           DateTime  @default(now())
+  symbol              String
+  priceChangePercent  Float
+  reason              String
+  confidenceScore     Float?
+  finalSummary        String?
+}
+
+enum Source {
+  AI
+  HUMAN
+}
+
+model TradeMemory {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  timestamp   DateTime @default(now())
+  symbol      String
+  outcome     String
+  pnl_percent Float
+  narrative   String
+  // embedding   Unsupported("vector(768)") // Paliekame kaip yra
+  userId      String
+  user        User     @relation(fields: [userId], references: [username])
+
+  // --- NAUJI LAUKAI ---
+  source  Source @default(AI)
+  context Json?
+
+  @@index([userId])
+}
+
+// Pridėti šį modelį failo pabaigoje
+
+model AgentMetric {
+  agentName         String   @id
+  successCount      Int      @default(0)
+  errorCount        Int      @default(0)
+  totalResponseTime Float    @default(0)
+  lastActivity      DateTime @updatedAt
+}
+
+// Pridėti šį modelį failo pabaigoje
+
+model Opportunity {
+  id                 String   @id @default(uuid())
+  symbol             String
+  priceChangePercent Float
+  timestamp          DateTime @default(now())
+  status             String   @default("detected") // "detected", "analyzing", "bought", "ignored", "sold", "held"
+
+  @@index([symbol, timestamp])
+}
+
+model ApiKey {
+  id        String   @id @default(uuid())
+  name      String
+  key       String // Raktas bus šifruotas ateityje
+  isActive  Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [username])
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, name])
+}
+
+model Notification {
+  id        String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String
+  user      User                 @relation(fields: [userId], references: [username])
+  message   String
+  isRead    Boolean              @default(false)
+  priority  NotificationPriority @default(INFO)
+  link      String?
+  createdAt DateTime             @default(now())
+
+  @@index([createdAt])
+}
+
+enum NotificationPriority {
+  CRITICAL
+  SUCCESS
+  WARNING
+  INFO
+}
+
+model AgentActivityLog {
+  id        String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String
+  user      User                 @relation(fields: [userId], references: [username])
+  cycleId   String               @db.Uuid
+  timestamp DateTime
+  agentName String
+  status    AgentActivityStatus
+  payload   Json?
+
+  @@index([cycleId])
+}
+
+enum AgentActivityStatus {
+  ANALYZING
+  SUCCESS
+  ERROR
+  DATA_FLOW
+}

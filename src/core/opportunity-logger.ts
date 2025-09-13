@@ -1,16 +1,16 @@
 // src/core/opportunity-logger.ts
-import fs from 'fs/promises';
-import path from 'path';
-
-const getMissedOpportunitiesPath = (username: string) => path.join(process.cwd(), `missed_opportunities_${username}.json`);
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 export interface MissedOpportunity {
+    id: string;
     timestamp: string;
     symbol: string;
     priceChangePercent: number; // Added this field
     reason: string; // e.g., "AVOID decision by RiskManager"
-    confidenceScore?: number;
-    finalSummary?: string;
+    confidenceScore: number | null;
+    finalSummary: string | null;
+    userId: string;
 }
 
 export class OpportunityLogger {
@@ -23,33 +23,35 @@ export class OpportunityLogger {
         this.username = username;
     }
 
-    private getFilePath(): string {
-        return getMissedOpportunitiesPath(this.username);
-    }
-
     public async getLogs(): Promise<MissedOpportunity[]> {
         try {
-            const data = await fs.readFile(this.getFilePath(), 'utf-8');
-            return JSON.parse(data);
-        } catch {
-            // If file doesn't exist or is invalid, start with an empty array
+            const logs = await prisma.missedOpportunity.findMany({
+                where: { userId: this.username },
+                orderBy: { timestamp: 'desc' },
+                take: 200,
+            });
+
+            return logs.map(log => ({
+                ...log,
+                timestamp: log.timestamp.toISOString(),
+            }));
+        } catch (error) {
+            console.error(`[OpportunityLogger] Failed to get logs for user ${this.username}:`, error);
             return [];
         }
     }
 
     async log(opportunity: Omit<MissedOpportunity, 'timestamp'>): Promise<void> {
         try {
-            const logs = await this.getLogs();
-            const newLog: MissedOpportunity = {
-                timestamp: new Date().toISOString(),
-                ...opportunity,
-            };
-            logs.push(newLog);
-            // Keep the log from growing indefinitely
-            const trimmedLogs = logs.slice(-500); 
-            await fs.writeFile(this.getFilePath(), JSON.stringify(trimmedLogs, null, 2));
-        } catch (error) {
-            console.error("Failed to log missed opportunity:", error);
+            await prisma.missedOpportunity.create({
+                data: {
+                    ...opportunity,
+                    userId: this.username,
+                },
+            });
+        } catch (error)
+        {
+            console.error(`[OpportunityLogger] Failed to log opportunity for user ${this.username}:`, error);
         }
     }
 }

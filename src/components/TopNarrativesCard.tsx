@@ -1,5 +1,4 @@
 // src/components/TopNarrativesCard.tsx
-
 "use client";
 
 import { IntelCard } from './IntelCard';
@@ -9,7 +8,7 @@ interface Narrative {
     id: string;
     name: string;
     market_cap: number;
-    market_cap_change_24h: number;
+    market_cap_change_24h: number; // Šis laukas gali būti undefined
 }
 
 interface TopNarrativesCardProps {
@@ -32,16 +31,25 @@ export function TopNarrativesCard({ narratives }: TopNarrativesCardProps) {
                             </tr>
                         </thead>
                         <tbody>
-                            {narratives.map((narrative) => (
-                                <tr key={narrative.id} className="border-b border-gray-800 hover:bg-gray-800 cursor-pointer">
-                                    <td className="p-2 font-semibold">{narrative.name}</td>
-                                    <td className="p-2 text-right">${(narrative.market_cap / 1_000_000_000).toFixed(2)}B</td>
-                                    <td className={`p-2 text-right flex justify-end items-center ${narrative.market_cap_change_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                        <TrendingUp size={14} className="mr-1" />
-                                        {narrative.market_cap_change_24h.toFixed(1)}%
-                                    </td>
-                                </tr>
-                            ))}
+                            {narratives.map((narrative) => {
+                                // --- PRADĖKITE KEISTI ČIA ---
+                                const marketCap = narrative.market_cap || 0;
+                                // Saugus market_cap_change_24h gavimas, numatant 0, jei jo nėra
+                                const change24h = narrative.market_cap_change_24h ?? 0;
+                                const isPositive = change24h >= 0;
+                                // --- BAIKITE KEISTI ČIA ---
+
+                                return (
+                                    <tr key={narrative.id} className="border-b border-gray-800 hover:bg-gray-800 cursor-pointer">
+                                        <td className="p-2 font-semibold">{narrative.name}</td>
+                                        <td className="p-2 text-right">${(marketCap / 1_000_000_000).toFixed(2)}B</td>
+                                        <td className={`p-2 text-right flex justify-end items-center ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+                                            <TrendingUp size={14} className="mr-1" />
+                                            {change24h.toFixed(1)}%
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 )}

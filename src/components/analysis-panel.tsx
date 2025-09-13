@@ -36,7 +36,7 @@ export function AnalysisPanel({ analysis }: AnalysisPanelProps) {
         );
     }
 
-    const portfolioAllocator = lastRunAnalysis.PortfolioAllocator;
+    const portfolioAllocator = 'PortfolioAllocator' in lastRunAnalysis ? lastRunAnalysis.PortfolioAllocator : null;
     const allocations = 
         portfolioAllocator && 
         typeof portfolioAllocator === 'object' && 

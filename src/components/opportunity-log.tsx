@@ -5,6 +5,8 @@ import { useDashboard } from '@/context/DashboardContext';
 import { Opportunity } from '@/core/opportunity-scanner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { PlayCircle } from 'lucide-react';
 
 export function OpportunityLog() {
@@ -33,7 +35,7 @@ export function OpportunityLog() {
 
     const getStatusVariant = (status: Opportunity['status']) => {
         switch (status) {
-            case 'bought': return 'success';
+            case 'bought': return 'default';
             case 'ignored': return 'destructive';
             case 'analyzing': return 'secondary';
             default: return 'default';
@@ -41,38 +43,44 @@ export function OpportunityLog() {
     };
 
     return (
-        <div className="bg-gray-800 p-4 rounded-lg">
-            <h2 className="font-semibold text-md mb-4">Opportunity Log (Fast Movers)</h2>
-            <div className="space-y-3">
-                {state.opportunities.length === 0 ? (
-                    <p className="text-gray-400 text-sm">No significant price movements detected recently.</p>
-                ) : (
-                    state.opportunities.slice(0, 10).map((opp) => (
-                        <div key={opp.timestamp} className="flex items-center justify-between bg-gray-700 p-2 rounded-md">
-                            <div>
-                                <p className="font-bold">{opp.symbol}</p>
-                                <p className={`text-sm ${opp.priceChangePercent && opp.priceChangePercent > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                    +{ (opp.priceChangePercent || 0).toFixed(2) }%
-                                </p>
-                                <p className="text-xs text-gray-400">{new Date(opp.timestamp).toLocaleTimeString()}</p>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <Badge variant={getStatusVariant(opp.status)}>{opp.status}</Badge>
-                                {opp.status === 'detected' && (
-                                    <Button 
-                                        size="sm" 
-                                        onClick={() => handleAnalyze(opp.symbol)}
-                                        disabled={isLoading === opp.symbol}
-                                    >
-                                        <PlayCircle size={16} />
-                                        <span className="ml-2">{isLoading === opp.symbol ? 'Analyzing...' : 'Analyze'}</span>
-                                    </Button>
-                                )}
-                            </div>
-                        </div>
-                    ))
-                )}
-            </div>
-        </div>
+        <Card>
+            <CardHeader>
+                <CardTitle>Opportunity Log (Fast Movers)</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <ScrollArea className="h-96">
+                    <div className="space-y-3">
+                        {state.opportunities.length === 0 ? (
+                            <p className="text-gray-400 text-sm">No significant price movements detected recently.</p>
+                        ) : (
+                            state.opportunities.slice(0, 10).map((opp) => (
+                                <div key={opp.timestamp.getTime()} className="flex items-center justify-between bg-gray-700 p-2 rounded-md">
+                                    <div>
+                                        <p className="font-bold">{opp.symbol}</p>
+                                        <p className={`text-sm ${opp.priceChangePercent && opp.priceChangePercent > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                            +{ (opp.priceChangePercent || 0).toFixed(2) }%
+                                        </p>
+                                        <p className="text-xs text-gray-400">{new Date(opp.timestamp).toLocaleTimeString()}</p>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <Badge variant={getStatusVariant(opp.status)}>{opp.status}</Badge>
+                                        {opp.status === 'detected' && (
+                                            <Button
+                                                size="sm"
+                                                onClick={() => handleAnalyze(opp.symbol)}
+                                                disabled={isLoading === opp.symbol}
+                                            >
+                                                <PlayCircle size={16} />
+                                                <span className="ml-2">{isLoading === opp.symbol ? 'Analyzing...' : 'Analyze'}</span>
+                                            </Button>
+                                        )}
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </ScrollArea>
+            </CardContent>
+        </Card>
     );
 }

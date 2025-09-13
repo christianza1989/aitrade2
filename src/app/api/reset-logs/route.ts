@@ -1,64 +1,55 @@
+// src/app/api/reset-logs/route.ts
+
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../../../lib/auth';
+import { PrismaClient } from '@prisma/client';
 
-const logFiles = [
-    'bot_logs.json',
-    'buy_log.json',
-    'decision_log.json',
-    'missed_opportunities.json',
-    'trades_log.json',
-];
-
-const initialPortfolio = { balance: 100000, positions: [] };
+const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
+    // Svarbu: Apsauga! Užtikriname, kad tik prisijungęs vartotojas gali atlikti šį veiksmą.
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user?.name) {
+        return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+    const username = session.user.name;
+
     try {
-        // Get username from request (assuming it's passed in the body or headers)
-        // For now, I'll assume a default or extract from a common source if available.
-        // Based on portfolio.ts, the log files are username-specific.
-        // I need to ensure the reset targets the correct user's files.
-        // For simplicity, I'll assume the request body will contain the username.
-        // If not, I'll need to ask the user how the username is passed.
-        const { username } = await request.json();
+        // Viską darome vienoje atominėje operacijoje. Jei bent viena dalis nepavyks,
+        // visi pakeitimai bus atšaukti, užtikrinant duomenų vientisumą.
+        await prisma.$transaction(async (tx) => {
+            // 1. Išvalome visus susijusius log'us ir atmintį
+            await tx.tradeLog.deleteMany({ where: { userId: username } });
+            await tx.decisionLog.deleteMany({ where: { userId: username } });
+            await tx.missedOpportunity.deleteMany({ where: { userId: username } });
+            await tx.tradeMemory.deleteMany({ where: { userId: username } });
 
-        if (!username) {
-            return NextResponse.json({ error: 'Username is required for resetting logs.' }, { status: 400 });
-        }
+            // 2. Atstatome portfelį
+            const portfolio = await tx.portfolio.findFirst({ where: { userId: username, type: 'MAIN' } });
 
-        // Clear log files
-        for (const file of logFiles) {
-            const filePath = path.join(process.cwd(), file.replace('.json', `_${username}.json`));
-            try {
-                await fs.writeFile(filePath, '[]', 'utf-8');
-            } catch (error) {
-                if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-                    console.warn(`Log file not found, creating: ${filePath}`);
-                    await fs.writeFile(filePath, '[]', 'utf-8');
-                } else {
-                    console.error(`Failed to clear log file ${filePath}:`, error);
-                    throw error;
-                }
-            }
-        }
+            if (portfolio) {
+                // Ištriname visas atidarytas pozicijas
+                await tx.position.deleteMany({ where: { portfolioId: portfolio.id } });
 
-        // Reset portfolio.json
-        const portfolioFilePath = path.join(process.cwd(), `portfolio_${username}.json`);
-        try {
-            await fs.writeFile(portfolioFilePath, JSON.stringify(initialPortfolio, null, 2), 'utf-8');
-        } catch (error) {
-            if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-                console.warn(`Portfolio file not found, creating: ${portfolioFilePath}`);
-                await fs.writeFile(portfolioFilePath, JSON.stringify(initialPortfolio, null, 2), 'utf-8');
+                // Atstatome balansą į pradinę sumą
+                await tx.portfolio.update({
+                    where: { id: portfolio.id },
+                    data: { balance: 100000 },
+                });
             } else {
-                console.error(`Failed to reset portfolio file ${portfolioFilePath}:`, error);
-                throw error;
+                // Jei vartotojas kažkaip neturi portfelio, sukuriame naują
+                await tx.portfolio.create({
+                    data: { userId: username, balance: 100000, type: 'MAIN' },
+                });
             }
-        }
+        });
 
-        return NextResponse.json({ message: 'All logs and portfolio reset successfully.' });
+        console.log(`[DB RESET] All data for user '${username}' has been successfully reset.`);
+        return NextResponse.json({ success: true, message: `All logs and portfolio for user '${username}' have been reset.` });
+
     } catch (error) {
-        console.error('Error resetting logs:', error);
-        return NextResponse.json({ error: 'Failed to reset logs.' }, { status: 500 });
+        console.error(`[DB RESET] Critical error while resetting data for user '${username}':`, error);
+        return NextResponse.json({ success: false, error: 'Failed to reset logs and portfolio.' }, { status: 500 });
     }
 }

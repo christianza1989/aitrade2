@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: Request) {
     try {
         const scanner = OpportunityScanner.getInstance();
-        const opportunities = scanner.getOpportunities();
+        const opportunities = await scanner.getOpportunities(); // Pridėtas await
         return NextResponse.json(opportunities);
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);

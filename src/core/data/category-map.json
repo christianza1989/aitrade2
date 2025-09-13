@@ -1,0 +1,23 @@
+{
+  "BTC": ["Layer 1", "Payment"],
+  "ETH": ["Layer 1", "Smart Contracts"],
+  "SOL": ["Layer 1", "Smart Contracts"],
+  "AVAX": ["Layer 1", "Smart Contracts"],
+  "ADA": ["Layer 1", "Smart Contracts"],
+  "BNB": ["Layer 1", "Exchange Token"],
+  "XRP": ["Payment", "Enterprise"],
+  "DOT": ["Layer 0", "Interoperability"],
+  "LINK": ["Oracle", "Infrastructure"],
+  "UNI": ["DeFi", "DEX"],
+  "AAVE": ["DeFi", "Lending"],
+  "MATIC": ["Layer 2", "Scaling"],
+  "RNDR": ["AI", "DePIN", "GPU"],
+  "FET": ["AI"],
+  "AGIX": ["AI"],
+  "OCEAN": ["AI", "Data"],
+  "TAO": ["AI"],
+  "GRT": ["Indexing", "Infrastructure"],
+  "LDO": ["Liquid Staking", "DeFi"],
+  "NEAR": ["Layer 1", "AI"],
+  "INJ": ["Layer 1", "DeFi"]
+}

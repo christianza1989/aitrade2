@@ -1,43 +1,47 @@
 {
-  "balance": 39648.25651799912,
+  "balance": 84652.2984374089,
   "positions": [
     {
-      "symbol": "EPICUSDT",
-      "amount": 897.0099667774087,
-      "entryPrice": 3.01
+      "symbol": "ETHFIUSDT",
+      "amount": 1763.6497740768234,
+      "entryPrice": 1.299,
+      "highPrice": 1.299
     },
     {
-      "symbol": "XUSDUSDT",
-      "amount": 2700,
-      "entryPrice": 1,
-      "highPnlPercent": 0.009999999999998899
+      "symbol": "UNIUSDT",
+      "amount": 158.16230973598852,
+      "entryPrice": 11.588,
+      "highPrice": 11.588
     },
     {
-      "symbol": "ALPINEUSDT",
-      "amount": 10802.361393448471,
-      "entryPrice": 2.090537353591615,
-      "highPnlPercent": 0.8157389635316653,
-      "takeProfitPercent": 1.5,
-      "highPrice": 2.098
+      "symbol": "OPUSDT",
+      "amount": 1528.0847467238912,
+      "entryPrice": 0.7996,
+      "highPrice": 0.7996
     },
     {
-      "symbol": "IOUSDT",
-      "amount": 16718.388625592415,
-      "entryPrice": 0.633,
-      "highPrice": 0.633
+      "symbol": "BBUSDT",
+      "amount": 4254.3752210321145,
+      "entryPrice": 0.1795,
+      "highPrice": 0.1795
     },
     {
-      "symbol": "BERAUSDT",
-      "amount": 7728.375034619476,
-      "entryPrice": 2.2246565316749716,
-      "highPrice": 2.232
+      "symbol": "ENAUSDT",
+      "amount": 5622.711200022783,
+      "entryPrice": 0.737,
+      "highPrice": 0.737
     },
     {
-      "symbol": "AAVEUSDT",
-      "amount": 23.585257073536233,
-      "entryPrice": 280.27,
-      "highPrice": 280.27,
-      "highPnlPercent": 0.12131159239306091
+      "symbol": "ETHUSDT",
+      "amount": 1.029976343268465,
+      "entryPrice": 4828,
+      "highPrice": 4828
+    },
+    {
+      "symbol": "LINKUSDT",
+      "amount": 122.19500639636686,
+      "entryPrice": 27.13,
+      "highPrice": 27.13
     }
   ]
 }

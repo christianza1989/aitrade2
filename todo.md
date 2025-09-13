@@ -1,0 +1,16 @@
+- [ ] Standardize Terminology in AI Agent Prompts
+  - [ ] In `RiskManager` -> `decideBatch` method: change `final_summary` to `reason` in prompt string (first occurrence)
+  - [ ] In `RiskManager` -> `decideBatch` method: update final `Format (JSON):` line to use `reason`
+  - [ ] In `PositionManager` -> `decide` method: change `justification` to `reason` in prompt string
+  - [ ] In `ScalperAgent` -> `manage_open_position` method: change `justification` to `reason` in prompt string
+  - [ ] In `ScalperAgent` -> `confirm_or_reject_scout` method: change `justification` to `reason` in prompt string
+- [ ] Update the `DecisionLogger` to a Universal Standard
+  - [ ] Update `DecisionLogEntry` interface
+  - [ ] Update `log` method signature
+- [ ] Update All Calls to `DecisionLogger` and Agent Responses
+  - [ ] In `src/app/api/bot/decision/route.ts`: update response handling from `PositionManager` (justification to reason)
+  - [ ] In `src/app/api/bot/decision/route.ts`: update `decisionLogger.log` call
+  - [ ] In `src/app/api/bot/decision/route.ts`: update `portfolioService.sell` call
+  - [ ] In `src/app/api/bot/run/route.ts`: update response handling from `ScalperAgent` (existing positions)
+  - [ ] In `src/app/api/bot/run/route.ts`: update response handling from `ScalperAgent` (scout confirmation)
+  - [ ] In `src/app/api/bot/run/route.ts`: log `AVOID` decisions from `RiskManager`

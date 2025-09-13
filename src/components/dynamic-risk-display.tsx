@@ -5,10 +5,10 @@ import { AlertTriangle, ShieldCheck } from 'lucide-react';
 
 export function DynamicRiskDisplay() {
     const { state } = useDashboard();
-    const { adjustedConfig, sharedContext } = state;
+    const { sharedContext } = state;
 
-    if (!adjustedConfig || !sharedContext) {
-        return null; // Don't render if there's no adjustment
+    if (!sharedContext) {
+        return null; // Don't render if there's no shared context
     }
 
     const isAggressive = sharedContext.regimeScore > 7.5;

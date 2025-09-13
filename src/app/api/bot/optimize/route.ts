@@ -2,9 +2,11 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { PortfolioService } from '@/core/portfolio';
+import { PaperExecutionService } from '@/core/services/ExecutionService';
 import { StrategyOptimizer } from '@/core/optimizer';
 import { OpportunityLogger } from '@/core/opportunity-logger';
 import { DecisionLogger } from '@/core/decision-logger';
+import { AgentService } from '@/core/agent-service';
 
 export async function POST() {
     try {
@@ -14,10 +16,12 @@ export async function POST() {
         }
         const username = session.user.name;
 
-        const portfolioService = new PortfolioService(username);
+        const executionService = new PaperExecutionService();
+        const portfolioService = new PortfolioService(username, 'MAIN', executionService);
         const opportunityLogger = new OpportunityLogger(username);
         const decisionLogger = new DecisionLogger(username);
-        const optimizer = new StrategyOptimizer();
+        const agentService = new AgentService();
+        const optimizer = new StrategyOptimizer('default', agentService, username);
 
         const trades = await portfolioService.getTradeLogs();
         const missedOpportunities = await opportunityLogger.getLogs();

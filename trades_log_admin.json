@@ -1,74 +1,1325 @@
 [
   {
-    "symbol": "RADUSDT",
-    "amount": 35751.26865550843,
-    "entryPrice": 0.7864231412573395,
-    "exitPrice": 0.777,
-    "pnl": -364.66799041527827,
-    "timestamp": "2025-08-19T16:47:59.296Z",
-    "reason": "Manual sell"
+    "symbol": "ADAUSDT",
+    "amount": 2654.9523680193,
+    "entryPrice": 0.9365,
+    "exitPrice": 0.9295,
+    "pnl": -21.052444802209056,
+    "timestamp": "2025-08-22T23:08:25.580Z",
+    "reason": "PM Decision: The market environment is 'Neutral/Risk-On' but significantly tempered by 'Jackson Hole Jitters' and 'significant external macroeconomic uncertainty.' While internal crypto metrics are positive and sentiment is broadly bullish, the neutral Fear & Greed Index (50) and external headwinds create a 'tug-of-war' scenario. As a pragmatic manager, I will not hold a position that is already at a small loss (-0.75%) when the market conditions are not unequivocally strong and present substantial external risks that could easily turn a small loss into a larger one. Protecting capital is paramount.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.2,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.55
+    }
   },
   {
-    "symbol": "OGUSDT",
-    "amount": 2474.4526582133713,
-    "entryPrice": 12.356415427271227,
-    "exitPrice": 12.654,
-    "pnl": 705.0472130949717,
-    "timestamp": "2025-08-19T18:15:51.514Z",
-    "reason": "PositionManager decision"
+    "symbol": "XRPUSDT",
+    "amount": 537.9816499843291,
+    "entryPrice": 3.0811,
+    "exitPrice": 3.0813,
+    "pnl": -1.5500865280998597,
+    "timestamp": "2025-08-22T22:36:50.741Z",
+    "reason": "PM Decision: The position is at breakeven (0.01% P/L). The original justification for entry is unknown, making it impossible to confirm if current 'Neutral/Risk-On' macro conditions (score 6.5) and 'Neutral' market sentiment (score 0.18) still strongly support the trade. While not 'Risk-Off,' the market sentiment includes 'regulatory scrutiny' and 'legal challenges' as key topics, which are specific risks for XRP. As a disciplined manager, capital should not be tied up in positions lacking a clear, currently validated strategic rationale. Closing the position protects against potential downside from unconfirmed thesis and frees capital.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Neutral",
+      "sentimentScore": 0.18
+    }
   },
   {
-    "symbol": "UMAUSDT",
-    "amount": 29747.299193787498,
-    "entryPrice": 1.3376298379487852,
-    "exitPrice": 1.384,
-    "pnl": 1338.2168221176926,
-    "timestamp": "2025-08-19T18:15:52.543Z",
-    "reason": "PositionManager decision"
+    "symbol": "ARBUSDT",
+    "amount": 5052.334450382166,
+    "entryPrice": 0.6046,
+    "exitPrice": 0.5828,
+    "pnl": -113.08539153601416,
+    "timestamp": "2025-08-22T22:35:14.115Z",
+    "reason": "PM Decision: The original justification for entering this position is absent. While the macro environment is categorized as 'Neutral/Risk-On' (score 6.5), indicating some internal growth, the market sentiment remains 'Neutral' with significant external headwinds (Jackson Hole jitters, regulatory uncertainties) tempering the outlook. Given the current -3.61% loss and the lack of an original thesis to strongly support holding, it is prudent to close the position to protect capital against potential further downside amidst lingering market uncertainties.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Neutral",
+      "sentimentScore": 0.18
+    }
   },
   {
-    "symbol": "CTSIUSDT",
-    "amount": 28907.92291220557,
-    "entryPrice": 0.0934,
-    "exitPrice": 0.0915,
-    "pnl": -57.570128479657356,
-    "timestamp": "2025-08-19T18:21:04.948Z",
-    "reason": "Manual sell"
+    "symbol": "LDOUSDT",
+    "amount": 1017.9423516065909,
+    "entryPrice": 1.5004,
+    "exitPrice": 1.5134,
+    "pnl": 11.692696615964392,
+    "timestamp": "2025-08-22T22:29:15.931Z",
+    "reason": "PM Decision: While the Macro Environment is 'Risk-On' (score 6.4) indicating capital inflows into riskier assets, the Market Sentiment is 'Bearish' (-0.45) driven by regulatory and security concerns. Given the position's minimal profit (0.87%) and the conflicting market signals, the combined Macro and Sentiment analysis does not 'strongly support' holding the position. As a pragmatic Portfolio Manager, protecting capital and small profits against potential downside from negative sentiment is prioritized when conditions are not unequivocally supportive.",
+    "marketContext": {
+      "regime": "Risk-On",
+      "regimeScore": 6.4,
+      "sentiment": "Bearish",
+      "sentimentScore": -0.45
+    }
   },
   {
-    "symbol": "RADUSDT",
-    "amount": 3452.6854219948846,
-    "entryPrice": 0.782,
-    "exitPrice": 0.761,
-    "pnl": -75.13388746803075,
-    "timestamp": "2025-08-19T18:21:05.284Z",
-    "reason": "Manual sell"
+    "symbol": "SOLUSDT",
+    "amount": 22.985663253996123,
+    "entryPrice": 199.34,
+    "exitPrice": 200.25,
+    "pnl": 16.31407449452367,
+    "timestamp": "2025-08-22T21:54:58.094Z",
+    "reason": "PM Decision: While the crypto market shows internal growth and a 'Neutral/Risk-On' regime score (6.5), the detailed analysis highlights significant tempering factors: a neutral Fear & Greed Index (50) and a 'significant macroeconomic overhang' due to U.S. political instability. Sentiment is weakly 'Bullish' (score 0.25). Given these clear external uncertainties and a very marginal profit (0.46%), it is prudent to protect capital and lock in this small gain rather than expose it to escalating geopolitical risks. The market conditions do not 'strongly support' continued holding.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
   },
   {
-    "symbol": "IOUSDT",
-    "amount": 19354.83870967742,
-    "entryPrice": 0.62,
-    "exitPrice": 0.633,
-    "pnl": 239.36129032258089,
-    "timestamp": "2025-08-19T19:31:50.484Z",
-    "reason": "PositionManager decision"
+    "symbol": "LTCUSDT",
+    "amount": 18.789094125009733,
+    "entryPrice": 122.25,
+    "exitPrice": 123.15,
+    "pnl": 14.596307771013917,
+    "timestamp": "2025-08-22T21:54:48.763Z",
+    "reason": "PM Decision: Although crypto's internal metrics show strong momentum (market cap, trading volume, institutional adoption), the broader macro environment is heavily tempered by significant geopolitical instability and a 'macroeconomic overhang' (Trump D.C. Takeover). The Fear & Greed Index is neutral at 50, indicating caution. Given the position's minimal 0.74% profit, locking in this small gain is a pragmatic move to protect capital against escalating external risks that could quickly erode profits or turn them into losses, aligning with the mandate to protect capital in a potentially deteriorating broader market.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
   },
   {
-    "symbol": "UMAUSDT",
-    "amount": 8752.7352297593,
-    "entryPrice": 1.371,
-    "exitPrice": 1.39,
-    "pnl": 154.13566739606046,
-    "timestamp": "2025-08-19T19:31:57.311Z",
-    "reason": "PositionManager decision"
+    "symbol": "AAVEUSDT",
+    "amount": 9.132342385426368,
+    "entryPrice": 335.36,
+    "exitPrice": 343.99,
+    "pnl": 75.6706803290667,
+    "timestamp": "2025-08-22T21:54:36.702Z",
+    "reason": "PM Decision: While the crypto market shows internal strength (Neutral/Risk-On regime with score 6.5) and the position is profitable (2.57%), the market data highlights a 'significant macroeconomic overhang' from U.S. political instability, which is 'tempering the overall risk appetite.' This creates a mixed environment with notable external risks. A pragmatic Portfolio Manager prioritizes capital protection; locking in profits in the face of significant external uncertainty is a disciplined move, as current conditions do not 'strongly support' continued holding.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
   },
   {
-    "symbol": "OGUSDT",
-    "amount": 939.261114589856,
-    "entryPrice": 12.776,
-    "exitPrice": 13.087,
-    "pnl": 279.8180964308077,
-    "timestamp": "2025-08-19T19:31:57.857Z",
-    "reason": "PositionManager decision"
+    "symbol": "TRXUSDT",
+    "amount": 4754.623459301428,
+    "entryPrice": 0.3647,
+    "exitPrice": 0.3666,
+    "pnl": 7.290739612492606,
+    "timestamp": "2025-08-22T21:54:26.139Z",
+    "reason": "PM Decision: While the crypto market shows internal strength, the macro environment is significantly tempered by a neutral Fear & Greed Index and escalating U.S. political instability, introducing a critical 'macroeconomic overhang.' This, combined with a weak underlying bullish sentiment score (0.25), does not 'strongly support' holding this position for further gains. Protecting the current small profit of 0.52% is paramount given these elevated external risks and uncertainties.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
+  },
+  {
+    "symbol": "BONKUSDT",
+    "amount": 110306054.42794088,
+    "entryPrice": 0.00002358,
+    "exitPrice": 0.00002373,
+    "pnl": 13.928345492616124,
+    "timestamp": "2025-08-22T21:54:15.033Z",
+    "reason": "PM Decision: While the crypto market shows internal strength and sentiment is bullish, the macro environment is characterized as 'Neutral/Risk-On' with a critical 'significant macroeconomic overhang' and 'external risks promoting caution.' Given the minimal 0.64% profit, it is more prudent to protect capital and this small gain in a 'mixed environment' where external risks temper overall confidence, rather than expose it to potential downside from geopolitical instability.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
+  },
+  {
+    "symbol": "ETCUSDT",
+    "amount": 174.65865991209012,
+    "entryPrice": 24.82,
+    "exitPrice": 24.91,
+    "pnl": 11.36853217367792,
+    "timestamp": "2025-08-22T21:54:05.591Z",
+    "reason": "PM Decision: While the macro regime is rated 'Neutral/Risk-On' (6.5), the accompanying analysis explicitly notes 'significant macroeconomic overhang' from escalating U.S. political instability, which 'tempers the overall risk appetite' and creates a 'mixed environment.' With only a 0.36% profit, it is prudent to protect capital by closing this position to avoid exposure to the highlighted external geopolitical uncertainties, which do not strongly support holding a virtually breakeven trade.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
+  },
+  {
+    "symbol": "AVAXUSDT",
+    "amount": 18.158208691732455,
+    "entryPrice": 25,
+    "exitPrice": 25.19,
+    "pnl": 2.992654374484449,
+    "timestamp": "2025-08-22T21:53:56.216Z",
+    "reason": "PM Decision: While the crypto market shows internal strength (Neutral/Risk-On score 6.5), the macro environment includes a 'significant macroeconomic overhang' and 'external geopolitical uncertainties' promoting caution. Market sentiment is weakly 'Bullish' (score 0.25) and the Fear & Greed Index is neutral (50). Given the small current profit of 0.76%, the prudent action is to lock in this gain and protect capital against the identified external risks which could quickly turn this small profit into a loss. The current market conditions do not strongly support holding a position with such a marginal gain when significant external uncertainties loom.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
+  },
+  {
+    "symbol": "PEPEUSDT",
+    "amount": 100521527.30144185,
+    "entryPrice": 0.00001129,
+    "exitPrice": 0.00001151,
+    "pnl": 20.957733227077572,
+    "timestamp": "2025-08-22T21:53:47.132Z",
+    "reason": "PM Decision: While the crypto market shows internal strength (6.5 regime score, bullish sentiment score 0.25), the 'significant macroeconomic overhang' from 'escalating political instability in the U.S.' introduces a critical external risk. A pragmatic Portfolio Manager prioritizes capital protection. The current 1.95% profit on a highly speculative asset like PEPE is vulnerable to rapid reversal due to these geopolitical uncertainties, which temper overall risk appetite. Locking in this profit is prudent given the new, heightened external risks.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
+  },
+  {
+    "symbol": "BNBUSDT",
+    "amount": 1.522828639024862,
+    "entryPrice": 894.3,
+    "exitPrice": 898.19,
+    "pnl": 4.556013950521125,
+    "timestamp": "2025-08-22T21:53:35.759Z",
+    "reason": "PM Decision: Despite the 'Neutral/Risk-On' macro regime score of 6.5 and bullish sentiment, the new market data explicitly highlights a 'significant macroeconomic overhang' and 'external geopolitical uncertainties' ('Trump D.C. Takeover') that temper overall risk appetite and promote caution. While the position has a small profit (0.43%), these new, material external risks mean market conditions no longer *strongly support* holding. As a pragmatic manager, protecting capital and locking in profit against unforeseen geopolitical shifts is paramount, aligning with the mandate to avoid a small profit becoming a large loss.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
+  },
+  {
+    "symbol": "DOGEUSDT",
+    "amount": 7635.916186599014,
+    "entryPrice": 0.2378,
+    "exitPrice": 0.24139,
+    "pnl": 25.569705301607186,
+    "timestamp": "2025-08-22T21:53:26.162Z",
+    "reason": "PM Decision: While the crypto market shows internal strength with a 'Neutral/Risk-On' macro regime (score 6.5), the significant macroeconomic overhang from U.S. political instability and the overall caution it promotes, coupled with a weak 'Bullish' sentiment score (0.25) that references headwinds for 'controversial celebrity projects' (like DOGE), does not provide strong support to keep this position open. Taking the small 1.51% profit is a prudent move to protect capital against escalating external risks.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
+  },
+  {
+    "symbol": "PENGUUSDT",
+    "amount": 79485.43550444355,
+    "entryPrice": 0.034173,
+    "exitPrice": 0.034863,
+    "pnl": 52.073849760074324,
+    "timestamp": "2025-08-22T21:53:16.311Z",
+    "reason": "PM Decision: While the crypto market shows strong internal momentum and a 'Neutral/Risk-On' regime (score 6.5), the 'significant macroeconomic overhang' due to escalating political instability explicitly 'tempers overall risk appetite' and 'promotes caution.' The market sentiment, though 'Bullish,' carries a low score (0.25), indicating mild conviction. Given these external risks that increase uncertainty, and the position's marginal 2.02% profit, it is prudent to protect capital and lock in current gains rather than expose the position to potential downside volatility in a volatile, mixed environment.",
+    "marketContext": {
+      "regime": "Neutral/Risk-On",
+      "regimeScore": 6.5,
+      "sentiment": "Bullish",
+      "sentimentScore": 0.25
+    }
+  },
+  {
+    "symbol": "SEIUSDT",
+    "amount": 10710.384037104577,
+    "entryPrice": 0.3238,
+    "exitPrice": 0.3249,
+    "pnl": 8.301618667160243,
+    "timestamp": "2025-08-22T20:22:48.296Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "SUIUSDT",
+    "amount": 122.35989684455832,
+    "entryPrice": 3.71,
+    "exitPrice": 3.7271,
+    "pnl": 1.636306664512608,
+    "timestamp": "2025-08-22T20:22:45.047Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "XRPUSDT",
+    "amount": 221.7588829349205,
+    "entryPrice": 3.0706,
+    "exitPrice": 3.0769,
+    "pnl": 0.7147510555875362,
+    "timestamp": "2025-08-22T20:22:43.116Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "ADAUSDT",
+    "amount": 1220.5722125546124,
+    "entryPrice": 0.9298,
+    "exitPrice": 0.9364,
+    "pnl": 6.912832783024363,
+    "timestamp": "2025-08-22T20:22:40.939Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "LINKUSDT",
+    "amount": 50.17927973028496,
+    "entryPrice": 27.14,
+    "exitPrice": 27.11,
+    "pnl": -2.8657386653966315,
+    "timestamp": "2025-08-22T20:22:38.871Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "ENAUSDT",
+    "amount": 3712.3228891370695,
+    "entryPrice": 0.7337,
+    "exitPrice": 0.7353,
+    "pnl": 3.210045602236582,
+    "timestamp": "2025-08-22T20:22:37.826Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "ETHUSDT",
+    "amount": 1.181973124625875,
+    "entryPrice": 4800.82,
+    "exitPrice": 4816.45,
+    "pnl": 12.781325481798259,
+    "timestamp": "2025-08-22T20:22:35.827Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "BTCUSDT",
+    "amount": 0.04255450774793113,
+    "entryPrice": 115831.68,
+    "exitPrice": 116911.49,
+    "pnl": 40.97567210426686,
+    "timestamp": "2025-08-22T20:22:20.747Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "UNIUSDT",
+    "amount": 39.70916876253598,
+    "entryPrice": 11.432,
+    "exitPrice": 11.578,
+    "pnl": 5.337785883397572,
+    "timestamp": "2025-08-22T20:08:26.710Z",
+    "reason": "Scalper AI Decision: The recent upward price movement, while closing at its high on the final candle, is accompanied by drastically diminishing volume, particularly on the last two candles. This indicates a severe lack of buying pressure and conviction, not acceleration. The conditions for an 'Alpha Move' are not met. Greed is a liability; securing the +1.28% profit is the most data-driven and profitable action."
+  },
+  {
+    "symbol": "SOLUSDT",
+    "amount": 20.79501682516314,
+    "entryPrice": 196.47,
+    "exitPrice": 198.92,
+    "pnl": 46.81124647478801,
+    "timestamp": "2025-08-22T20:08:16.627Z",
+    "reason": "Scalper AI Decision: Momentum has decisively reversed; the last two candles are red, with the penultimate candle showing rejection at highs (199.30) and closing significantly lower. Volume has drastically faded (from 2862 to 798 to a mere 63), indicating a complete lack of buying interest and confirming weakness. No signs of parabolic acceleration. Greed is a liability; secure the +1.25% profit."
+  },
+  {
+    "symbol": "LDOUSDT",
+    "amount": 2602.3233824829945,
+    "entryPrice": 1.4711,
+    "exitPrice": 1.493,
+    "pnl": 53.10561326633055,
+    "timestamp": "2025-08-22T19:46:11.957Z",
+    "reason": "Scalper AI Decision: Momentum has stalled, evidenced by a long upper wick on the penultimate candle (high 1.4957, close 1.493) followed by an extremely low-volume, flat candle (volume 11.73). The high volume on the rejection candle (46504.3) indicates significant selling pressure at the highs, not sustained buying. Further upside is not supported by current data. Securing profit now is the most profitable action."
+  },
+  {
+    "symbol": "ETHFIUSDT",
+    "amount": 352.9978361534303,
+    "entryPrice": 1.286,
+    "exitPrice": 1.302,
+    "pnl": 5.188362195783124,
+    "timestamp": "2025-08-22T19:45:59.143Z",
+    "reason": "Scalper AI Decision: Momentum has stalled after hitting the initial profit target. The price made a high of 1.307 but has since failed to establish higher closes, with the last candle closing red at 1.302 on relatively low volume. Significant volume on the candle at 1755891600 (67000.3) failed to push price higher, indicating absorption/selling pressure. There is no evidence of the 'extreme, undeniable acceleration in both price and volume' required to justify letting the winner run. Greed is a liability; secure the profit."
+  },
+  {
+    "symbol": "BBUSDT",
+    "amount": 8836.186792777227,
+    "entryPrice": 0.1733,
+    "exitPrice": 0.1707,
+    "pnl": -24.48242274674803,
+    "timestamp": "2025-08-22T19:23:28.144Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "ARBUSDT",
+    "amount": 7896.0699786264695,
+    "entryPrice": 0.5818,
+    "exitPrice": 0.5996,
+    "pnl": 135.81556206036703,
+    "timestamp": "2025-08-22T19:23:17.154Z",
+    "reason": "Scalper AI Decision: Momentum stalled with a significant upper wick on the last candle, indicating strong selling pressure at the high. Volume has drastically decreased on this reversal candle. Greed is not a strategy. Secure current profit."
+  },
+  {
+    "symbol": "BBUSDT",
+    "amount": 30872.60253306642,
+    "entryPrice": 0.1685,
+    "exitPrice": 0.1725,
+    "pnl": 118.16488619531097,
+    "timestamp": "2025-08-22T19:00:27.981Z",
+    "reason": "Scalper AI Decision: Momentum is decelerating, indicated by smaller candle bodies and increasing upper wicks in the recent price action. The final candle, despite high volume, closed significantly below its high, forming a long upper wick. This is a clear sign of rejection and buyer exhaustion at the current levels. Divergence in volume before the final candle also suggests weakening buying pressure. No sustained, undeniable acceleration is detected. Greed is a liability; securing profit is paramount."
+  },
+  {
+    "symbol": "ARBUSDT",
+    "amount": 1593.1048159091467,
+    "entryPrice": 0.5699,
+    "exitPrice": 0.5819,
+    "pnl": 18.190230098532247,
+    "timestamp": "2025-08-22T18:45:45.205Z",
+    "reason": "Scalper AI Decision: Momentum has reversed, indicated by the last candle closing red below the previous candle's close. Significant volume on this bearish candle suggests profit-taking. Securing the +2.11% profit target is the most rational action given the high-frequency scalping strategy and the observed price action."
+  },
+  {
+    "symbol": "LDOUSDT",
+    "amount": 2061.9787174297758,
+    "entryPrice": 1.4343,
+    "exitPrice": 1.4579,
+    "pnl": 45.656538959201974,
+    "timestamp": "2025-08-22T18:24:38.657Z",
+    "reason": "Scalper AI Decision: Price action shows a clear rejection from the recent high of 1.4628, followed by a series of lower closes. The most recent green candle exhibits significantly diminished volume (19283.82), indicating weak buying pressure and a lack of conviction for further upward movement. Momentum is fading, and there is no evidence of the extreme, undeniable acceleration in both price and volume required to justify holding or increasing the take-profit target. Securing the current +1.65% profit is the most data-driven, risk-averse, and profitable action in this high-frequency environment."
+  },
+  {
+    "symbol": "SEIUSDT",
+    "amount": 3983.811615247597,
+    "entryPrice": 0.3187,
+    "exitPrice": 0.3241,
+    "pnl": 20.22142937783534,
+    "timestamp": "2025-08-22T18:02:28.125Z",
+    "reason": "Scalper AI Decision: The penultimate candle showed strong price acceleration with significantly increased volume. However, the most recent candle, while closing higher, exhibited a sharp and notable decrease in volume (from 602,406.5 to 178,623.7). This divergence indicates a loss of immediate buying momentum and a potential exhaustion of the current upward thrust. Greed is a liability; securing the achieved profit is the most rational action based on data."
+  },
+  {
+    "symbol": "BONKUSDT",
+    "amount": 29358579.63135916,
+    "entryPrice": 0.00002313,
+    "exitPrice": 0.00002344,
+    "pnl": 8.412994579162245,
+    "timestamp": "2025-08-22T17:50:44.454Z",
+    "reason": "Scalper AI Decision: Momentum is showing indecision and rejection at previous highs (0.00002353), failing to sustain upward movement. The last green candle (0.00002341 -> 0.00002344) exhibits extremely low volume (186,247,248) relative to earlier candles, indicating a severe lack of buying conviction. There is no evidence of the required 'extreme, undeniable acceleration in both price and volume.' Securing the existing profit is the only logical action."
+  },
+  {
+    "symbol": "UNIUSDT",
+    "amount": 122.79637375648053,
+    "entryPrice": 11.06,
+    "exitPrice": 11.412,
+    "pnl": 41.82297134497223,
+    "timestamp": "2025-08-22T17:50:33.778Z",
+    "reason": "Scalper AI Decision: Momentum shows clear exhaustion at recent high (11.44). The candle immediately following the peak exhibited a long upper wick and a bearish close on extremely low volume (2655.26), indicating rejection and lack of buying interest. The subsequent candle confirms this weakness. Greed is a liability; secure profit."
+  },
+  {
+    "symbol": "BBUSDT",
+    "amount": 9127.203587007223,
+    "entryPrice": 0.1488,
+    "exitPrice": 0.1727,
+    "pnl": 216.56389766999652,
+    "timestamp": "2025-08-22T17:50:22.028Z",
+    "reason": "Scalper AI Decision: Price momentum has stalled and shown a clear reversal pattern (large red candle after peak). Subsequent attempts at upward movement are met with significantly diminishing volume, indicating market exhaustion and a lack of conviction. Securing the current +16.06% profit is the optimal, data-driven action to mitigate drawdown risk."
+  },
+  {
+    "symbol": "ETHFIUSDT",
+    "amount": 1658.9510102768827,
+    "entryPrice": 1.228,
+    "exitPrice": 1.282,
+    "pnl": 87.45657935977678,
+    "timestamp": "2025-08-22T17:50:10.792Z",
+    "reason": "Scalper AI Decision: Momentum has stalled after reaching the profit target, indicated by small candle bodies and lack of upward progression. Volume has significantly faded across the last several candles, culminating in a zero-volume candle, which indicates a complete lack of buying interest or market activity to sustain the move. There is no evidence of accelerating price or volume to justify holding. Greed is a liability. Securing profit now."
+  },
+  {
+    "symbol": "SKLUSDT",
+    "amount": 52722.35612370631,
+    "entryPrice": 0.03864,
+    "exitPrice": 0.03764,
+    "pnl": -54.706825608202664,
+    "timestamp": "2025-08-22T17:50:01.617Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "ARBUSDT",
+    "amount": 6213.981944302135,
+    "entryPrice": 0.5464,
+    "exitPrice": 0.5694,
+    "pnl": 139.3833433998636,
+    "timestamp": "2025-08-22T17:49:59.368Z",
+    "reason": "Scalper AI Decision: Momentum is fading, evidenced by the last candle's negative close and upper wick indicating rejection at the high. Volume does not show the extreme acceleration required to justify holding. Securing profit as per the profit target hit."
+  },
+  {
+    "symbol": "ENAUSDT",
+    "amount": 1094.9709895296407,
+    "entryPrice": 0.7247,
+    "exitPrice": 0.7341,
+    "pnl": 9.488909098164875,
+    "timestamp": "2025-08-22T17:49:52.178Z",
+    "reason": "Scalper AI Decision: Momentum is fading into indecision, with small-bodied candles and low volume failing to confirm further upward movement. Previous attempts to break higher were met with rejection (wicks), and significant volume was observed on a bearish candle. No undeniable acceleration detected. Securing the established profit is the most prudent action."
+  },
+  {
+    "symbol": "BCHUSDT",
+    "amount": 1.8734159638397692,
+    "entryPrice": 593,
+    "exitPrice": 605.1,
+    "pnl": 21.534729162741804,
+    "timestamp": "2025-08-22T17:49:41.039Z",
+    "reason": "Scalper AI Decision: Initial profit target hit. Price momentum is decelerating with increasingly small candle bodies. Volume has significantly faded across the last four candles, indicating a severe lack of conviction and potential for reversal. Extreme acceleration in price and volume, a prerequisite for extending the position, is absent. Secure the established profit."
+  },
+  {
+    "symbol": "HBARUSDT",
+    "amount": 6346.680605551714,
+    "entryPrice": 0.25006,
+    "exitPrice": 0.25585,
+    "pnl": 35.123482473214125,
+    "timestamp": "2025-08-22T17:49:29.896Z",
+    "reason": "Scalper AI Decision: Volume has significantly decreased on the last candle, despite a marginal price increase. This divergence indicates fading momentum and a lack of conviction for further upside. Greed is a liability; securing current profit is the most rational action."
+  },
+  {
+    "symbol": "AVAXUSDT",
+    "amount": 65.33762668687778,
+    "entryPrice": 24.29,
+    "exitPrice": 25.03,
+    "pnl": 46.714442952317135,
+    "timestamp": "2025-08-22T17:49:23.021Z",
+    "reason": "Scalper AI Decision: The last candle (25.01-25.02) exhibits extremely low volume (927.21) immediately following a strong high-volume candle (25.02, volume 11530.43). This represents a significant divergence in volume and a clear deceleration in price momentum, indicating exhaustion rather than further acceleration. Greed is a liability; profit must be secured."
+  },
+  {
+    "symbol": "DOGEUSDT",
+    "amount": 10281.046980506982,
+    "entryPrice": 0.23155,
+    "exitPrice": 0.23764,
+    "pnl": 60.168388106839686,
+    "timestamp": "2025-08-22T17:49:13.061Z",
+    "reason": "Scalper AI Decision: Momentum has stalled with the last candle showing minimal price movement and critically, volume has collapsed by over 90% compared to the prior candle. This indicates a severe lack of conviction and fading buying pressure. Greed is a liability; securing current profit is paramount. No signs of parabolic acceleration."
+  },
+  {
+    "symbol": "XRPUSDT",
+    "amount": 1047.5238125634544,
+    "entryPrice": 3.0301,
+    "exitPrice": 3.0687,
+    "pnl": 37.219882841336066,
+    "timestamp": "2025-08-22T17:49:04.169Z",
+    "reason": "Scalper AI Decision: Price action is exhibiting choppy, downward-ranging behavior from recent local highs. While the last candle is green, its volume is not indicative of extreme, undeniable acceleration. Momentum is not confirming continued upside, and overall volume trends are not signaling a parabolic leg. Greed is a liability; securing current profit aligns with optimal risk management for a scalping position."
+  },
+  {
+    "symbol": "SOLUSDT",
+    "amount": 16.44953308690155,
+    "entryPrice": 192.96,
+    "exitPrice": 196.69,
+    "pnl": 58.12129975127995,
+    "timestamp": "2025-08-22T17:48:48.967Z",
+    "reason": "Scalper AI Decision: The recent price action exhibits strong bearish momentum, particularly with the high-volume red candle (close 196.45, volume 8172.317). The subsequent green candle (close 196.7, volume 3132.743) is a weak bounce on low volume, failing to show any undeniable acceleration or confirmation of strength required to let the position run further. Current data indicates a high probability of reversal or further decline. Securing profit is the only rational action."
+  },
+  {
+    "symbol": "PEPEUSDT",
+    "amount": 210101430.70080075,
+    "entryPrice": 0.00001073,
+    "exitPrice": 0.00001128,
+    "pnl": 113.18584274713534,
+    "timestamp": "2025-08-22T17:48:39.089Z",
+    "reason": "Scalper AI Decision: Momentum has slowed significantly, with the price showing a clear decline from recent highs. The last green candle, while positive, is accompanied by drastically fading volume, indicating a lack of conviction and buyer exhaustion. This is not the parabolic acceleration required to justify extending the profit target. Securing the profit is the most rational action."
+  },
+  {
+    "symbol": "AAVEUSDT",
+    "amount": 7.017332850089001,
+    "entryPrice": 321.26,
+    "exitPrice": 327,
+    "pnl": 37.98482271753182,
+    "timestamp": "2025-08-22T17:48:30.798Z",
+    "reason": "Scalper AI Decision: Momentum is fading following the take-profit target hit. Recent candles show choppy action, a failure to establish higher highs, and several instances of upper wicks indicating resistance. Volume is not confirming any significant upward acceleration; in fact, it remains relatively low. Greed is a liability; securing the +1.79% profit is the most rational, data-driven action given the lack of sustained upward pressure."
+  },
+  {
+    "symbol": "BNBUSDT",
+    "amount": 3.4450621026992505,
+    "entryPrice": 872.51,
+    "exitPrice": 895.38,
+    "pnl": 75.70393058321702,
+    "timestamp": "2025-08-22T17:48:08.880Z",
+    "reason": "Scalper AI Decision: Momentum is decelerating. Price failed to sustain highs, indicated by the previous candle's rejection at 896.12 on higher volume. Subsequent green candles show reduced range and non-confirming volume. Greed is a liability; secure the profit now before a reversal."
+  },
+  {
+    "symbol": "LINKUSDT",
+    "amount": 114.11735517183459,
+    "entryPrice": 26.34,
+    "exitPrice": 27.1,
+    "pnl": 83.63660960543776,
+    "timestamp": "2025-08-22T17:48:01.635Z",
+    "reason": "Scalper AI Decision: Price momentum has decisively turned negative, with a series of lower closes and significant volume spikes accompanying downward movement. The recent candle at 1755884760 showing a high-volume drop from 27.16 to 27.12, followed by another lower close, confirms strong selling pressure. No signs of upward acceleration. Securing the current +2.89% profit is the only rational action given the data. Greed is a liability."
+  },
+  {
+    "symbol": "ADAUSDT",
+    "amount": 1090.7634706828676,
+    "entryPrice": 0.9038,
+    "exitPrice": 0.9279,
+    "pnl": 25.275280219010366,
+    "timestamp": "2025-08-22T17:47:50.236Z",
+    "reason": "Scalper AI Decision: Momentum has clearly reversed downwards with the last three candles closing lower, showing immediate rejection after a brief recovery. Volume is significantly fading on the most recent red candle, indicating a lack of buying pressure to sustain any upward movement. Greed is a liability; secure the profit."
+  },
+  {
+    "symbol": "SUIUSDT",
+    "amount": 545.8951352805669,
+    "entryPrice": 3.6118,
+    "exitPrice": 3.704,
+    "pnl": 48.30953589178909,
+    "timestamp": "2025-08-22T17:47:40.411Z",
+    "reason": "Scalper AI Decision: Price action shows clear rejection at recent highs and subsequent bearish movement (lower lows, lower closes) following a minor bounce. Volume is not confirming upward momentum; in fact, the candle showing rejection (time 1755884700, high 3.7158, close 3.707) had significantly higher volume than the preceding green candle. There is no 'extreme, undeniable acceleration' in either price or volume to justify holding. Securing the existing profit is the only logical action."
+  },
+  {
+    "symbol": "ETHUSDT",
+    "amount": 1.84712009973498,
+    "entryPrice": 4603.3,
+    "exitPrice": 4797.38,
+    "pnl": 349.6277319324982,
+    "timestamp": "2025-08-22T17:47:28.990Z",
+    "reason": "Scalper AI Decision: Price action exhibits clear bearish momentum. After a temporary rebound, the last three candles show a decline, with volume on the preceding upward move showing exhaustion. The highest volumes were observed during significant price drops. There is no evidence of accelerating price or volume to the upside, indicating a high probability of further decline or consolidation. Securing the current +4.22% profit is the only logical action."
+  },
+  {
+    "symbol": "TRXUSDT",
+    "amount": 5397.694484273062,
+    "entryPrice": 0.3565,
+    "exitPrice": 0.3647,
+    "pnl": 42.292555592624936,
+    "timestamp": "2025-08-22T17:47:17.370Z",
+    "reason": "Scalper AI Decision: The absolute latest candle (time: 1755884820) shows zero price movement (open=high=low=close=0.3647) and a catastrophic collapse in volume (32.1), following a period where momentum was already slowing. This is a definitive sign of immediate exhaustion and complete lack of follow-through, not acceleration. Greed is a liability; locking in profit is the only logical action."
+  },
+  {
+    "symbol": "PENGUUSDT",
+    "amount": 23642.160532479167,
+    "entryPrice": 0.033564,
+    "exitPrice": 0.03411,
+    "pnl": 12.102185554970875,
+    "timestamp": "2025-08-22T15:46:41.816Z",
+    "reason": "Scalper AI Decision: Momentum has stalled significantly after the initial profit target hit. Price action is showing small ranges and lower highs, with recent candles exhibiting upper wicks and declining volume. A previous high-volume red candle indicates strong selling pressure. There is no evidence of extreme, undeniable acceleration in both price and volume to justify letting the winner run. Securing realized profit is the only logical action."
+  },
+  {
+    "symbol": "UNIUSDT",
+    "amount": 206.91953661492357,
+    "entryPrice": 10.895,
+    "exitPrice": 11.062,
+    "pnl": 32.266618700657915,
+    "timestamp": "2025-08-22T15:46:28.628Z",
+    "reason": "Scalper AI Decision: Momentum has stalled after hitting a local high, evidenced by the upper wick on the 11.063 candle and the subsequent low-volume indecision candle at 11.062. Volume is not confirming further upside and shows signs of fading interest. The conditions for extreme, undeniable acceleration in both price and volume are not met. Securing the existing profit is the optimal, data-driven action."
+  },
+  {
+    "symbol": "SKLUSDT",
+    "amount": 42842.8040938729,
+    "entryPrice": 0.03508,
+    "exitPrice": 0.03817,
+    "pnl": 130.74895481780425,
+    "timestamp": "2025-08-22T15:29:17.080Z",
+    "reason": "Scalper AI Decision: Initial profit target hit. Price action shows a clear reversal from the peak (0.04044), with significant bearish candles and corresponding high volume (13.9M, 11.7M) immediately following the highest close. Momentum has deteriorated, and recent candles exhibit consolidation at a lower level with declining volume. No signs of sustained upward acceleration are present; instead, there is evidence of exhaustion and a potential downtrend forming. Securing current profit is the most rational, data-driven action."
+  },
+  {
+    "symbol": "ARBUSDT",
+    "amount": 3678.4777044894618,
+    "entryPrice": 0.536,
+    "exitPrice": 0.5452,
+    "pnl": 31.83648883681534,
+    "timestamp": "2025-08-22T15:29:02.753Z",
+    "reason": "Scalper AI Decision: Momentum has stalled and reversed after a weak higher high, evidenced by decreasing volume on the last upward move followed by a significant high-volume bearish candle. Current price action shows a clear lack of buying pressure and a confirmed pullback. Greed is a liability; securing current profit is the most rational action."
+  },
+  {
+    "symbol": "ETHFIUSDT",
+    "amount": 1656.8605458876905,
+    "entryPrice": 1.19,
+    "exitPrice": 1.208,
+    "pnl": 27.822002286546127,
+    "timestamp": "2025-08-22T15:04:53.440Z",
+    "reason": "Scalper AI Decision: Momentum is decelerating, evidenced by smaller candle bodies and the final candle closing red with a significant upper wick. Volume analysis shows a clear divergence; volume has been consistently decreasing as price made higher highs, indicating a lack of conviction from buyers. This combination signals exhaustion and potential reversal. Securing the current +1.51% profit is the optimal, data-driven action."
+  },
+  {
+    "symbol": "ENAUSDT",
+    "amount": 5539.938324266232,
+    "entryPrice": 0.7118,
+    "exitPrice": 0.7262,
+    "pnl": 75.75200865835143,
+    "timestamp": "2025-08-22T15:04:37.577Z",
+    "reason": "Scalper AI Decision: Momentum is decelerating, and volume has significantly faded on the most recent candle following a high-volume bounce. The price is showing signs of exhaustion and lack of sustained buying interest. Locking in the confirmed profit is the optimal, data-driven action."
+  },
+  {
+    "symbol": "DOGEUSDT",
+    "amount": 10135.69891454419,
+    "entryPrice": 0.22673,
+    "exitPrice": 0.2307,
+    "pnl": 37.9004189511551,
+    "timestamp": "2025-08-22T15:04:24.685Z",
+    "reason": "Scalper AI Decision: Initial strong momentum and volume surge has dissipated. The last candles show decreasing price acceleration and volume inconsistency, with the most recent candle exhibiting a small body and an upper wick. This indicates potential buying exhaustion and an increased risk of reversal. Locking in the current +1.75% profit is the most data-driven, risk-averse, and profitable action."
+  },
+  {
+    "symbol": "XRPUSDT",
+    "amount": 1152.1828071200966,
+    "entryPrice": 2.9918,
+    "exitPrice": 3.0309,
+    "pnl": 41.55819688829538,
+    "timestamp": "2025-08-22T15:04:13.196Z",
+    "reason": "Scalper AI Decision: Momentum significantly decelerating with the last two candles showing reduced range and upper wicks, indicative of buying exhaustion. Crucially, volume has drastically faded from 417,187.6 to 89,798.8 in the final two upward movements. This clear divergence of price attempt versus supporting volume signals weakness, not strength. Lock in profit before a potential reversal."
+  },
+  {
+    "symbol": "SOLUSDT",
+    "amount": 30.180539699708493,
+    "entryPrice": 190.36,
+    "exitPrice": 192.83,
+    "pnl": 68.72621958798516,
+    "timestamp": "2025-08-22T15:03:51.293Z",
+    "reason": "Scalper AI Decision: Price exhibits strong upward momentum, closing at its high on the final candle. However, a significant reduction in volume on this last price surge indicates weakening buying conviction. This divergence suggests potential exhaustion of the move, not the beginning of a parabolic leg. Profit is secured."
+  },
+  {
+    "symbol": "SUIUSDT",
+    "amount": 323.5529263783127,
+    "entryPrice": 3.5513,
+    "exitPrice": 3.6141,
+    "pnl": 19.14977114533424,
+    "timestamp": "2025-08-22T14:42:18.978Z",
+    "reason": "Scalper AI Decision: Momentum is slowing. The recent upward move encountered resistance, forming a significant upper wick rejection (candle at 1755873660). The subsequent candle (1755873720) exhibits extremely low volume and negligible price movement, indicating a clear lack of buying conviction. Greed is a liability; data suggests the immediate upside is exhausted. Securing profit now."
+  },
+  {
+    "symbol": "ENAUSDT",
+    "amount": 2647.542643887792,
+    "entryPrice": 0.6944,
+    "exitPrice": 0.7121,
+    "pnl": 44.97618968010126,
+    "timestamp": "2025-08-22T14:42:08.538Z",
+    "reason": "Scalper AI Decision: The final candle exhibits extreme deceleration in price action and a catastrophic collapse in volume (8198.12 compared to millions previously). This is not acceleration; it is an undeniable sign of immediate exhaustion and a high probability of reversal. Greed is dismissed; profit is secured."
+  },
+  {
+    "symbol": "LINKUSDT",
+    "amount": 198.64830958087504,
+    "entryPrice": 25.96,
+    "exitPrice": 26.32,
+    "pnl": 66.28496794094627,
+    "timestamp": "2025-08-22T14:41:59.940Z",
+    "reason": "Scalper AI Decision: Momentum has stalled after hitting a high of 26.59, immediately followed by a high-volume bearish candle. Subsequent price action shows declining volume and a struggle to recover, with the most recent candle closing low with weak volume. No signs of parabolic acceleration are present; instead, consolidation and potential reversal are indicated. Securing the current +1.39% profit is the optimal, data-driven action."
+  },
+  {
+    "symbol": "BTCUSDT",
+    "amount": 0.01445030112005617,
+    "entryPrice": 114300,
+    "exitPrice": 115872.91,
+    "pnl": 21.054624693590434,
+    "timestamp": "2025-08-22T14:41:45.410Z",
+    "reason": "Scalper AI Decision: The final candle shows a sharp rejection of higher prices, closing significantly below its open and the previous candle's close. While the prior candle exhibited strong momentum and volume, this immediate reversal on relatively high volume (though less than the peak) indicates exhaustion and strong selling pressure. Greed is a liability; securing the +1.38% profit is the most rational action based on this clear reversal signal."
+  },
+  {
+    "symbol": "QTUMUSDT",
+    "amount": 191.1028392336304,
+    "entryPrice": 2.313,
+    "exitPrice": 2.215,
+    "pnl": -19.151371033798327,
+    "timestamp": "2025-08-22T14:20:15.133Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "MEMEUSDT",
+    "amount": 284330.932167366,
+    "entryPrice": 0.002591,
+    "exitPrice": 0.002532,
+    "pnl": -17.49545091812237,
+    "timestamp": "2025-08-22T14:20:14.213Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "ARBUSDT",
+    "amount": 2971.7686375378994,
+    "entryPrice": 0.4958,
+    "exitPrice": 0.5208,
+    "pnl": 72.74651883201781,
+    "timestamp": "2025-08-22T14:20:12.896Z",
+    "reason": "Scalper AI Decision: Analysis of the last three candles reveals a clear and decisive momentum reversal. Candle 8 shows a large red body with high volume, rejecting previous highs. Candle 9 further confirms the downtrend with an even larger red candle and the highest volume in the sequence, indicating strong selling pressure. The final candle, while green, is a weak bounce on high volume, failing to recover significant ground. The conditions for letting a winner run (extreme, undeniable acceleration) are not met; instead, a sharp reversal is in progress. Immediate exit to secure the +5.04% profit is the most data-driven and profitable action."
+  },
+  {
+    "symbol": "ADAUSDT",
+    "amount": 3380.139689128907,
+    "entryPrice": 0.8718,
+    "exitPrice": 0.8926,
+    "pnl": 67.28979284736457,
+    "timestamp": "2025-08-22T14:19:59.555Z",
+    "reason": "Scalper AI Decision: Analysis of recent price action indicates a strong reversal. Price peaked at 0.9117 with long upper wicks, followed by two significant bearish candles on exceptionally high volume (7.76M on the second bearish candle, far exceeding previous buying volume). While the last candle showed a slight recovery, it remains well below the peak and is insufficient to negate the prior, undeniable selling pressure. Greed is a liability. Locking in profit is the most data-driven and profitable action."
+  },
+  {
+    "symbol": "API3USDT",
+    "amount": 2432.3212006261397,
+    "entryPrice": 1.5144,
+    "exitPrice": 1.4851,
+    "pnl": -74.87925139339548,
+    "timestamp": "2025-08-22T14:19:50.592Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "PENGUUSDT",
+    "amount": 49885.52836195206,
+    "entryPrice": 0.031111,
+    "exitPrice": 0.031685,
+    "pnl": 27.053670313611942,
+    "timestamp": "2025-08-22T14:19:49.148Z",
+    "reason": "Scalper AI Decision: Price peaked and initiated a sharp, high-volume rejection from higher levels. The most recent candle shows a minor rebound on lower volume, confirming weakened buying pressure after the significant dump. Greed is irrelevant; data indicates a high probability of further downside or consolidation. Securing profit now minimizes risk and optimizes capital rotation."
+  },
+  {
+    "symbol": "DOGEUSDT",
+    "amount": 17781.72173314265,
+    "entryPrice": 0.2182,
+    "exitPrice": 0.22445,
+    "pnl": 107.1446533891378,
+    "timestamp": "2025-08-22T14:19:40.945Z",
+    "reason": "Scalper AI Decision: Peak volume detected on candle 7, immediately followed by two large-bodied red candles (8 & 9) with high volume, indicating a strong bearish reversal and significant price depreciation. The most recent candle (10) is a weak bullish bounce on lower volume. Current price action shows a clear loss of upward momentum and strong selling pressure. Greed is a liability; securing profit is the only logical action."
+  },
+  {
+    "symbol": "BNBUSDT",
+    "amount": 6.389865020221879,
+    "entryPrice": 850.09,
+    "exitPrice": 861.11,
+    "pnl": 64.91393585528172,
+    "timestamp": "2025-08-22T14:19:28.354Z",
+    "reason": "Scalper AI Decision: Momentum has clearly reversed, with two strong bearish candles immediately following the peak, both supported by high volume. The final candle shows a weak, low-volume rebound, indicating a lack of buying interest. The initial profit target was met, and the data indicates a high probability of further downside. Greed is not a factor; data dictates action. Locking in profit immediately."
+  },
+  {
+    "symbol": "LTCUSDT",
+    "amount": 4.5600226324770246,
+    "entryPrice": 115.78,
+    "exitPrice": 117.31,
+    "pnl": 6.441898372673974,
+    "timestamp": "2025-08-22T14:19:17.478Z",
+    "reason": "Scalper AI Decision: Initial take profit target hit was followed by a sharp price rejection and significant bearish momentum. Candles 8 and 9 show strong downward movement, confirmed by exceptionally high selling volume. The current price is substantially below the recent peak. Holding this position would be a violation of risk management principles, as a clear reversal has been established, immediately threatening existing profit. Capital preservation dictates an immediate exit."
+  },
+  {
+    "symbol": "NEOUSDT",
+    "amount": 157.01395401879253,
+    "entryPrice": 6.725,
+    "exitPrice": 6.594,
+    "pnl": -21.604177989261636,
+    "timestamp": "2025-08-22T14:19:07.402Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "BIOUSDT",
+    "amount": 7153.921685476827,
+    "entryPrice": 0.1476,
+    "exitPrice": 0.2198,
+    "pnl": 514.9407137049591,
+    "timestamp": "2025-08-22T14:19:05.989Z",
+    "reason": "Scalper AI Decision: The last candle shows a sharp reversal with significant selling pressure (large red candle, open equals high, closing near low) immediately after hitting a new peak. The prior candle also exhibited an upper wick, signaling resistance. This is not sustained parabolic acceleration; it is a clear indication of profit-taking and a momentum shift downwards. Locking in the +48.92% profit is the most rational, data-driven action."
+  },
+  {
+    "symbol": "PENDLEUSDT",
+    "amount": 242.1387912255503,
+    "entryPrice": 5.451,
+    "exitPrice": 5.601,
+    "pnl": 34.96459931417833,
+    "timestamp": "2025-08-22T14:18:55.237Z",
+    "reason": "Scalper AI Decision: The recent price action shows a clear bearish reversal. After a modest green candle run, the penultimate candle exhibited a significant upper wick and closed lower, followed immediately by a large red candle with the highest volume in the series. This indicates strong selling pressure and a high probability of further downside. Greed is a liability; lock in the profit now."
+  },
+  {
+    "symbol": "SUSDT",
+    "amount": 4107.9942451617635,
+    "entryPrice": 0.3213,
+    "exitPrice": 0.3364,
+    "pnl": 60.64878383787022,
+    "timestamp": "2025-08-22T14:18:44.760Z",
+    "reason": "Scalper AI Decision: Clear bearish reversal detected. The last two candles show significant price rejection at the highs (long upper wick on candle 9, followed by a strong close down), and subsequent decline. High volume on candle 9 confirms the selling pressure. Momentum has decisively shifted downwards, securing current profit is the optimal action."
+  },
+  {
+    "symbol": "ETHUSDT",
+    "amount": 0.7677774803855438,
+    "entryPrice": 4297.79,
+    "exitPrice": 4571.61,
+    "pnl": 206.72285047206404,
+    "timestamp": "2025-08-22T14:18:36.357Z",
+    "reason": "Scalper AI Decision: Analysis of the last two candles indicates a clear and decisive reversal. The 9th candle formed a long upper wick and closed red with the highest volume in the observed sequence, signaling strong rejection and significant selling pressure at the top. This was immediately confirmed by the 10th candle, which continued the downward movement. Upward momentum has dissipated and reversed. Greed is a liability; data dictates securing profit."
+  },
+  {
+    "symbol": "HBARUSDT",
+    "amount": 3088.2315488300305,
+    "entryPrice": 0.23823,
+    "exitPrice": 0.24459,
+    "pnl": 18.88580209603067,
+    "timestamp": "2025-08-22T14:18:26.272Z",
+    "reason": "Scalper AI Decision: Price encountered strong rejection at 0.24855, forming a large bearish candle (candle 9) with a significant upper wick and high volume, immediately followed by another bearish candle (candle 10) also on high volume. This indicates a clear reversal and loss of upward momentum. Locking in profit is mandatory."
+  },
+  {
+    "symbol": "AAVEUSDT",
+    "amount": 7.350233800563922,
+    "entryPrice": 300.28,
+    "exitPrice": 316.97,
+    "pnl": 120.34559852364751,
+    "timestamp": "2025-08-22T14:18:18.604Z",
+    "reason": "Scalper AI Decision: Analysis of the most recent candles shows a clear reversal pattern. Candle 8 exhibited a long upper wick with the highest volume in the sequence, indicating strong selling pressure at the high. This was immediately followed by Candle 9, a large red candle with high volume, confirming the bearish momentum and the start of a significant pullback. Candle 10 continues the decline. There is no evidence of accelerating upward momentum; instead, the data points to a high-probability reversal. Securing the existing +5.56% profit is the only logical action."
+  },
+  {
+    "symbol": "UNIUSDT",
+    "amount": 209.88286474261452,
+    "entryPrice": 10.516,
+    "exitPrice": 10.763,
+    "pnl": 49.582098318201005,
+    "timestamp": "2025-08-22T14:18:08.195Z",
+    "reason": "Scalper AI Decision: Aggressive bearish candle on high volume immediately following an attempt at new highs indicates strong selling pressure and a high probability of reversal. Profit target achieved, securing capital is paramount. Greed is inefficient."
+  },
+  {
+    "symbol": "AVAXUSDT",
+    "amount": 94.36204384922335,
+    "entryPrice": 23.39,
+    "exitPrice": 23.86,
+    "pnl": 42.0986822428924,
+    "timestamp": "2025-08-22T14:17:59.238Z",
+    "reason": "Scalper AI Decision: The last candle exhibits a strong bearish reversal signal: a long upper wick and a close significantly below its open and the previous candle's close, despite hitting new highs. This occurred on notably decreased volume compared to the preceding bullish surge, indicating exhaustion of buying pressure and a high probability of an immediate pullback. Greed is a liability; data dictates securing profit."
+  },
+  {
+    "symbol": "XRPUSDT",
+    "amount": 1317.9986874269496,
+    "entryPrice": 2.92,
+    "exitPrice": 3.0278,
+    "pnl": 138.089622078834,
+    "timestamp": "2025-08-22T14:17:49.827Z",
+    "reason": "Scalper AI Decision: Momentum has stalled, indicated by the last candle closing red at 3.0275 with a significant drop in volume (1.8M) compared to previous green candles. Upper wicks on the preceding candles (3.0011, 3.0342) also show resistance and selling pressure at higher prices. The conditions for extreme, undeniable acceleration are not met. Greed is a liability; securing profit is the mandate."
+  },
+  {
+    "symbol": "SOLUSDT",
+    "amount": 31.776706022633476,
+    "entryPrice": 186.64,
+    "exitPrice": 192.48,
+    "pnl": 179.4595827969431,
+    "timestamp": "2025-08-22T14:17:39.723Z",
+    "reason": "Scalper AI Decision: The prior candle showed a significant price increase with a massive volume spike, suggesting a potential climax. However, the latest candle is red, indicating a pullback, and critically, volume has dropped by over 75% compared to the preceding candle. This lack of immediate follow-through on significantly reduced volume, after a large move, signals exhaustion or a temporary top. Greed is a liability; securing the +3.13% profit is the most rational action."
+  },
+  {
+    "symbol": "API3USDT",
+    "amount": 504.12157242535267,
+    "entryPrice": 1.5393,
+    "exitPrice": 1.5115,
+    "pnl": -14.776559470145637,
+    "timestamp": "2025-08-21T10:04:31.709Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "CFXUSDT",
+    "amount": 12954.830324446499,
+    "entryPrice": 0.1797,
+    "exitPrice": 0.1756,
+    "pnl": -55.38967253520335,
+    "timestamp": "2025-08-21T10:04:30.320Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "SUIUSDT",
+    "amount": 838.6303062070367,
+    "entryPrice": 3.5091,
+    "exitPrice": 3.4532,
+    "pnl": -49.77539229036773,
+    "timestamp": "2025-08-21T10:04:25.436Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "ADAUSDT",
+    "amount": 1790.2741641119974,
+    "entryPrice": 0.8669,
+    "exitPrice": 0.8786,
+    "pnl": 19.373272839521647,
+    "timestamp": "2025-08-21T09:41:21.087Z",
+    "reason": "Scalper AI Decision: Price momentum is clearly decelerating, evidenced by the extremely small range and insignificant price change of the final candle. Crucially, volume has collapsed on this last upward tick (41074.2), representing a strong divergence and exhaustion signal. There is no evidence of the 'extreme, undeniable acceleration in both price and volume' required to justify holding. Execute profit capture immediately."
+  },
+  {
+    "symbol": "LINKUSDT",
+    "amount": 187.11377709484114,
+    "entryPrice": 25.71,
+    "exitPrice": 26.18,
+    "pnl": 83.04483655023218,
+    "timestamp": "2025-08-21T09:41:06.430Z",
+    "reason": "Scalper AI Decision: Momentum is not exhibiting extreme acceleration after the initial surge, and volume, while increased on the final candle, does not indicate a parabolic breakout. Prior candles show mixed signals and a previous significant volume spike did not lead to sustained, undeniable price acceleration. Securing current profit aligns with ruthless risk management for a scalping position."
+  },
+  {
+    "symbol": "WIFUSDT",
+    "amount": 1520.6204504268142,
+    "entryPrice": 0.868,
+    "exitPrice": 0.854,
+    "pnl": -22.587296170639917,
+    "timestamp": "2025-08-21T09:19:53.387Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "PEPEUSDT",
+    "amount": 126478371.69486785,
+    "entryPrice": 0.00001065,
+    "exitPrice": 0.00001046,
+    "pnl": -25.353854389953195,
+    "timestamp": "2025-08-21T09:19:50.217Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "WLDUSDT",
+    "amount": 1729.496772798346,
+    "entryPrice": 0.955,
+    "exitPrice": 0.938,
+    "pnl": -31.023713110456757,
+    "timestamp": "2025-08-21T09:19:47.545Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "CRVUSDT",
+    "amount": 2415.5846929370073,
+    "entryPrice": 0.8803,
+    "exitPrice": 0.8645,
+    "pnl": -40.25451111544857,
+    "timestamp": "2025-08-21T09:19:45.079Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "OGNUSDT",
+    "amount": 16437.09278917154,
+    "entryPrice": 0.0803,
+    "exitPrice": 0.0788,
+    "pnl": -25.950882095544053,
+    "timestamp": "2025-08-21T08:57:44.086Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "BANDUSDT",
+    "amount": 2373.9182571411416,
+    "entryPrice": 0.834,
+    "exitPrice": 0.82,
+    "pnl": -35.18146857083175,
+    "timestamp": "2025-08-21T08:57:42.924Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "CFXUSDT",
+    "amount": 7380.792649590919,
+    "entryPrice": 0.1825,
+    "exitPrice": 0.1796,
+    "pnl": -22.72988904368009,
+    "timestamp": "2025-08-21T08:57:39.750Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "DOGEUSDT",
+    "amount": 21552.328341509638,
+    "entryPrice": 0.22321,
+    "exitPrice": 0.21943,
+    "pnl": -86.19702853888401,
+    "timestamp": "2025-08-21T08:57:37.495Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "BNBUSDT",
+    "amount": 4.191711116904168,
+    "entryPrice": 871.58,
+    "exitPrice": 858.34,
+    "pnl": -59.09616850789474,
+    "timestamp": "2025-08-21T08:27:55.235Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "PENGUUSDT",
+    "amount": 36090.364483323676,
+    "entryPrice": 0.031991,
+    "exitPrice": 0.031466,
+    "pnl": -20.08306076257711,
+    "timestamp": "2025-08-21T07:20:49.454Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "ARBUSDT",
+    "amount": 1424.8875098562148,
+    "entryPrice": 0.5128,
+    "exitPrice": 0.5043,
+    "pnl": -12.830114604998405,
+    "timestamp": "2025-08-21T07:20:47.020Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "ADAUSDT",
+    "amount": 1651.6327193812544,
+    "entryPrice": 0.8848,
+    "exitPrice": 0.8703,
+    "pnl": -25.386090386705806,
+    "timestamp": "2025-08-21T07:20:45.897Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "BIOUSDT",
+    "amount": 9757.419123047457,
+    "entryPrice": 0.1508,
+    "exitPrice": 0.1474,
+    "pnl": -34.61346859709841,
+    "timestamp": "2025-08-21T07:05:24.244Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "API3USDT",
+    "amount": 936.3148608053175,
+    "entryPrice": 1.5715,
+    "exitPrice": 1.5294,
+    "pnl": -40.850855588019336,
+    "timestamp": "2025-08-21T06:53:58.512Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "MEMEUSDT",
+    "amount": 261167.69679722335,
+    "entryPrice": 0.002817,
+    "exitPrice": 0.002879,
+    "pnl": 15.440495402348638,
+    "timestamp": "2025-08-21T06:34:08.626Z",
+    "reason": "Scalper AI Decision: Initial take profit target hit. Price action shows clear signs of momentum loss and volume divergence after an attempted surge. The strong bullish candle (0.002873 open to 0.002883 close with 51M volume) was immediately followed by significantly declining volume and subsequent red candles, indicating a failed continuation and potential reversal. Greed is a liability; secure the profit."
+  },
+  {
+    "symbol": "ETHUSDT",
+    "amount": 1.0066851949551092,
+    "entryPrice": 4354.98,
+    "exitPrice": 4288.77,
+    "pnl": -70.97006802154453,
+    "timestamp": "2025-08-21T06:20:41.373Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "SUIUSDT",
+    "amount": 327.26582428318653,
+    "entryPrice": 3.5723,
+    "exitPrice": 3.5103,
+    "pnl": -21.43928232853878,
+    "timestamp": "2025-08-21T06:14:15.392Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "AAVEUSDT",
+    "amount": 24.95099197620309,
+    "entryPrice": 297.8844443615557,
+    "exitPrice": 302.02,
+    "pnl": 95.6505169553113,
+    "timestamp": "2025-08-21T05:49:07.176Z",
+    "reason": "Scalper Take Profit (Simple)"
+  },
+  {
+    "symbol": "ENAUSDT",
+    "amount": 1551.342494807361,
+    "entryPrice": 0.6594,
+    "exitPrice": 0.6468,
+    "pnl": -20.550323760214063,
+    "timestamp": "2025-08-21T05:41:58.804Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "XRPUSDT",
+    "amount": 737.2933790194747,
+    "entryPrice": 2.9731,
+    "exitPrice": 2.9232,
+    "pnl": -38.94619561862156,
+    "timestamp": "2025-08-21T05:41:57.334Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "LINKUSDT",
+    "amount": 438.69043226305484,
+    "entryPrice": 26.354999051413394,
+    "exitPrice": 25.72,
+    "pnl": -289.8511262689778,
+    "timestamp": "2025-08-21T05:41:55.020Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "CFXUSDT",
+    "amount": 13203.877233604306,
+    "entryPrice": 0.1895,
+    "exitPrice": 0.1822,
+    "pnl": -98.79405023727415,
+    "timestamp": "2025-08-21T05:41:52.408Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "MEMEUSDT",
+    "amount": 857482.7744235833,
+    "entryPrice": 0.002918,
+    "exitPrice": 0.002871,
+    "pnl": -42.763523443278665,
+    "timestamp": "2025-08-20T21:18:10.368Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "DOGEUSDT",
+    "amount": 13426.615077570206,
+    "entryPrice": 0.22086,
+    "exitPrice": 0.22192,
+    "pnl": 11.25257756421011,
+    "timestamp": "2025-08-20T21:14:21.823Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "API3USDT",
+    "amount": 2378.213704855897,
+    "entryPrice": 1.389,
+    "exitPrice": 1.41,
+    "pnl": 46.589206478126805,
+    "timestamp": "2025-08-20T21:06:26.424Z",
+    "reason": "Scalper Take Profit (Simple)"
+  },
+  {
+    "symbol": "BIOUSDT",
+    "amount": 16299.3692568002,
+    "entryPrice": 0.152,
+    "exitPrice": 0.1479,
+    "pnl": -69.23809066596145,
+    "timestamp": "2025-08-20T21:01:29.392Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "OGNUSDT",
+    "amount": 61860.27782855507,
+    "entryPrice": 0.0801,
+    "exitPrice": 0.0804,
+    "pnl": 13.584517011150364,
+    "timestamp": "2025-08-20T20:59:01.852Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "BNBUSDT",
+    "amount": 3.4152209584725792,
+    "entryPrice": 868.29,
+    "exitPrice": 873,
+    "pnl": 13.104202817659413,
+    "timestamp": "2025-08-20T20:58:58.196Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "SUSDT",
+    "amount": 6593.609938581232,
+    "entryPrice": 0.3225,
+    "exitPrice": 0.3244,
+    "pnl": 10.388891819228673,
+    "timestamp": "2025-08-20T20:58:55.704Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "ETHUSDT",
+    "amount": 1.8244390647908906,
+    "entryPrice": 4334.34,
+    "exitPrice": 4358.1,
+    "pnl": 35.39758429116678,
+    "timestamp": "2025-08-20T20:58:54.612Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "ARBUSDT",
+    "amount": 4894.629764804414,
+    "entryPrice": 0.5112,
+    "exitPrice": 0.5125,
+    "pnl": 3.8545209397833182,
+    "timestamp": "2025-08-20T20:58:51.675Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "UNIUSDT",
+    "amount": 237.34914966496075,
+    "entryPrice": 10.542,
+    "exitPrice": 10.598,
+    "pnl": 10.776126093088772,
+    "timestamp": "2025-08-20T20:58:50.376Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "AAVEUSDT",
+    "amount": 7.198507803630493,
+    "entryPrice": 295.4,
+    "exitPrice": 299.29,
+    "pnl": 25.84775395557436,
+    "timestamp": "2025-08-20T20:30:39.700Z",
+    "reason": "Scalper Take Profit"
+  },
+  {
+    "symbol": "LINKUSDT",
+    "amount": 96.3471211308439,
+    "entryPrice": 25.97,
+    "exitPrice": 26.35,
+    "pnl": 34.07315938792319,
+    "timestamp": "2025-08-20T20:30:37.303Z",
+    "reason": "Scalper Take Profit"
+  },
+  {
+    "symbol": "OGNUSDT",
+    "amount": 26415.393853322326,
+    "entryPrice": 0.0805,
+    "exitPrice": 0.0792,
+    "pnl": -36.43211120250204,
+    "timestamp": "2025-08-20T20:24:24.526Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "BIOUSDT",
+    "amount": 17244.20906800838,
+    "entryPrice": 0.1451,
+    "exitPrice": 0.1471,
+    "pnl": 31.95179498211276,
+    "timestamp": "2025-08-20T20:17:24.189Z",
+    "reason": "Scalper Take Profit"
+  },
+  {
+    "symbol": "BIOUSDT",
+    "amount": 27092.85209505259,
+    "entryPrice": 0.1476,
+    "exitPrice": 0.1445,
+    "pnl": -87.90275862239865,
+    "timestamp": "2025-08-20T19:17:20.450Z",
+    "reason": "Scalper Stop Loss"
+  },
+  {
+    "symbol": "ARBUSDT",
+    "amount": 9811.616954474097,
+    "entryPrice": 0.5096,
+    "exitPrice": 0.5098,
+    "pnl": -3.039638932496292,
+    "timestamp": "2025-08-20T19:17:00.415Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "UNIUSDT",
+    "amount": 410.2147016501813,
+    "entryPrice": 10.496,
+    "exitPrice": 10.525,
+    "pnl": 7.578716612987066,
+    "timestamp": "2025-08-20T19:16:58.367Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "CFXUSDT",
+    "amount": 22938.80398785457,
+    "entryPrice": 0.1877,
+    "exitPrice": 0.1887,
+    "pnl": 18.610251675346433,
+    "timestamp": "2025-08-20T19:16:56.158Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "LINKUSDT",
+    "amount": 194.9317738791423,
+    "entryPrice": 25.65,
+    "exitPrice": 25.92,
+    "pnl": 47.57894736842166,
+    "timestamp": "2025-08-20T19:16:53.438Z",
+    "reason": "Manual Sell"
+  },
+  {
+    "symbol": "MEMEUSDT",
+    "amount": 1775568.1818181819,
+    "entryPrice": 0.002816,
+    "exitPrice": 0.002864,
+    "pnl": 80.14204545454521,
+    "timestamp": "2025-08-20T19:07:06.210Z",
+    "reason": "Scalper Take Profit"
+  },
+  {
+    "symbol": "CFXUSDT",
+    "amount": 26954.177897574125,
+    "entryPrice": 0.1855,
+    "exitPrice": 0.1878,
+    "pnl": 56.932614555255974,
+    "timestamp": "2025-08-20T19:07:05.218Z",
+    "reason": "Scalper Take Profit"
+  },
+  {
+    "symbol": "BIOUSDT",
+    "amount": 27870.725750174457,
+    "entryPrice": 0.1433,
+    "exitPrice": 0.1472,
+    "pnl": 104.59325959525434,
+    "timestamp": "2025-08-20T18:58:41.997Z",
+    "reason": "Scalper Take Profit"
+  },
+  {
+    "symbol": "BIOUSDT",
+    "amount": 34293.55281207133,
+    "entryPrice": 0.1458,
+    "exitPrice": 0.1431,
+    "pnl": -97.50000000000026,
+    "timestamp": "2025-08-20T18:45:52.461Z",
+    "reason": "Scalper Stop Loss"
   }
 ]

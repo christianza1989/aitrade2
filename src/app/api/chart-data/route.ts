@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
         }
         
         const formattedData = candles.map(c => ({
-            time: c.time,
+            time: c.timestamp,
             open: c.open,
             high: c.high,
             low: c.low,

@@ -37,7 +37,113 @@ Siekdami užtikrinti sklandų bendradarbiavimą, visi agentai yra prijungti prie
 
 ## Darbo Pradžia
 
-### 1. Aplinkos Kintamieji
+### ⚡ Optimizuotas Development Workflow (Rekomenduojama)
+
+Šis projektas turi pažangią development darbo eigą, kuri suteikia greitą grįžtamąjį ryšį ir sumažina Docker build laiką nuo 5-10 minučių iki kelių sekundžių.
+
+#### 🚀 Greitoji Patikra (Sekundės)
+
+Prieš kiekvieną commit'ą arba Docker build, naudokite šiuos greitus patikrinimus:
+
+```bash
+# TypeScript tipų patikra (tik kompiliacija, be failų generavimo)
+npm run type-check
+
+# ESLint kodo kokybės patikra
+npm run lint
+
+# Kombinuota patikra (tipai + lint)
+npm run pre-commit
+
+# Pilna validacija (tipai + lint + build)
+npm run validate
+```
+
+#### 🐳 Docker Validacija
+
+```bash
+# Docker konfigūracijos sintaksės patikra
+npm run docker:validate
+```
+
+#### 🛠️ VS Code Integracija
+
+Projektas turi integraciją su VS Code užduotimis. Naudokite `Ctrl+Shift+P` ir ieškokite "Tasks: Run Task", tada pasirinkite:
+
+- **Type Check** - Greita TypeScript patikra
+- **Lint Code** - ESLint patikra
+- **Pre-commit Validation** - Kombinuota patikra
+- **Full Validation** - Pilna validacija
+- **Docker Config Validation** - Docker sintaksės patikra
+
+### Greitas Paleidimas su Docker
+
+Šis projektas turi pilną Docker konfigūraciją, kuri automatiškai nustato visą kūrimo aplinką.
+
+#### 1. Nukopijuokite aplinkos kintamuosius
+
+```bash
+cp .env.example .env
+```
+
+#### 2. Paleiskite sistemą su Docker
+
+```bash
+# Development režimas su hot reload
+npm run docker:dev
+
+# Arba tiesiogiai su docker-compose
+docker-compose up
+```
+
+#### 3. Prieiga prie aplikacijos
+
+- **Aplikacija**: http://localhost:3000
+- **Prisijungimas**: admin / admin123
+- **Duomenų bazė**: localhost:5432 (jei reikia tiesioginio priėjimo)
+- **Redis**: localhost:6379
+
+#### Docker Komandos
+
+```bash
+# Paleisti visus servisus
+npm run docker:dev
+
+# Paleisti gamybos režimu (be hot reload)
+npm run docker:prod
+
+# Sustabdyti visus servisus
+npm run docker:down
+
+# Perstatyti atvaizdus
+npm run docker:build
+```
+
+### Lokalus Development (be Docker)
+
+Jei norite dirbti be Docker ir naudoti vietinius servisus:
+
+#### 1. Paleiskite vietinius servisus
+
+```bash
+# Paleiskite tik duomenų bazę ir Redis iš Docker
+docker-compose up db redis
+
+# Aplikacija veiks su npm run dev ir jungsis prie Docker konteinerių
+npm run dev
+```
+
+#### 2. Aplinkos konfigūracija
+
+`.env.local` failas jau sukonfigūruotas naudoti vietinius servisus:
+```
+DATABASE_URL="postgresql://postgres:password@localhost:5432/lucidehive"
+REDIS_URL="redis://localhost:6379"
+```
+
+### Tradicinis Vystymas (be Docker)
+
+#### 1. Aplinkos Kintamieji
 
 Sukurkite `.env.local` failą pagrindiniame kataloge ir pridėkite savo API raktus:
 
@@ -49,12 +155,18 @@ NEWS_API_KEY=JŪSŲ_NAUJIENŲ_API_RAKTAS
 # Gali būti vienas raktas arba kableliais atskirtas sąrašas raktų rotacijai
 GEMINI_API_KEYS=JŪSŲ_GEMINI_API_RAKTAS_1,JŪSŲ_GEMINI_API_RAKTAS_2
 
+# Duomenų bazė (lokaliai)
+DATABASE_URL="postgresql://user:password@localhost:5432/database?schema=public"
+
+# Redis
+REDIS_URL="redis://127.0.0.1:6379"
+
 # Imitaciniai administratoriaus prisijungimo duomenys
 ADMIN_USER=admin
 ADMIN_PASS=password
 ```
 
-### 2. Instaliacija
+#### 2. Instaliacija
 
 Įdiekite priklausomybes:
 
@@ -62,7 +174,7 @@ ADMIN_PASS=password
 npm install
 ```
 
-### 3. Vystymo Serverio Paleidimas
+#### 3. Vystymo Serverio Paleidimas
 
 Paleiskite vystymo serverį:
 

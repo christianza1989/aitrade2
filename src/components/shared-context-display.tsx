@@ -30,7 +30,7 @@ export function SharedContextDisplay({ context }: SharedContextDisplayProps) {
 
     return (
         <div className="bg-gray-800 p-4 rounded-lg">
-            <h2 className="text-lg font-semibold mb-3">Hive Mind Context</h2>
+<h2 className="text-lg font-semibold mb-3">Lucid Hive Context</h2>
             <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="flex justify-between items-center">
                     <span className="text-gray-400">Market Regime:</span>

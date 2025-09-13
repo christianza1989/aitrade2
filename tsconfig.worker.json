@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["esnext"],
+    "baseUrl": ".",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "allowImportingTsExtensions": false,
+    "declaration": false,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["worker.ts", "src/core/**/*", "src/lib/**/*", "src/utils/**/*"],
+  "exclude": ["node_modules", ".next", "tests", "src/lib/toasts.tsx", "src/components/**/*", "src/core/coinmarketcap.ts", "src/core/news.ts", "src/lib/messages.ts"]
+}

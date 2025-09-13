@@ -1,51 +1,68 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
-const usersFilePath = path.join(process.cwd(), 'users.json');
-const getPortfolioFilePath = (username: string) => path.join(process.cwd(), `portfolio_${username}.json`);
-
-async function getUsers() {
-    try {
-        const data = await fs.readFile(usersFilePath, 'utf-8');
-        return JSON.parse(data);
-    } catch (error) {
-        return {};
-    }
-}
+const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
     try {
         const { username, password } = await req.json();
 
         if (!username || !password) {
-            return NextResponse.json({ error: 'Username and password are required' }, { status: 400 });
+            return NextResponse.json({ error: 'Username and password are required.' }, { status: 400 });
         }
 
-        const users = await getUsers();
-
-        if (users[username]) {
-            return NextResponse.json({ error: 'User already exists' }, { status: 409 });
+        const existingUser = await prisma.user.findUnique({ where: { username } });
+        if (existingUser) {
+            return NextResponse.json({ error: 'Username already exists.' }, { status: 409 });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        users[username] = { password: hashedPassword };
 
-        await fs.writeFile(usersFilePath, JSON.stringify(users, null, 2));
+        // Naudojame transakciją, kad užtikrintume vientisumą
+        await prisma.$transaction(async (tx) => {
+            // 1. Sukuriam vartotoją
+            const user = await tx.user.create({
+                data: { username, password: hashedPassword },
+            });
 
-        // Create a new portfolio for the user
-        const portfolioFilePath = getPortfolioFilePath(username);
-        const initialPortfolio = {
-            balance: 100000,
-            positions: [],
-        };
-        await fs.writeFile(portfolioFilePath, JSON.stringify(initialPortfolio, null, 2));
+            // 2. Nuskaitom etaloninę konfigūraciją iš duomenų bazės
+            const templateConfig = await tx.userConfiguration.findUnique({
+                where: { userId: 'admin' },
+            });
 
-        return NextResponse.json({ message: 'User registered successfully' }, { status: 201 });
+            if (!templateConfig) {
+                throw new Error("Default configuration template not found. Please seed the database.");
+            }
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const defaultConfig = templateConfig.strategyConfig as Record<string, any>; // Use flexible config object
+            if (defaultConfig.global_settings) {
+                defaultConfig.global_settings.username = username; // Personalizuojam
+            }
+
+            // 3. Sukuriam vartotojo konfigūracijos įrašą
+            await tx.userConfiguration.create({
+                data: {
+                    userId: user.username,
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    strategyConfig: defaultConfig as any,
+                },
+            });
+
+            // 4. Sukuriam pagrindinį portfelį
+            await tx.portfolio.create({
+                data: {
+                    userId: user.username,
+                    balance: 100000,
+                    type: 'MAIN' as const,
+                },
+            });
+        });
+
+        return NextResponse.json({ message: 'User registered successfully.' }, { status: 201 });
     } catch (error) {
-        console.error("Registration error:", error);
+        console.error('[Register API Error]', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
