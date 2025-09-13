@@ -6,7 +6,7 @@ import { MarketTable } from '@/components/market-table';
 import { KpiCard } from '@/components/kpi-card';
 import { NewsFeed } from '@/components/news-feed';
 import { OpportunityLog } from '@/components/opportunity-log';
-import { DollarSign, TrendingUp, Wallet, LoaderCircle, Activity, BarChart3, Zap, Shield } from 'lucide-react';
+import { DollarSign, TrendingUp, Wallet, LoaderCircle, Activity, BarChart3, Zap, Shield, Brain, Cpu, Network } from 'lucide-react';
 import { ActivityFeed } from '@/components/ActivityFeed';
 import { MacroEnvironmentCard } from '@/components/MacroEnvironmentCard';
 import { MarketSentimentCard } from '@/components/MarketSentimentCard';
@@ -14,6 +14,12 @@ import { AlertTriangle } from 'lucide-react';
 import { ChatInterface } from '@/components/chat/ChatInterface';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { StatefulContainer } from '@/components/ui/stateful-container';
+import { LiveHiveNetwork } from '@/components/lucid-hive/LiveHiveNetwork';
+import { MarketPulse } from '@/components/lucid-hive/MarketPulse';
+import { AIDecisionFlow } from '@/components/lucid-hive/AIDecisionFlow';
+import { PerformanceAnalytics } from '@/components/lucid-hive/PerformanceAnalytics';
+import { Portfolio3DGlobe } from '@/components/lucid-hive/Portfolio3DGlobe';
+import { FloatingAIControl } from '@/components/lucid-hive/FloatingAIControl';
 import { motion } from 'framer-motion';
 
 export default function Dashboard() {
@@ -21,9 +27,22 @@ export default function Dashboard() {
 
     if (state.isLoading) {
         return (
-            <div className="flex items-center justify-center h-full text-white">
-                <LoaderCircle className="animate-spin mr-3" size={24} />
-                <span>Loading Dashboard Data...</span>
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center"
+                >
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                        className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full mx-auto mb-6"
+                    />
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent mb-2">
+                        Lucid Hive Awakening...
+                    </h2>
+                    <p className="text-gray-400">Initializing AI Trading Network</p>
+                </motion.div>
             </div>
         );
     }
@@ -43,39 +62,119 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="min-h-screen text-white">
-            {/* Enhanced Header */}
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white relative overflow-hidden">
+            {/* Animated Background Elements */}
+            <div className="fixed inset-0 pointer-events-none">
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+            </div>
+
+            {/* Mission Control Header */}
             <motion.div
-                initial={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-8"
+                className="relative z-10 p-8"
             >
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 mb-6 backdrop-blur-sm"
+                    className="flex items-center justify-between mb-8"
                 >
-                    <Activity className="w-5 h-5 text-blue-400 mr-3" />
-                    <span className="text-blue-300 text-sm font-semibold tracking-wide">TRADING DASHBOARD</span>
+                    <div className="flex items-center space-x-4">
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                            className="relative"
+                        >
+                            <Brain className="w-10 h-10 text-cyan-400" />
+                            <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-lg" />
+                        </motion.div>
+                        <div>
+                            <h1 className="text-4xl font-black bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                                LUCID HIVE
+                            </h1>
+                            <p className="text-gray-300 text-sm font-medium">AI Trading Mission Control</p>
+                        </div>
+                    </div>
+                    
+                    {/* Status Indicators */}
+                    <div className="flex items-center space-x-6">
+                        <motion.div
+                            animate={{ scale: [1, 1.05, 1] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                            className="flex items-center space-x-2 bg-green-500/20 border border-green-500/30 rounded-full px-4 py-2"
+                        >
+                            <div className="w-2 h-2 bg-green-400 rounded-full animate-ping" />
+                            <span className="text-green-300 text-sm font-semibold">ONLINE</span>
+                        </motion.div>
+                        <div className="text-right">
+                            <p className="text-xl font-bold text-white">
+                                ${state.portfolio?.balance?.toLocaleString() || '100,000'}
+                            </p>
+                            <p className="text-gray-400 text-sm">Portfolio Value</p>
+                        </div>
+                    </div>
                 </motion.div>
-
-                <h1 className="text-4xl md:text-6xl font-black mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                    Portfolio Overview
-                </h1>
-                <p className="text-xl text-gray-400 max-w-3xl leading-relaxed">
-                    Real-time monitoring of your trading performance, market conditions, and AI-driven insights.
-                    Stay ahead of the market with intelligent analytics and automated decision-making.
-                </p>
             </motion.div>
 
-            {/* Enhanced KPI Cards Section */}
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="mb-12"
-            >
+            {/* Main Content Grid */}
+            <div className="relative z-10 px-8 pb-8 space-y-8">
+                {/* LIVE HIVE NETWORK - THE CENTERPIECE */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
+                    className="w-full"
+                >
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-white mb-2 flex items-center">
+                            <Network className="w-6 h-6 mr-3 text-cyan-400" />
+                            Live AI Hive Network
+                        </h2>
+                        <p className="text-gray-400">Real-time visualization of AI agents communication and decision flow</p>
+                    </div>
+                    <LiveHiveNetwork />
+                </motion.div>
+
+                {/* AI Decision Flow */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.6, duration: 0.8 }}
+                    className="w-full"
+                >
+                    <AIDecisionFlow />
+                </motion.div>
+
+                {/* Market Pulse and Performance Analytics Row */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
+                    className="grid grid-cols-1 xl:grid-cols-2 gap-6"
+                >
+                    <MarketPulse />
+                    <PerformanceAnalytics />
+                </motion.div>
+
+                {/* Global Portfolio Distribution */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1.0, duration: 0.8 }}
+                    className="w-full"
+                >
+                    <Portfolio3DGlobe />
+                </motion.div>
+
+                {/* Enhanced KPI Cards Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="mb-8"
+                >
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center">
@@ -145,13 +244,13 @@ export default function Dashboard() {
                 </Card>
             </motion.div>
 
-            {/* Enhanced Market Analysis Section */}
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="mb-12"
-            >
+                {/* Enhanced Market Analysis Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
+                    className="mb-8"
+                >
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center">
@@ -185,12 +284,13 @@ export default function Dashboard() {
                 </Card>
             </motion.div>
 
-            {/* Enhanced Trading Operations Section */}
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
-            >
+                {/* Enhanced Trading Operations Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.0 }}
+                    className="mb-8"
+                >
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center">
@@ -233,7 +333,11 @@ export default function Dashboard() {
                         </div>
                     </CardContent>
                 </Card>
-            </motion.div>
+                </motion.div>
+            </div>
+
+            {/* Floating AI Control */}
+            <FloatingAIControl />
         </div>
     );
 }
