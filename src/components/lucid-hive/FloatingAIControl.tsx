@@ -75,4 +75,198 @@ export const FloatingAIControl: React.FC<AIControlProps> = ({ className = '' }) 
                                             <Brain className="w-6 h-6 text-cyan-400" />
                                         </motion.div>
                                         <div>
-                                            <h3 className="text-white font-bold">AI Control Center</h3>\n                                            <p className="text-xs text-gray-400 capitalize">{aiStatus}</p>\n                                        </div>\n                                    </div>\n                                    <div className={`px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${getStatusColor(aiStatus)} text-white`}>\n                                        {aiStatus.toUpperCase()}\n                                    </div>\n                                </div>\n                            </div>\n\n                            {/* Control Buttons */}\n                            <div className="p-4 border-b border-gray-700/50">\n                                <div className="grid grid-cols-4 gap-2">\n                                    <motion.button\n                                        whileHover={{ scale: 1.05 }}\n                                        whileTap={{ scale: 0.95 }}\n                                        onClick={() => handleAIControl('play')}\n                                        className={`p-3 rounded-lg border transition-colors duration-200 ${\n                                            aiStatus === 'running'\n                                                ? 'bg-green-500/20 border-green-500/30 text-green-400'\n                                                : 'bg-gray-800/50 border-gray-600/30 text-gray-400 hover:border-green-500/30 hover:text-green-400'\n                                        }`}\n                                    >\n                                        <Play className="w-5 h-5 mx-auto" />\n                                    </motion.button>\n\n                                    <motion.button\n                                        whileHover={{ scale: 1.05 }}\n                                        whileTap={{ scale: 0.95 }}\n                                        onClick={() => handleAIControl('pause')}\n                                        className={`p-3 rounded-lg border transition-colors duration-200 ${\n                                            aiStatus === 'paused'\n                                                ? 'bg-yellow-500/20 border-yellow-500/30 text-yellow-400'\n                                                : 'bg-gray-800/50 border-gray-600/30 text-gray-400 hover:border-yellow-500/30 hover:text-yellow-400'\n                                        }`}\n                                    >\n                                        <Pause className="w-5 h-5 mx-auto" />\n                                    </motion.button>\n\n                                    <motion.button\n                                        whileHover={{ scale: 1.05 }}\n                                        whileTap={{ scale: 0.95 }}\n                                        onClick={() => handleAIControl('restart')}\n                                        className="p-3 rounded-lg border bg-gray-800/50 border-gray-600/30 text-gray-400 hover:border-blue-500/30 hover:text-blue-400 transition-colors duration-200"\n                                    >\n                                        <RotateCcw className="w-5 h-5 mx-auto" />\n                                    </motion.button>\n\n                                    <motion.button\n                                        whileHover={{ scale: 1.05 }}\n                                        whileTap={{ scale: 0.95 }}\n                                        onClick={() => handleAIControl('stop')}\n                                        className={`p-3 rounded-lg border transition-colors duration-200 ${\n                                            aiStatus === 'stopped'\n                                                ? 'bg-red-500/20 border-red-500/30 text-red-400'\n                                                : 'bg-gray-800/50 border-gray-600/30 text-gray-400 hover:border-red-500/30 hover:text-red-400'\n                                        }`}\n                                    >\n                                        <Power className="w-5 h-5 mx-auto" />\n                                    </motion.button>\n                                </div>\n                            </div>\n\n                            {/* Agent Status */}\n                            <div className="p-4">\n                                <h4 className="text-white font-semibold mb-3 flex items-center">\n                                    <Activity className="w-4 h-4 mr-2 text-cyan-400" />\n                                    Agent Status\n                                </h4>\n                                <div className="space-y-2 max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">\n                                    {agents.map((agent) => {\n                                        const IconComponent = agent.icon;\n                                        return (\n                                            <motion.div\n                                                key={agent.name}\n                                                initial={{ opacity: 0, x: 20 }}\n                                                animate={{ opacity: 1, x: 0 }}\n                                                className={`p-3 rounded-lg border cursor-pointer transition-all duration-200 ${\n                                                    selectedAgent === agent.name\n                                                        ? 'bg-cyan-500/10 border-cyan-500/30'\n                                                        : 'bg-gray-800/50 border-gray-600/30 hover:border-gray-500/50'\n                                                }`}\n                                                onClick={() => setSelectedAgent(selectedAgent === agent.name ? null : agent.name)}\n                                            >\n                                                <div className="flex items-center justify-between">\n                                                    <div className="flex items-center space-x-3">\n                                                        <div className="relative">\n                                                            <IconComponent className="w-4 h-4 text-cyan-400" />\n                                                            <motion.div\n                                                                animate={{\n                                                                    scale: [1, 1.2, 1],\n                                                                    opacity: [0.5, 1, 0.5]\n                                                                }}\n                                                                transition={{\n                                                                    duration: 2,\n                                                                    repeat: Infinity,\n                                                                    delay: Math.random() * 2\n                                                                }}\n                                                                className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full"\n                                                            />\n                                                        </div>\n                                                        <div>\n                                                            <div className="text-sm text-white font-medium">{agent.name}</div>\n                                                            <div className="text-xs text-gray-400">Performance: {agent.performance}%</div>\n                                                        </div>\n                                                    </div>\n                                                    <div className="text-right">\n                                                        <div className={`w-2 h-2 rounded-full ${\n                                                            agent.status === 'active' ? 'bg-green-400' : 'bg-gray-500'\n                                                        } shadow-lg shadow-current/50`} />\n                                                    </div>\n                                                </div>\n                                                \n                                                {/* Performance bar */}\n                                                <div className="mt-2">\n                                                    <div className="w-full bg-gray-700 rounded-full h-1">\n                                                        <motion.div\n                                                            className="bg-gradient-to-r from-green-400 to-cyan-400 h-1 rounded-full"\n                                                            initial={{ width: 0 }}\n                                                            animate={{ width: `${agent.performance}%` }}\n                                                            transition={{ delay: 0.5, duration: 1 }}\n                                                        />\n                                                    </div>\n                                                </div>\n                                            </motion.div>\n                                        );\n                                    })}\n                                </div>\n                            </div>\n                        </div>\n                    </motion.div>\n                )}\n            </AnimatePresence>\n\n            {/* Main FAB */}\n            <motion.button\n                whileHover={{ scale: 1.1 }}\n                whileTap={{ scale: 0.9 }}\n                onClick={() => setIsExpanded(!isExpanded)}\n                className="relative group"\n            >\n                {/* Pulsing rings */}\n                <motion.div\n                    animate={{\n                        scale: [1, 1.2, 1],\n                        opacity: [0.3, 0.6, 0.3]\n                    }}\n                    transition={{\n                        duration: 2,\n                        repeat: Infinity,\n                        ease: "easeInOut"\n                    }}\n                    className={`absolute inset-0 rounded-full bg-gradient-to-r ${getStatusColor(aiStatus)} blur-xl`}\n                />\n                \n                {/* Main button */}\n                <div className={`relative w-16 h-16 rounded-full bg-gradient-to-r ${getStatusColor(aiStatus)} shadow-2xl flex items-center justify-center border-2 border-white/10 backdrop-blur-xl`}>\n                    <motion.div\n                        animate={{ rotate: isExpanded ? 180 : 0 }}\n                        transition={{ duration: 0.2 }}\n                    >\n                        {isExpanded ? (\n                            <ChevronDown className="w-6 h-6 text-white" />\n                        ) : (\n                            <Brain className="w-6 h-6 text-white" />\n                        )}\n                    </motion.div>\n                    \n                    {/* Status indicator */}\n                    <motion.div\n                        animate={{\n                            scale: aiStatus === 'running' ? [1, 1.3, 1] : 1,\n                            opacity: aiStatus === 'running' ? [0.7, 1, 0.7] : 0.7\n                        }}\n                        transition={{\n                            duration: 1.5,\n                            repeat: aiStatus === 'running' ? Infinity : 0\n                        }}\n                        className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full shadow-lg flex items-center justify-center"\n                    >\n                        <div className={`w-2 h-2 rounded-full ${\n                            aiStatus === 'running' ? 'bg-green-500' :\n                            aiStatus === 'paused' ? 'bg-yellow-500' : 'bg-red-500'\n                        }`} />\n                    </motion.div>\n                </div>\n                \n                {/* Tooltip */}\n                <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">\n                    AI Control Center\n                </div>\n            </motion.button>\n        </div>\n    );\n};
+                                            <h3 className="text-white font-bold">AI Control Center</h3>
+                                            <p className="text-xs text-gray-400 capitalize">{aiStatus}</p>
+                                        </div>
+                                    </div>
+                                    <div className={`px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${getStatusColor(aiStatus)} text-white`}>
+                                        {aiStatus.toUpperCase()}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Control Buttons */}
+                            <div className="p-4 border-b border-gray-700/50">
+                                <div className="grid grid-cols-4 gap-2">
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => handleAIControl('play')}
+                                        className={`p-3 rounded-lg border transition-colors duration-200 ${
+                                            aiStatus === 'running'
+                                                ? 'bg-green-500/20 border-green-500/30 text-green-400'
+                                                : 'bg-gray-800/50 border-gray-600/30 text-gray-400 hover:border-green-500/30 hover:text-green-400'
+                                        }`}
+                                    >
+                                        <Play className="w-5 h-5 mx-auto" />
+                                    </motion.button>
+
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => handleAIControl('pause')}
+                                        className={`p-3 rounded-lg border transition-colors duration-200 ${
+                                            aiStatus === 'paused'
+                                                ? 'bg-yellow-500/20 border-yellow-500/30 text-yellow-400'
+                                                : 'bg-gray-800/50 border-gray-600/30 text-gray-400 hover:border-yellow-500/30 hover:text-yellow-400'
+                                        }`}
+                                    >
+                                        <Pause className="w-5 h-5 mx-auto" />
+                                    </motion.button>
+
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => handleAIControl('restart')}
+                                        className="p-3 rounded-lg border bg-gray-800/50 border-gray-600/30 text-gray-400 hover:border-blue-500/30 hover:text-blue-400 transition-colors duration-200"
+                                    >
+                                        <RotateCcw className="w-5 h-5 mx-auto" />
+                                    </motion.button>
+
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => handleAIControl('stop')}
+                                        className={`p-3 rounded-lg border transition-colors duration-200 ${
+                                            aiStatus === 'stopped'
+                                                ? 'bg-red-500/20 border-red-500/30 text-red-400'
+                                                : 'bg-gray-800/50 border-gray-600/30 text-gray-400 hover:border-red-500/30 hover:text-red-400'
+                                        }`}
+                                    >
+                                        <Power className="w-5 h-5 mx-auto" />
+                                    </motion.button>
+                                </div>
+                            </div>
+
+                            {/* Agent Status */}
+                            <div className="p-4">
+                                <h4 className="text-white font-semibold mb-3 flex items-center">
+                                    <Activity className="w-4 h-4 mr-2 text-cyan-400" />
+                                    Agent Status
+                                </h4>
+                                <div className="space-y-2 max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+                                    {agents.map((agent) => {
+                                        const IconComponent = agent.icon;
+                                        return (
+                                            <motion.div
+                                                key={agent.name}
+                                                initial={{ opacity: 0, x: 20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                className={`p-3 rounded-lg border cursor-pointer transition-all duration-200 ${
+                                                    selectedAgent === agent.name
+                                                        ? 'bg-cyan-500/10 border-cyan-500/30'
+                                                        : 'bg-gray-800/50 border-gray-600/30 hover:border-gray-500/50'
+                                                }`}
+                                                onClick={() => setSelectedAgent(selectedAgent === agent.name ? null : agent.name)}
+                                            >
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center space-x-3">
+                                                        <div className="relative">
+                                                            <IconComponent className="w-4 h-4 text-cyan-400" />
+                                                            <motion.div
+                                                                animate={{
+                                                                    scale: [1, 1.2, 1],
+                                                                    opacity: [0.5, 1, 0.5]
+                                                                }}
+                                                                transition={{
+                                                                    duration: 2,
+                                                                    repeat: Infinity,
+                                                                    delay: Math.random() * 2
+                                                                }}
+                                                                className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-sm text-white font-medium">{agent.name}</div>
+                                                            <div className="text-xs text-gray-400">Performance: {agent.performance}%</div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className={`w-2 h-2 rounded-full ${
+                                                            agent.status === 'active' ? 'bg-green-400' : 'bg-gray-500'
+                                                        } shadow-lg shadow-current/50`} />
+                                                    </div>
+                                                </div>
+                                                
+                                                {/* Performance bar */}
+                                                <div className="mt-2">
+                                                    <div className="w-full bg-gray-700 rounded-full h-1">
+                                                        <motion.div
+                                                            className="bg-gradient-to-r from-green-400 to-cyan-400 h-1 rounded-full"
+                                                            initial={{ width: 0 }}
+                                                            animate={{ width: `${agent.performance}%` }}
+                                                            transition={{ delay: 0.5, duration: 1 }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Main FAB */}
+            <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="relative group"
+            >
+                {/* Pulsing rings */}
+                <motion.div
+                    animate={{
+                        scale: [1, 1.2, 1],
+                        opacity: [0.3, 0.6, 0.3]
+                    }}
+                    transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                    className={`absolute inset-0 rounded-full bg-gradient-to-r ${getStatusColor(aiStatus)} blur-xl`}
+                />
+                
+                {/* Main button */}
+                <div className={`relative w-16 h-16 rounded-full bg-gradient-to-r ${getStatusColor(aiStatus)} shadow-2xl flex items-center justify-center border-2 border-white/10 backdrop-blur-xl`}>
+                    <motion.div
+                        animate={{ rotate: isExpanded ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        {isExpanded ? (
+                            <ChevronDown className="w-6 h-6 text-white" />
+                        ) : (
+                            <Brain className="w-6 h-6 text-white" />
+                        )}
+                    </motion.div>
+                    
+                    {/* Status indicator */}
+                    <motion.div
+                        animate={{
+                            scale: aiStatus === 'running' ? [1, 1.3, 1] : 1,
+                            opacity: aiStatus === 'running' ? [0.7, 1, 0.7] : 0.7
+                        }}
+                        transition={{
+                            duration: 1.5,
+                            repeat: aiStatus === 'running' ? Infinity : 0
+                        }}
+                        className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full shadow-lg flex items-center justify-center"
+                    >
+                        <div className={`w-2 h-2 rounded-full ${
+                            aiStatus === 'running' ? 'bg-green-500' :
+                            aiStatus === 'paused' ? 'bg-yellow-500' : 'bg-red-500'
+                        }`} />
+                    </motion.div>
+                </div>
+                
+                {/* Tooltip */}
+                <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                    AI Control Center
+                </div>
+            </motion.button>
+        </div>
+    );
+};
