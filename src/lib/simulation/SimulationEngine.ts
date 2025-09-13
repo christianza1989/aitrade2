@@ -209,7 +209,7 @@ export class SimulationEngine {
     }
     
     setSpeed(speed: number) {
-        this.speed = Math.max(0.1, Math.min(10, speed));
+        this.speed = Math.max(0.1, Math.min(5, speed));
         this.emit('simulation:speed_changed', { speed: this.speed });
     }
     
@@ -238,8 +238,8 @@ export class SimulationEngine {
                 // Update portfolio
                 this.updatePortfolio();
                 
-                // Stop after 10 minutes (600 seconds)
-                if (this.currentTime > 600000) {
+                // Stop after 10 hours (36000 seconds) at x1 speed
+                if (this.currentTime > 36000000) {
                     this.stop();
                     this.emit('simulation:completed', { 
                         duration: this.currentTime,
@@ -249,8 +249,8 @@ export class SimulationEngine {
                 }
             }
             
-            // Wait based on speed (100ms base, adjusted by speed)
-            await new Promise(resolve => setTimeout(resolve, 100 / this.speed));
+            // Wait based on speed (1000ms base for real-time x1, adjusted by speed)
+            await new Promise(resolve => setTimeout(resolve, 1000 / this.speed));
         }
     }
     
@@ -659,8 +659,8 @@ export class SimulationEngine {
             isPaused: this.isPaused,
             speed: this.speed,
             elapsedTime: this.currentTime,
-            remainingTime: Math.max(0, 600000 - this.currentTime),
-            progress: Math.min(1, this.currentTime / 600000)
+            remainingTime: Math.max(0, 36000000 - this.currentTime),
+            progress: Math.min(1, this.currentTime / 36000000)
         };
     }
 }
